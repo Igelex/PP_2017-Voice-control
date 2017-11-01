@@ -65,19 +65,25 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _dependencies = _interopRequireDefault(__webpack_require__(1));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/***/ (function(module, exports) {
 
 /**
  * Created by Pastuh on 19.10.2017.
  */
-//import {frequency} from './frequencyAnalyser';
+function bind() {
+  var scriptJquery = document.createElement('script');
+  var scriptAnnyang = document.createElement('script');
+  var scriptSpeechKitt = document.createElement('script');
+  scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
+  scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
+  scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
+  document.getElementsByTagName('head')[0].appendChild(scriptJquery); //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
+
+  document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
+}
+
+bind();
+var sound;
 var elements = [];
 var INPUT_SELECTORS = 'a, li, :button';
 var FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
@@ -89,14 +95,19 @@ console.log('Test Go: ' + regExpGo.test('please go to Email address:'));
 console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
-  //Bind needed Libraries in HTML
-  (0, _dependencies.default)();
+  $('#request').click(function () {
+    sendRequest();
+  });
+  $('#start-search').click(function () {
+    checkInputType($('#search-input').val());
+  });
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
   if (navigator.getUserMedia) {
     navigator.mediaDevices.getUserMedia({
       audio: true
     }).then(function (stream) {
+      sound = stream;
       rec = new MediaRecorder(stream);
 
       rec.ondataavailable = function (e) {
@@ -109,7 +120,8 @@ window.onload = function () {
           recordedAudio.src = URL.createObjectURL(audio);
           recordedAudio.controls = true; //audioDownload.href = recordedAudio.src;
 
-          audioDownload.download = 'mp3'; //audioDownload.innerHTML = 'download';
+          audioDownload.download = 'mp3';
+          audioDownload.innerHTML = 'download';
         }
       };
     }).catch(function (e) {
@@ -121,6 +133,7 @@ window.onload = function () {
       stopRecord.disabled = false;
       audioChunks = [];
       rec.start();
+      setupAudioNodes(sound);
     };
 
     stopRecord.onclick = function (e) {
@@ -130,8 +143,7 @@ window.onload = function () {
     };
   } else {
     console.log('getUserMedia not supported');
-  } //document.getElementById('click1').addEventListener('click', alert('hui'));
-
+  }
 
   function checkInputType(input) {
     var userInput = input.toString().toLowerCase().trim();
@@ -203,6 +215,18 @@ window.onload = function () {
     }
 
     return false;
+  }
+
+  function sendRequest() {
+    $.ajax({
+      host: 'localhost',
+      port: '3000',
+      dataType: 'text',
+      path: '/',
+      method: 'GET'
+    }).done(function (data) {
+      alert('Greteengs from Server: ' + data);
+    }).fail(function (jqXHR, errorMessage, error) {});
   } ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /*if (! window.AudioContext) {
@@ -239,7 +263,7 @@ window.onload = function () {
       analyser.fftSize = 1024;
         // create a buffer source node
       sourceNode = context.createMediaStreamSource();
-      sourceNode = stream;
+      sourceNode. = stream;
         // connect the source to the analyser
       sourceNode.connect(analyser);
         // we use the javascript node to draw at a specific interval.
@@ -276,34 +300,6 @@ window.onload = function () {
   }*/
 
 };
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-/*
-* Bind needed Libraries in HTML
-* */
-function _default() {
-  console.log('IN Dependencies !!!!!!!!!');
-  var scriptJquery = document.createElement('script');
-  var scriptAnnyang = document.createElement('script');
-  var scriptSpeechKitt = document.createElement('script');
-  scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
-  scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
-  scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
-  document.getElementsByTagName('head')[0].appendChild(scriptJquery); //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
-
-  document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
-}
 
 /***/ })
 /******/ ]);

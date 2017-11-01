@@ -2,12 +2,23 @@
  * Created by Pastuh on 19.10.2017.
  */
 
-import bindDependencies from './dependencies';
-//import {frequency} from './frequencyAnalyser';
+function bind() {
+    let scriptJquery = document.createElement('script');
+    let scriptAnnyang = document.createElement('script');
+    let scriptSpeechKitt = document.createElement('script');
+    scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
+    scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
+    scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
+    document.getElementsByTagName('head')[0].appendChild(scriptJquery);
+    //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
+    document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
+}
 
+bind();
+let sound;
 let elements = [];
-const INPUT_SELECTORS = 'a, li, :button';
-const FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
+let INPUT_SELECTORS = 'a, li, :button';
+let FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 
 let regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
 let regExpGo = /(go to)\s[[a-zA-Z0-9\.]/;
@@ -17,8 +28,14 @@ console.log('Test Go: ' + regExpGo.test('please go to Email address:'));
 console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
-    //Bind needed Libraries in HTML
-    bindDependencies();
+
+    $('#request').click(function () {
+        sendRequest();
+    });
+
+    $('#start-search').click(function () {
+        checkInputType($('#search-input').val());
+    });
 
     navigator.getUserMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
@@ -27,6 +44,7 @@ window.onload = function () {
     if (navigator.getUserMedia) {
         navigator.mediaDevices.getUserMedia({audio: true})
             .then(stream => {
+                sound = stream;
                 rec = new MediaRecorder(stream);
                 rec.ondataavailable = e => {
                     audioChunks.push(e.data);
@@ -36,7 +54,7 @@ window.onload = function () {
                         recordedAudio.controls = true;
                         //audioDownload.href = recordedAudio.src;
                         audioDownload.download = 'mp3';
-                        //audioDownload.innerHTML = 'download';
+                        audioDownload.innerHTML = 'download';
                     }
                 }
             })
@@ -47,6 +65,7 @@ window.onload = function () {
             stopRecord.disabled = false;
             audioChunks = [];
             rec.start();
+            setupAudioNodes(sound);
         };
         stopRecord.onclick = e => {
             startRecord.disabled = false;
@@ -57,8 +76,6 @@ window.onload = function () {
         console.log('getUserMedia not supported');
     }
 
-
-    //document.getElementById('click1').addEventListener('click', alert('hui'));
     function checkInputType(input) {
         let userInput = input.toString().toLowerCase().trim();
         let t0 = performance.now();
@@ -124,6 +141,19 @@ window.onload = function () {
         return false;
     }
 
+    function sendRequest() {
+        $.ajax({
+            host: 'localhost',
+            port: '3000',
+            dataType: 'text',
+            path: '/',
+            method: 'GET'
+        }).done(function (data) {
+            alert('Greteengs from Server: ' + data);
+        }).fail(function (jqXHR, errorMessage, error) {
+
+        });
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -163,7 +193,7 @@ window.onload = function () {
 
         // create a buffer source node
         sourceNode = context.createMediaStreamSource();
-        sourceNode = stream;
+        sourceNode. = stream;
 
         // connect the source to the analyser
         sourceNode.connect(analyser);
