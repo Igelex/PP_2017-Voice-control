@@ -2,29 +2,12 @@
  * Created by Pastuh on 19.10.2017.
  */
 
-/*import {bind} from 'dependencies';
-//Bind needed Libraries in HTML
-bind();*/
+import bindDependencies from './dependencies';
+//import {frequency} from './frequencyAnalyser';
 
-//import setupAudioNodes from 'frequencyAnalyser';
-
-function bind() {
-    let scriptJquery = document.createElement('script');
-    let scriptAnnyang = document.createElement('script');
-    let scriptSpeechKitt = document.createElement('script');
-    scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
-    scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
-    scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
-    document.getElementsByTagName('head')[0].appendChild(scriptJquery);
-    //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
-    document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
-}
-
-bind();
-let sound;
 let elements = [];
-let INPUT_SELECTORS = 'a, li, :button';
-let FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
+const INPUT_SELECTORS = 'a, li, :button';
+const FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 
 let regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
 let regExpGo = /(go to)\s[[a-zA-Z0-9\.]/;
@@ -34,7 +17,9 @@ console.log('Test Go: ' + regExpGo.test('please go to Email address:'));
 console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
-    //bindDependencies();
+    //Bind needed Libraries in HTML
+    bindDependencies();
+
     navigator.getUserMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia ||
@@ -42,7 +27,6 @@ window.onload = function () {
     if (navigator.getUserMedia) {
         navigator.mediaDevices.getUserMedia({audio: true})
             .then(stream => {
-                sound = stream;
                 rec = new MediaRecorder(stream);
                 rec.ondataavailable = e => {
                     audioChunks.push(e.data);
