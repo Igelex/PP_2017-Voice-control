@@ -3,6 +3,7 @@ let path = require('path');
 let logger = require('morgan');
 let bodyParser = require('body-parser');
 let index = require('./routes/index');
+let test = require('./routes/test-post');
 let helmet = require('helmet');
 let app = express();
 
@@ -17,15 +18,21 @@ app.use(helmet());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname + '/dist')));
 
 app.use('/', index);
+//app.use('/test', test);
+
+app.post('/test', function (req, res) {
+  console.log('REQ.BODY: ' + req.body);
+    res.send('Hello Client');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  let err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  console.log(res.statusCode);
+  next(res.error);
 });
 
 // error handler
