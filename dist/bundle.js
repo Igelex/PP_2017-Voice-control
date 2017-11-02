@@ -72,16 +72,15 @@
 
 var _dependencies = _interopRequireDefault(__webpack_require__(1));
 
-var _frequencyAnalyser = _interopRequireDefault(__webpack_require__(2));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Created by Pastuh on 19.10.2017.
  */
+
+/*import frequencyAnalyser from './frequencyAnalyser';*/
 (0, _dependencies.default)();
 var elements = [];
-var rec;
 var INPUT_SELECTORS = 'a, li, :button';
 var FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 var regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
@@ -92,7 +91,7 @@ console.log('Test Go: ' + regExpGo.test('please go to Email address:'));
 console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
-  (0, _frequencyAnalyser.default)();
+  //frequencyAnalyser();
   $('#request').click(function () {
     sendRequest();
   });
@@ -180,97 +179,15 @@ window.onload = function () {
       url: '/test',
       type: 'POST'
     }).done(function (data) {
-      alert('Greetings from Server: ' + data);
+      //alert('Greetings from Server: ' + data);
       console.log(data);
+      checkInputType(data);
     }).fail(function (jqXHR, errorMessage, error) {
       console.log('AJAx error: ' + error);
     });
   } ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /*navigator.getUserMedia = navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia;
-  if (navigator.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({audio: true})
-          .then(stream => {
-              sound = stream;
-              rec = new MediaRecorder(stream);
-              rec.ondataavailable = e => {
-                  audioChunks.push(e.data);
-                  if (rec.state === "inactive") {
-                      let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
-                      recordedAudio.src = URL.createObjectURL(audio);
-                      recordedAudio.controls = true;
-                      //audioDownload.href = recordedAudio.src;
-                      audioDownload.download = 'mp3';
-                      //audioDownload.innerHTML = 'download';
-                  }
-              }
-          })
-          .catch(e => console.log(e));
-        startRecord.onclick = e => {
-          startRecord.disabled = true;
-          stopRecord.disabled = false;
-          audioChunks = [];
-          rec.start();
-          setupAudioNodes(sound);
-      };
-      stopRecord.onclick = e => {
-          startRecord.disabled = false;
-          stopRecord.disabled = true;
-          rec.stop();
-      };
-  } else {
-      console.log('getUserMedia not supported');
-  }*/
 
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-/*
-* Bind needed Libraries in HTML
-* */
-function _default() {
-  console.log('IN Dependencies !!!!!!!!!');
-  var scriptJquery = document.createElement('script');
-  var scriptAnnyang = document.createElement('script');
-  var scriptSpeechKitt = document.createElement('script');
-  scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
-  scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
-  scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
-  console.log('SCRIPT !!!!!!!!!' + scriptJquery.src.toString());
-  document.getElementsByTagName('head')[0].appendChild(scriptJquery); //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
-
-  document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-// fork getUserMedia for multiple browser versions, for those
-// that need prefixes
-function _default() {
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia; // set up forked web audio context, for multiple browsers
   // window. is needed otherwise Safari explodes
 
@@ -281,6 +198,9 @@ function _default() {
   analyser.minDecibels = -90;
   analyser.maxDecibels = -10;
   analyser.smoothingTimeConstant = 0.85;
+  var audioChunks = [];
+  var rec;
+  var isRecording = false;
   var distortion = audioCtx.createWaveShaper();
   var gainNode = audioCtx.createGain();
   var biquadFilter = audioCtx.createBiquadFilter();
@@ -294,11 +214,12 @@ function _default() {
   /*if (typeof (Storage) !== 'undefined') {
       console.log('audio value : ' + localStorage.getItem('audio'));
       if (localStorage.getItem('audio') == true) {
+          runAudioContext();
           startAudioRecord();
           $('#startRecord').textContent = 'Stop';
           console.log('Audio settings stored');
       }
-  }else {
+  } else {
       console.log('Storage is undefined: ' + Storage);
   }*/
 
@@ -337,8 +258,34 @@ function _default() {
         biquadFilter.connect(convolver);
         convolver.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        voiceMute();
         visualize();
+        voiceMute();
+        rec = new MediaRecorder(stream);
+
+        if (isRecording === false) {
+          rec.start();
+          isRecording = true;
+        }
+
+        rec.ondataavailable = function (e) {
+          audioChunks.push(e.data);
+        };
+
+        rec.onstop = function () {
+          isRecording = false;
+
+          if (audioChunks.length > 0) {
+            var audio = new Blob(audioChunks, {
+              type: 'audio/x-mpeg-3'
+            });
+            recordedAudio.src = URL.createObjectURL(audio);
+            recordedAudio.controls = true;
+            audioDownload.href = recordedAudio.src;
+            audioDownload.download = 'mp3';
+            audioDownload.innerHTML = 'download';
+            audioChunks = [];
+          }
+        };
       }, // Error callback
       function (err) {
         console.log('The following gUM error occured: ' + err);
@@ -352,7 +299,6 @@ function _default() {
       var bufferLengthAlt = analyser.frequencyBinCount;
       console.log(bufferLengthAlt);
       var dataArrayAlt = new Uint8Array(bufferLengthAlt);
-      getAverageVolume(dataArrayAlt);
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
       var drawAlt = function drawAlt() {
@@ -369,32 +315,29 @@ function _default() {
           canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
           canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
           x += barWidth + 1;
+
+          if (barHeight >= 50) {
+            if (isRecording === false) {
+              console.log('...Starting recorder');
+              rec.start();
+              isRecording = true; //setTimeOut();
+            }
+          }
         }
       };
 
       drawAlt();
     }
+  }
 
-    function voiceMute() {
-      gainNode.gain.value = 0;
-    }
-
-    function getAverageVolume(array) {
-      var values = 0;
-      var average;
-      var length = array.length; // get all the frequency amplitudes
-
-      for (var i = 0; i < length; i++) {
-        values += array[i];
-      }
-
-      average = values / length;
-      console.log('AVArAGE:' + average);
-      return average;
-    }
+  function voiceMute() {
+    gainNode.gain.value = 0;
   }
 
   function stopAudioContext() {
+    //sendRequest();
+    rec.stop();
+
     if (audioCtx.state === 'running') {
       audioCtx.suspend().then(function () {
         window.cancelAnimationFrame(drawVisual);
@@ -413,6 +356,56 @@ function _default() {
       });
     }
   }
+
+  function getAverageVolume(array) {
+    var values = 0;
+    var average;
+    var length = array.length; // get all the frequency amplitudes
+
+    for (var i = 0; i < length; i++) {
+      values += array[i];
+    }
+
+    average = values / length;
+    console.log('AVArAGE:' + average);
+    return average;
+  }
+
+  function setTimeOut() {
+    setTimeout(function () {
+      rec.stop();
+      console.log('...Stopping recorder');
+    }, 3000);
+  }
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+/*
+* Bind needed Libraries in HTML
+* */
+function _default() {
+  console.log('IN Dependencies !!!!!!!!!');
+  var scriptJquery = document.createElement('script');
+  var scriptAnnyang = document.createElement('script');
+  var scriptSpeechKitt = document.createElement('script');
+  scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
+  scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
+  scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
+  console.log('SCRIPT !!!!!!!!!' + scriptJquery.src.toString());
+  document.getElementsByTagName('head')[0].appendChild(scriptJquery); //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
+
+  document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
 }
 
 /***/ })

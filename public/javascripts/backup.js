@@ -234,40 +234,27 @@ window.onload = function () {
         }
 
         function visualize() {
+            console.log('IN VUZUALIZE****************');
             analyser.fftSize = 256;
             let bufferLengthAlt = analyser.frequencyBinCount;
-            console.log(bufferLengthAlt);
             let dataArrayAlt = new Uint8Array(bufferLengthAlt);
-
             canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
             let drawAlt = function () {
                 drawVisual = requestAnimationFrame(drawAlt);
-
                 analyser.getByteFrequencyData(dataArrayAlt);
 
-                canvasCtx.fillStyle = 'white';
+                canvasCtx.fillStyle = 'transparent';
                 canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
                 let barWidth = (WIDTH / bufferLengthAlt) * 2.5;
                 let barHeight;
                 let x = 0;
-
                 for (let i = 0; i < bufferLengthAlt; i++) {
                     barHeight = dataArrayAlt[i];
                     canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
                     canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
-
                     x += barWidth + 1;
-
-                    if (barHeight >= 50) {
-                        if (isRecording === false) {
-                            console.log('...Starting recorder');
-                            rec.start();
-                            isRecording = true;
-                            //setTimeOut();
-                        }
-                    }
                 }
             };
             drawAlt();
@@ -281,7 +268,6 @@ window.onload = function () {
 
     function stopAudioContext() {
         //sendRequest();
-        rec.stop();
         if (audioCtx.state === 'running') {
             audioCtx.suspend().then(function () {
                 window.cancelAnimationFrame(drawVisual);
@@ -313,14 +299,6 @@ window.onload = function () {
         average = values / length;
         console.log('AVArAGE:' + average);
         return average;
-    }
-
-    function setTimeOut() {
-        setTimeout(function () {
-            rec.stop();
-            console.log('...Stopping recorder');
-        }, 3000);
-
     }
 };
 

@@ -1,5 +1,7 @@
 // fork getUserMedia for multiple browser versions, for those
 // that need prefixes
+
+import {sendAudioToServer} from './requestTransmitter';
 export default function () {
 
     navigator.getUserMedia = (navigator.getUserMedia ||
@@ -18,6 +20,10 @@ export default function () {
     analyser.minDecibels = -90;
     analyser.maxDecibels = -10;
     analyser.smoothingTimeConstant = 0.85;
+
+    let audioChunks = [];
+    let rec;
+    let isRecording = false;
 
     let distortion = audioCtx.createWaveShaper();
     let gainNode = audioCtx.createGain();
@@ -82,6 +88,20 @@ export default function () {
                     gainNode.connect(audioCtx.destination);
                     voiceMute();
                     visualize();
+
+                    rec = new MediaRecorder(stream);
+                    rec.start();
+                    rec.ondataavailable = e => {
+                        audioChunks.push(e.data);
+                        if (rec.state === "inactive") {
+                            let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
+                            recordedAudio.src = URL.createObjectURL(audio);
+                            recordedAudio.controls = true;
+                            audioDownload.href = recordedAudio.src;
+                            audioDownload.download = 'mp3';
+                            audioDownload.innerHTML = 'download';
+                        }
+                    }
                 },
                 // Error callback
                 function (err) {
@@ -97,7 +117,6 @@ export default function () {
             let bufferLengthAlt = analyser.frequencyBinCount;
             console.log(bufferLengthAlt);
             let dataArrayAlt = new Uint8Array(bufferLengthAlt);
-            getAverageVolume(dataArrayAlt);
 
             canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -115,7 +134,6 @@ export default function () {
 
                 for (let i = 0; i < bufferLengthAlt; i++) {
                     barHeight = dataArrayAlt[i];
-
                     canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
                     canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
 
@@ -144,6 +162,10 @@ export default function () {
     }
 
     function stopAudioContext() {
+
+        sendAudioToServer('audio');
+
+        rec.stop();
         if (audioCtx.state === 'running') {
             audioCtx.suspend().then(function () {
                 window.cancelAnimationFrame(drawVisual);
@@ -163,6 +185,39 @@ export default function () {
             });
         }
     }
+
+
+
+    /*navigator.mediaDevices.getUserMedia({audio: true})
+        .then(stream => {
+            sound = stream;
+            rec = new MediaRecorder(stream);
+            rec.ondataavailable = e => {
+                audioChunks.push(e.data);
+                if (rec.state === "inactive") {
+                    let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
+                    recordedAudio.src = URL.createObjectURL(audio);
+                    recordedAudio.controls = true;
+                    //audioDownload.href = recordedAudio.src;
+                    audioDownload.download = 'mp3';
+                    //audioDownload.innerHTML = 'download';
+                }
+            }
+        })
+        .catch(e => console.log(e));
+
+    startRecord.onclick = e => {
+        startRecord.disabled = true;
+        stopRecord.disabled = false;
+        audioChunks = [];
+        rec.start();
+        setupAudioNodes(sound);
+    };
+    stopRecord.onclick = e => {
+        startRecord.disabled = false;
+        stopRecord.disabled = true;
+        rec.stop();
+    };*/
 }
 
 

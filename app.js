@@ -25,7 +25,7 @@ app.use('/', index);
 
 app.post('/test', function (req, res) {
   console.log('REQ.BODY: ' + req.body);
-    res.send('Hello Client');
+    res.send('click click');
 });
 
 // catch 404 and forward to error handler
