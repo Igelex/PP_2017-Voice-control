@@ -261,11 +261,10 @@ window.onload = function () {
         visualize();
         voiceMute();
         rec = new MediaRecorder(stream);
-
-        if (isRecording === false) {
-          rec.start();
-          isRecording = true;
-        }
+        /*if (isRecording === false) {
+            rec.start();
+            isRecording = true;
+        }*/
 
         rec.ondataavailable = function (e) {
           audioChunks.push(e.data);
@@ -317,10 +316,12 @@ window.onload = function () {
           x += barWidth + 1;
 
           if (barHeight >= 50) {
+            /*console.log('#####' + barHeight);*/
             if (isRecording === false) {
               console.log('...Starting recorder');
               rec.start();
-              isRecording = true; //setTimeOut();
+              isRecording = true;
+              setTimeOut();
             }
           }
         }
@@ -336,8 +337,6 @@ window.onload = function () {
 
   function stopAudioContext() {
     //sendRequest();
-    rec.stop();
-
     if (audioCtx.state === 'running') {
       audioCtx.suspend().then(function () {
         window.cancelAnimationFrame(drawVisual);
@@ -375,7 +374,7 @@ window.onload = function () {
     setTimeout(function () {
       rec.stop();
       console.log('...Stopping recorder');
-    }, 3000);
+    }, 500);
   }
 };
 
