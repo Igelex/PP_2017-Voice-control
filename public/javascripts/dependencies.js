@@ -12,6 +12,6 @@ export default function() {
     console.log('SCRIPT !!!!!!!!!' + scriptJquery.src.toString());
 
     document.getElementsByTagName('head')[0].appendChild(scriptJquery);
-    //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
+    document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
     document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
 }

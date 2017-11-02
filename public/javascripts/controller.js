@@ -12,6 +12,8 @@ let elements = [];
 let INPUT_SELECTORS = 'a, li, :button';
 let FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 
+let selectedInputField;
+let isTypingText = false;
 let regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
 let regExpGo = /(go to)\s[[a-zA-Z0-9\.]/;
 let regExpCheck = /(check)\s[[a-zA-Z0-9\.]/;
@@ -42,12 +44,18 @@ window.onload = function () {
                 searchElements(INPUT_SELECTORS, result);
             }
         }
-        if (regExpGo.test(userInput)) {
+        else if (regExpGo.test(userInput)) {
             let result = userInput.slice((userInput.indexOf('go to') + 5)).trim();
             if (result != undefined) {
                 console.log('Search string: ' + result);
                 searchElements(FORM_SELECTORS, result)
             }
+        }else if (isTypingText && selectedInputField != undefined){
+            console.log('---------Typing text......: ' + userInput);
+            //selectedInputField.value += userInput;
+            console.log($(selectedInputField).attr('id'));
+            document.getElementById($(selectedInputField).attr('id')).value += ' ' + userInput;
+
         }
         selectElements(elements);
         elements = [];
@@ -59,9 +67,8 @@ window.onload = function () {
         let selectedElements = $(selector);
         if (selectedElements.length > 0) {
             for (let i = 0; i < selectedElements.length; i++) {
-                console.log('Elements textContent: ' + selectedElements[i].textContent.toLowerCase());
                 if (selectedElements[i].textContent.toLowerCase().trim() === userInput
-                    || checkValue(selectedElements[i], userInput)) {
+                    || hasValue(selectedElements[i], userInput)) {
                     elements.push(selectedElements[i]);
                 }
             }
@@ -76,18 +83,19 @@ window.onload = function () {
         } else if (elements.length === 1 && elements[0] !== undefined) {
             if ($(elements).is('label')) {
                 $(elements).next().focus();
+                selectedInputField = $(elements).next();
+                isTypingText = true;
             } else {
                 elements[0].style.backgroundColor = 'black';
                 elements[0].style.color = 'white';
                 elements[0].click();
             }
         } else {
-            console.error('No element found');
-            alert('No Elements found');
+            console.error('-------------No element found------------------------------');
         }
     }
 
-    function checkValue(element, userInput) {
+    function hasValue(element, userInput) {
         if (element.value !== undefined) {
             if (element.value.toString().toLowerCase() === userInput) {
                 return true;
@@ -111,6 +119,37 @@ window.onload = function () {
             console.log('AJAx error: ' + error);
         });
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    /*if (isTypingText){
+        recognition.addEventListener('result', e => {
+            const transcript = Array.from(e.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('')
+            console.log('**********'  + transcript);
+            if (e.results[0].isFinal){
+                checkInputType(result);
+            }
+        });
+    }*/
+    recognition.onresult = function(event) {
+        let result = event.results[0][0].transcript;
+        console.log('ON RESULT...: '  + result);
+        if(result){
+            checkInputType(result);
+        }
+    };
+    recognition.addEventListener('end', recognition.start);
+
+
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     navigator.getUserMedia = (navigator.getUserMedia ||
@@ -167,6 +206,7 @@ window.onload = function () {
                     console.log('Save audio settings');
                 }
             }
+            recognition.start();
             runAudioContext();
             startAudioRecord();
             this.textContent = 'Stop';
@@ -201,11 +241,6 @@ window.onload = function () {
 
                     rec = new MediaRecorder(stream);
 
-                    /*if (isRecording === false) {
-                        rec.start();
-                        isRecording = true;
-                    }*/
-
                     rec.ondataavailable = e => {
                         audioChunks.push(e.data);
                     };
@@ -214,11 +249,11 @@ window.onload = function () {
                         isRecording = false;
 
                         if (audioChunks.length > 0) {
-                            let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
+                            let audio = new Blob(audioChunks, {type: 'audio/wave'});
                             recordedAudio.src = URL.createObjectURL(audio);
                             recordedAudio.controls = true;
                             audioDownload.href = recordedAudio.src;
-                            audioDownload.download = 'mp3';
+                            audioDownload.download = 'wave';
                             audioDownload.innerHTML = 'download';
                             audioChunks = [];
                         }
@@ -234,7 +269,7 @@ window.onload = function () {
         }
 
         function visualize() {
-            analyser.fftSize = 256;
+            analyser.fftSize = 512;
             let bufferLengthAlt = analyser.frequencyBinCount;
             console.log(bufferLengthAlt);
             let dataArrayAlt = new Uint8Array(bufferLengthAlt);
@@ -260,15 +295,15 @@ window.onload = function () {
 
                     x += barWidth + 1;
 
-                    if (barHeight >= 50) {
-                        /*console.log('#####' + barHeight);*/
+                    /*if (barHeight >= 100) {
+                        /!*console.log('#####' + barHeight);*!/
                         if (isRecording === false) {
                             console.log('...Starting recorder');
                             rec.start();
                             isRecording = true;
                             setTimeOut();
                         }
-                    }
+                    }*/
                 }
             };
             drawAlt();
@@ -318,8 +353,9 @@ window.onload = function () {
     function setTimeOut() {
         setTimeout(function () {
             rec.stop();
+            sendRequest();
             console.log('...Stopping recorder');
-        }, 500);
+        }, 1500);
 
     }
 };

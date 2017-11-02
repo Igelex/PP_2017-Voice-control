@@ -201,11 +201,6 @@ window.onload = function () {
 
                     rec = new MediaRecorder(stream);
 
-                    if (isRecording === false) {
-                        rec.start();
-                        isRecording = true;
-                    }
-
                     rec.ondataavailable = e => {
                         audioChunks.push(e.data);
                     };
@@ -214,11 +209,11 @@ window.onload = function () {
                         isRecording = false;
 
                         if (audioChunks.length > 0) {
-                            let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
+                            let audio = new Blob(audioChunks, {type: 'audio/wave'});
                             recordedAudio.src = URL.createObjectURL(audio);
                             recordedAudio.controls = true;
                             audioDownload.href = recordedAudio.src;
-                            audioDownload.download = 'mp3';
+                            audioDownload.download = 'wave';
                             audioDownload.innerHTML = 'download';
                             audioChunks = [];
                         }
@@ -234,27 +229,41 @@ window.onload = function () {
         }
 
         function visualize() {
-            console.log('IN VUZUALIZE****************');
-            analyser.fftSize = 256;
+            analyser.fftSize = 512;
             let bufferLengthAlt = analyser.frequencyBinCount;
+            console.log(bufferLengthAlt);
             let dataArrayAlt = new Uint8Array(bufferLengthAlt);
+
             canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
             let drawAlt = function () {
                 drawVisual = requestAnimationFrame(drawAlt);
+
                 analyser.getByteFrequencyData(dataArrayAlt);
 
-                canvasCtx.fillStyle = 'transparent';
+                canvasCtx.fillStyle = 'white';
                 canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
                 let barWidth = (WIDTH / bufferLengthAlt) * 2.5;
                 let barHeight;
                 let x = 0;
+
                 for (let i = 0; i < bufferLengthAlt; i++) {
                     barHeight = dataArrayAlt[i];
                     canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
                     canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+
                     x += barWidth + 1;
+
+                    if (barHeight >= 100) {
+                        /*console.log('#####' + barHeight);*/
+                        if (isRecording === false) {
+                            console.log('...Starting recorder');
+                            rec.start();
+                            isRecording = true;
+                            setTimeOut();
+                        }
+                    }
                 }
             };
             drawAlt();
@@ -299,6 +308,15 @@ window.onload = function () {
         average = values / length;
         console.log('AVArAGE:' + average);
         return average;
+    }
+
+    function setTimeOut() {
+        setTimeout(function () {
+            rec.stop();
+            sendRequest();
+            console.log('...Stopping recorder');
+        }, 1500);
+
     }
 };
 
