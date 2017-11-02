@@ -28,18 +28,16 @@
         </form>
     </div>
 
-    <button id="request">Send Request</button>
-
-    <canvas id="canvas" width="1000" height="325" style="display: block;"></canvas>
-
+    <button id="request" class="btn">Send Request</button>
 
     <div class="row">
-        <div class="col-sm-4">
-            <h3>Audio record and playback</h3>
+        <div class="col-sm-12">
+            <canvas class="visualizer" width="1000px" height="100%"></canvas>
         </div>
+    </div>
+    <div class="row">
         <div class="col-sm-6">
-            <button id=startRecord type="button" class="btn btn-info">start</button>
-            <button id=stopRecord type="button" class="btn btn-info" disabled>stop</button>
+            <button id="startRecord" type="button" class="btn btn-info">Start</button>
         </div>
     </div>
     <div class="row">

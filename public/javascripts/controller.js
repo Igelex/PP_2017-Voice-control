@@ -3,9 +3,10 @@
  */
 
 import bindDependencies from './dependencies';
+import frequencyAnalyser from './frequencyAnalyser';
+
 bindDependencies();
 
-let sound;
 let elements = [];
 let rec;
 let INPUT_SELECTORS = 'a, li, :button';
@@ -20,6 +21,8 @@ console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
 
+    frequencyAnalyser();
+
     $('#request').click(function () {
         sendRequest();
     });
@@ -28,44 +31,7 @@ window.onload = function () {
         checkInputType($('#search-input').val());
     });
 
-    navigator.getUserMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia;
-    if (navigator.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({audio: true})
-            .then(stream => {
-                sound = stream;
-                rec = new MediaRecorder(stream);
-                rec.ondataavailable = e => {
-                    audioChunks.push(e.data);
-                    if (rec.state === "inactive") {
-                        let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
-                        recordedAudio.src = URL.createObjectURL(audio);
-                        recordedAudio.controls = true;
-                        //audioDownload.href = recordedAudio.src;
-                        audioDownload.download = 'mp3';
-                        //audioDownload.innerHTML = 'download';
-                    }
-                }
-            })
-            .catch(e => console.log(e));
 
-        startRecord.onclick = e => {
-            startRecord.disabled = true;
-            stopRecord.disabled = false;
-            audioChunks = [];
-            rec.start();
-            setupAudioNodes(sound);
-        };
-        stopRecord.onclick = e => {
-            startRecord.disabled = false;
-            stopRecord.disabled = true;
-            rec.stop();
-        };
-    } else {
-        console.log('getUserMedia not supported');
-    }
 
     function checkInputType(input) {
         let userInput = input.toString().toLowerCase().trim();
@@ -147,85 +113,45 @@ window.onload = function () {
         });
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /*if (! window.AudioContext) {
-        if (! window.webkitAudioContext) {
-            alert('no audiocontext found');
-        }
-        window.AudioContext = window.webkitAudioContext;
-    }
-    var context = new AudioContext();
-    var audioBuffer;
-    var sourceNode;
-    var splitter;
-    var analyser, analyser2;
-    var javascriptNode;
-    // get the context from the canvas to draw on
-    var ctx = $("#canvas").get()[0].getContext("2d");
-    // create a gradient for the fill. Note the strange
-    // offset, since the gradient is calculated based on
-    // the canvas, not the specific element we draw
-    var gradient = ctx.createLinearGradient(0,0,0,130);
-    gradient.addColorStop(1,'#000000');
-    gradient.addColorStop(0.75,'#ff0000');
-    gradient.addColorStop(0.25,'#ffff00');
-    gradient.addColorStop(0,'#ffffff');
-    function setupAudioNodes(stream) {
-        // setup a javascript node
-        // setup a javascript node
-        javascriptNode = context.createScriptProcessor(2048, 1, 1);
-        // connect to destination, else it isn't called
-        javascriptNode.connect(context.destination);
+    /*navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+    if (navigator.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({audio: true})
+            .then(stream => {
+                sound = stream;
+                rec = new MediaRecorder(stream);
+                rec.ondataavailable = e => {
+                    audioChunks.push(e.data);
+                    if (rec.state === "inactive") {
+                        let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
+                        recordedAudio.src = URL.createObjectURL(audio);
+                        recordedAudio.controls = true;
+                        //audioDownload.href = recordedAudio.src;
+                        audioDownload.download = 'mp3';
+                        //audioDownload.innerHTML = 'download';
+                    }
+                }
+            })
+            .catch(e => console.log(e));
 
-        // setup a analyzer
-        analyser = context.createAnalyser();
-        analyser.smoothingTimeConstant = 0.3;
-        analyser.fftSize = 1024;
-
-        // create a buffer source node
-        sourceNode = context.createMediaStreamSource();
-        sourceNode. = stream;
-
-        // connect the source to the analyser
-        sourceNode.connect(analyser);
-
-        // we use the javascript node to draw at a specific interval.
-        analyser.connect(javascriptNode);
-
-        // and connect to destination, if you want audio
-        sourceNode.connect(context.destination);
-    }
-    // when the javascript node is called
-    // we use information from the analyzer node
-    // to draw the volume
-    javascriptNode.onaudioprocess = function() {
-        // get the average for the first channel
-        // get the average, bincount is fftsize / 2
-        var array =  new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(array);
-        var average = getAverageVolume(array)
-
-        // clear the current state
-        ctx.clearRect(0, 0, 60, 130);
-
-        // set the fill style
-        ctx.fillStyle=gradient;
-
-        // create the meters
-        ctx.fillRect(0,130-average,25,130);
-    }
-    function getAverageVolume(array) {
-        var values = 0;
-        var average;
-        var length = array.length;
-        // get all the frequency amplitudes
-        for (var i = 0; i < length; i++) {
-            values += array[i];
-        }
-        average = values / length;
-        return average;
+        startRecord.onclick = e => {
+            startRecord.disabled = true;
+            stopRecord.disabled = false;
+            audioChunks = [];
+            rec.start();
+            setupAudioNodes(sound);
+        };
+        stopRecord.onclick = e => {
+            startRecord.disabled = false;
+            stopRecord.disabled = true;
+            rec.stop();
+        };
+    } else {
+        console.log('getUserMedia not supported');
     }*/
-
 };
 

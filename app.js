@@ -5,15 +5,14 @@ let bodyParser = require('body-parser');
 let index = require('./routes/index');
 let test = require('./routes/test-post');
 let helmet = require('helmet');
+let resourceMonitorMiddleware = require('express-watcher').resourceMonitorMiddleware;
 let app = express();
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(resourceMonitorMiddleware);
 app.use(helmet());
 app.use(logger('dev'));
 app.use(bodyParser.json());

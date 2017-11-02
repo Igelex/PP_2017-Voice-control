@@ -72,13 +72,14 @@
 
 var _dependencies = _interopRequireDefault(__webpack_require__(1));
 
+var _frequencyAnalyser = _interopRequireDefault(__webpack_require__(2));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Created by Pastuh on 19.10.2017.
  */
 (0, _dependencies.default)();
-var sound;
 var elements = [];
 var rec;
 var INPUT_SELECTORS = 'a, li, :button';
@@ -91,54 +92,13 @@ console.log('Test Go: ' + regExpGo.test('please go to Email address:'));
 console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
+  (0, _frequencyAnalyser.default)();
   $('#request').click(function () {
     sendRequest();
   });
   $('#start-search').click(function () {
     checkInputType($('#search-input').val());
   });
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-  if (navigator.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({
-      audio: true
-    }).then(function (stream) {
-      sound = stream;
-      rec = new MediaRecorder(stream);
-
-      rec.ondataavailable = function (e) {
-        audioChunks.push(e.data);
-
-        if (rec.state === "inactive") {
-          var audio = new Blob(audioChunks, {
-            type: 'audio/x-mpeg-3'
-          });
-          recordedAudio.src = URL.createObjectURL(audio);
-          recordedAudio.controls = true; //audioDownload.href = recordedAudio.src;
-
-          audioDownload.download = 'mp3'; //audioDownload.innerHTML = 'download';
-        }
-      };
-    }).catch(function (e) {
-      return console.log(e);
-    });
-
-    startRecord.onclick = function (e) {
-      startRecord.disabled = true;
-      stopRecord.disabled = false;
-      audioChunks = [];
-      rec.start();
-      setupAudioNodes(sound);
-    };
-
-    stopRecord.onclick = function (e) {
-      startRecord.disabled = false;
-      stopRecord.disabled = true;
-      rec.stop();
-    };
-  } else {
-    console.log('getUserMedia not supported');
-  }
 
   function checkInputType(input) {
     var userInput = input.toString().toLowerCase().trim();
@@ -225,76 +185,44 @@ window.onload = function () {
     }).fail(function (jqXHR, errorMessage, error) {
       console.log('AJAx error: ' + error);
     });
-  } ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  } ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /*if (! window.AudioContext) {
-      if (! window.webkitAudioContext) {
-          alert('no audiocontext found');
-      }
-      window.AudioContext = window.webkitAudioContext;
-  }
-  var context = new AudioContext();
-  var audioBuffer;
-  var sourceNode;
-  var splitter;
-  var analyser, analyser2;
-  var javascriptNode;
-  // get the context from the canvas to draw on
-  var ctx = $("#canvas").get()[0].getContext("2d");
-  // create a gradient for the fill. Note the strange
-  // offset, since the gradient is calculated based on
-  // the canvas, not the specific element we draw
-  var gradient = ctx.createLinearGradient(0,0,0,130);
-  gradient.addColorStop(1,'#000000');
-  gradient.addColorStop(0.75,'#ff0000');
-  gradient.addColorStop(0.25,'#ffff00');
-  gradient.addColorStop(0,'#ffffff');
-  function setupAudioNodes(stream) {
-      // setup a javascript node
-      // setup a javascript node
-      javascriptNode = context.createScriptProcessor(2048, 1, 1);
-      // connect to destination, else it isn't called
-      javascriptNode.connect(context.destination);
-        // setup a analyzer
-      analyser = context.createAnalyser();
-      analyser.smoothingTimeConstant = 0.3;
-      analyser.fftSize = 1024;
-        // create a buffer source node
-      sourceNode = context.createMediaStreamSource();
-      sourceNode. = stream;
-        // connect the source to the analyser
-      sourceNode.connect(analyser);
-        // we use the javascript node to draw at a specific interval.
-      analyser.connect(javascriptNode);
-        // and connect to destination, if you want audio
-      sourceNode.connect(context.destination);
-  }
-  // when the javascript node is called
-  // we use information from the analyzer node
-  // to draw the volume
-  javascriptNode.onaudioprocess = function() {
-      // get the average for the first channel
-      // get the average, bincount is fftsize / 2
-      var array =  new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(array);
-      var average = getAverageVolume(array)
-        // clear the current state
-      ctx.clearRect(0, 0, 60, 130);
-        // set the fill style
-      ctx.fillStyle=gradient;
-        // create the meters
-      ctx.fillRect(0,130-average,25,130);
-  }
-  function getAverageVolume(array) {
-      var values = 0;
-      var average;
-      var length = array.length;
-      // get all the frequency amplitudes
-      for (var i = 0; i < length; i++) {
-          values += array[i];
-      }
-      average = values / length;
-      return average;
+  /*navigator.getUserMedia = navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia;
+  if (navigator.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({audio: true})
+          .then(stream => {
+              sound = stream;
+              rec = new MediaRecorder(stream);
+              rec.ondataavailable = e => {
+                  audioChunks.push(e.data);
+                  if (rec.state === "inactive") {
+                      let audio = new Blob(audioChunks, {type: 'audio/x-mpeg-3'});
+                      recordedAudio.src = URL.createObjectURL(audio);
+                      recordedAudio.controls = true;
+                      //audioDownload.href = recordedAudio.src;
+                      audioDownload.download = 'mp3';
+                      //audioDownload.innerHTML = 'download';
+                  }
+              }
+          })
+          .catch(e => console.log(e));
+        startRecord.onclick = e => {
+          startRecord.disabled = true;
+          stopRecord.disabled = false;
+          audioChunks = [];
+          rec.start();
+          setupAudioNodes(sound);
+      };
+      stopRecord.onclick = e => {
+          startRecord.disabled = false;
+          stopRecord.disabled = true;
+          rec.stop();
+      };
+  } else {
+      console.log('getUserMedia not supported');
   }*/
 
 };
@@ -326,6 +254,165 @@ function _default() {
   document.getElementsByTagName('head')[0].appendChild(scriptJquery); //document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
 
   document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+// fork getUserMedia for multiple browser versions, for those
+// that need prefixes
+function _default() {
+  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia; // set up forked web audio context, for multiple browsers
+  // window. is needed otherwise Safari explodes
+
+  var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  var source; //set up the different audio nodes we will use for the app
+
+  var analyser = audioCtx.createAnalyser();
+  analyser.minDecibels = -90;
+  analyser.maxDecibels = -10;
+  analyser.smoothingTimeConstant = 0.85;
+  var distortion = audioCtx.createWaveShaper();
+  var gainNode = audioCtx.createGain();
+  var biquadFilter = audioCtx.createBiquadFilter();
+  var convolver = audioCtx.createConvolver(); // set up canvas context for visualizer
+
+  var canvas = document.querySelector('.visualizer');
+  var canvasCtx = canvas.getContext("2d");
+  var WIDTH = canvas.width;
+  var HEIGHT = canvas.height;
+  var drawVisual;
+  /*if (typeof (Storage) !== 'undefined') {
+      console.log('audio value : ' + localStorage.getItem('audio'));
+      if (localStorage.getItem('audio') == true) {
+          startAudioRecord();
+          $('#startRecord').textContent = 'Stop';
+          console.log('Audio settings stored');
+      }
+  }else {
+      console.log('Storage is undefined: ' + Storage);
+  }*/
+
+  $('#startRecord').click(function () {
+    if (this.textContent.toLowerCase().trim() === 'start') {
+      if (typeof Storage === 'undefined') {
+        if (localStorage.getItem('audio') !== true) {
+          localStorage.setItem('audio', true);
+          console.log('Save audio settings');
+        }
+      }
+
+      runAudioContext();
+      startAudioRecord();
+      this.textContent = 'Stop';
+    } else {
+      stopAudioContext();
+      this.textContent = 'Start';
+    }
+  }); //main block for doing the audio recording
+
+  function startAudioRecord() {
+    console.log('Start Audio Record');
+
+    if (navigator.getUserMedia) {
+      console.log('getUserMedia supported.');
+      navigator.getUserMedia( // constraints - only audio needed for this app
+      {
+        audio: true
+      }, // Success callback
+      function (stream) {
+        source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        analyser.connect(distortion);
+        distortion.connect(biquadFilter);
+        biquadFilter.connect(convolver);
+        convolver.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        voiceMute();
+        visualize();
+      }, // Error callback
+      function (err) {
+        console.log('The following gUM error occured: ' + err);
+      });
+    } else {
+      console.log('getUserMedia not supported on your browser!');
+    }
+
+    function visualize() {
+      analyser.fftSize = 256;
+      var bufferLengthAlt = analyser.frequencyBinCount;
+      console.log(bufferLengthAlt);
+      var dataArrayAlt = new Uint8Array(bufferLengthAlt);
+      getAverageVolume(dataArrayAlt);
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+      var drawAlt = function drawAlt() {
+        drawVisual = requestAnimationFrame(drawAlt);
+        analyser.getByteFrequencyData(dataArrayAlt);
+        canvasCtx.fillStyle = 'white';
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        var barWidth = WIDTH / bufferLengthAlt * 2.5;
+        var barHeight;
+        var x = 0;
+
+        for (var i = 0; i < bufferLengthAlt; i++) {
+          barHeight = dataArrayAlt[i];
+          canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+          canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+          x += barWidth + 1;
+        }
+      };
+
+      drawAlt();
+    }
+
+    function voiceMute() {
+      gainNode.gain.value = 0;
+    }
+
+    function getAverageVolume(array) {
+      var values = 0;
+      var average;
+      var length = array.length; // get all the frequency amplitudes
+
+      for (var i = 0; i < length; i++) {
+        values += array[i];
+      }
+
+      average = values / length;
+      console.log('AVArAGE:' + average);
+      return average;
+    }
+  }
+
+  function stopAudioContext() {
+    if (audioCtx.state === 'running') {
+      audioCtx.suspend().then(function () {
+        window.cancelAnimationFrame(drawVisual);
+        canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx.fillStyle = "transparent";
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        console.log('AudioContext state: ' + audioCtx.state);
+      });
+    }
+  }
+
+  function runAudioContext() {
+    if (audioCtx.state === 'suspended' || audioCtx.state === 'closed') {
+      audioCtx.resume().then(function () {
+        console.log('AudioContext state: ' + audioCtx.state);
+      });
+    }
+  }
 }
 
 /***/ })
