@@ -84,7 +84,7 @@ var elements = [];
 var INPUT_SELECTORS = 'a, li, :button';
 var FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 var selectedInputField;
-var isTypingText = false;
+var inputMode = '';
 var regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
 var regExpGo = /(go to)\s[[a-zA-Z0-9\.]/;
 var regExpCheck = /(check)\s[[a-zA-Z0-9\.]/;
@@ -107,6 +107,7 @@ window.onload = function () {
     console.log(regExpClick.test(userInput));
 
     if (regExpClick.test(userInput)) {
+      changeInputMode('click');
       var result = userInput.slice(userInput.indexOf('click') + 5).trim();
 
       if (result != undefined) {
@@ -114,16 +115,17 @@ window.onload = function () {
         searchElements(INPUT_SELECTORS, result);
       }
     } else if (regExpGo.test(userInput)) {
+      changeInputMode('typing');
+
       var _result = userInput.slice(userInput.indexOf('go to') + 5).trim();
 
-      if (_result != undefined) {
+      if (_result) {
         console.log('Search string: ' + _result);
         searchElements(FORM_SELECTORS, _result);
       }
-    } else if (isTypingText && selectedInputField != undefined) {
+    } else if (inputMode === 'typing' && selectedInputField) {
       console.log('---------Typing text......: ' + userInput); //selectedInputField.value += userInput;
 
-      console.log($(selectedInputField).attr('id'));
       document.getElementById($(selectedInputField).attr('id')).value += ' ' + userInput;
     }
 
@@ -134,6 +136,7 @@ window.onload = function () {
   }
 
   function searchElements(selector, userInput) {
+    selectedInputField = null;
     var selectedElements = $(selector);
 
     if (selectedElements.length > 0) {
@@ -154,7 +157,6 @@ window.onload = function () {
       if ($(elements).is('label')) {
         $(elements).next().focus();
         selectedInputField = $(elements).next();
-        isTypingText = true;
       } else {
         elements[0].style.backgroundColor = 'black';
         elements[0].style.color = 'white';
@@ -173,6 +175,17 @@ window.onload = function () {
     }
 
     return false;
+  }
+
+  function changeInputMode(newInputMode) {
+    inputMode = newInputMode;
+
+    if (inputMode !== 'typing') {
+      $(selectedInputField).blur();
+      selectedInputField = null;
+    }
+
+    console.log('------MODUS------' + inputMode);
   }
 
   function sendRequest() {
@@ -196,7 +209,7 @@ window.onload = function () {
   var recognition = new SpeechRecognition();
   recognition.lang = 'en-US';
   recognition.interimResults = false;
-  /*if (isTypingText){
+  /*if (inputMode){
       recognition.addEventListener('result', e => {
           const transcript = Array.from(e.results)
               .map(result => result[0])
@@ -211,7 +224,7 @@ window.onload = function () {
 
   recognition.onresult = function (event) {
     var result = event.results[0][0].transcript;
-    console.log('ON RESULT...: ' + result);
+    console.info('-----ON RESULT------: ' + result);
 
     if (result) {
       checkInputType(result);

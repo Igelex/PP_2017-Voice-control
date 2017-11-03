@@ -13,7 +13,7 @@ let INPUT_SELECTORS = 'a, li, :button';
 let FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 
 let selectedInputField;
-let isTypingText = false;
+let inputMode = '';
 let regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
 let regExpGo = /(go to)\s[[a-zA-Z0-9\.]/;
 let regExpCheck = /(check)\s[[a-zA-Z0-9\.]/;
@@ -34,10 +34,16 @@ window.onload = function () {
     });
 
     function checkInputType(input) {
+
         let userInput = input.toString().toLowerCase().trim();
         let t0 = performance.now();
+
         console.log(regExpClick.test(userInput));
+
         if (regExpClick.test(userInput)) {
+
+            changeInputMode('click');
+
             let result = userInput.slice((userInput.indexOf('click') + 5)).trim();
             if (result != undefined) {
                 console.log('Search string for CLICKS: ' + result);
@@ -45,15 +51,18 @@ window.onload = function () {
             }
         }
         else if (regExpGo.test(userInput)) {
+
+            changeInputMode('typing');
+
             let result = userInput.slice((userInput.indexOf('go to') + 5)).trim();
-            if (result != undefined) {
+
+            if (result) {
                 console.log('Search string: ' + result);
                 searchElements(FORM_SELECTORS, result)
             }
-        }else if (isTypingText && selectedInputField != undefined){
+        }else if (inputMode === 'typing' && selectedInputField){
             console.log('---------Typing text......: ' + userInput);
             //selectedInputField.value += userInput;
-            console.log($(selectedInputField).attr('id'));
             document.getElementById($(selectedInputField).attr('id')).value += ' ' + userInput;
 
         }
@@ -64,6 +73,7 @@ window.onload = function () {
     }
 
     function searchElements(selector, userInput) {
+        selectedInputField = null;
         let selectedElements = $(selector);
         if (selectedElements.length > 0) {
             for (let i = 0; i < selectedElements.length; i++) {
@@ -84,7 +94,6 @@ window.onload = function () {
             if ($(elements).is('label')) {
                 $(elements).next().focus();
                 selectedInputField = $(elements).next();
-                isTypingText = true;
             } else {
                 elements[0].style.backgroundColor = 'black';
                 elements[0].style.color = 'white';
@@ -102,6 +111,16 @@ window.onload = function () {
             }
         }
         return false;
+    }
+    function changeInputMode(newInputMode) {
+        inputMode = newInputMode;
+        if (inputMode !== 'typing'){
+            $(selectedInputField).blur();
+            selectedInputField = null;
+        }
+
+        console.log('------MODUS------' + inputMode);
+
     }
 
     function sendRequest() {
@@ -127,7 +146,7 @@ window.onload = function () {
     recognition.lang = 'en-US';
     recognition.interimResults = false;
 
-    /*if (isTypingText){
+    /*if (inputMode){
         recognition.addEventListener('result', e => {
             const transcript = Array.from(e.results)
                 .map(result => result[0])
@@ -141,7 +160,7 @@ window.onload = function () {
     }*/
     recognition.onresult = function(event) {
         let result = event.results[0][0].transcript;
-        console.log('ON RESULT...: '  + result);
+        console.info('-----ON RESULT------: '  + result);
         if(result){
             checkInputType(result);
         }
