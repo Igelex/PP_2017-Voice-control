@@ -77,6 +77,7 @@ window.onload = function () {
         let selectedElements = $(selector);
         if (selectedElements.length > 0) {
             for (let i = 0; i < selectedElements.length; i++) {
+                console.log('######Found Elemets#####: ' + selectedElements[i].textContent);
                 if (selectedElements[i].textContent.toLowerCase().trim() === userInput
                     || hasValue(selectedElements[i], userInput)) {
                     elements.push(selectedElements[i]);
@@ -86,15 +87,18 @@ window.onload = function () {
     }
 
     function selectElements() {
+        console.log('++++Count Elemets+++++: ' + elements.length);
         if (elements.length >= 2) {
-            for (let j = 0; j < elements.length; j++) {
-                elements[j].style.border = 'black 5px solid';
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.border = 'black 5px solid';
+                console.log('++++Selected Elemets+++++: ' + elements[i].textContent);
             }
         } else if (elements.length === 1 && elements[0] !== undefined) {
             if ($(elements).is('label')) {
                 $(elements).next().focus();
                 selectedInputField = $(elements).next();
             } else {
+                console.log('++++Selected Elemets+++++: ' + elements[0].textContent);
                 elements[0].style.backgroundColor = 'black';
                 elements[0].style.color = 'white';
                 elements[0].click();
