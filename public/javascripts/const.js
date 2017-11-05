@@ -2,7 +2,8 @@
  * Selectors
  */
 const CLICK_SELECTORS = 'a, li, :button';
-const GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
+const GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
+    'input[type="search"], input[type="tel"]';
 const CHECK_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
 const SELECT_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
 const SEARCH_SELECTORS = 'input[type="search"]';
@@ -46,6 +47,6 @@ const MODE_NO_MODE = '';
 export {SELECT_SELECTORS, CHECK_SELECTORS, CLICK_SELECTORS, SEARCH_SELECTORS, GO_TO_SELECTORS,
         CLICK, GO_TO, OFF, SELECT,SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP_TYPE,
         REG_EXP_CLICK, REG_EXP_GO_TO, REG_EXP_OFF, REG_EXP_SEARCH, REG_EXP_CHECK, REG_EXP_SELECT, REG_EXP_SCROLL_DOWN,
-                                                   REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM,REG_EXP_STOP_TYPE,
+                                 REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM,REG_EXP_STOP_TYPE, REG_EXP_SCROLL_UP,
         MODE_TYPE, MODE_SELECT, MODE_NO_MODE};
 

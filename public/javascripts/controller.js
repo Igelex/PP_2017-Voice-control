@@ -3,6 +3,11 @@
  */
 
 import bindDependencies from './dependencies';
+import {SELECT_SELECTORS, CHECK_SELECTORS, CLICK_SELECTORS, SEARCH_SELECTORS, GO_TO_SELECTORS,
+    CLICK, GO_TO, OFF, SELECT,SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP_TYPE,
+    REG_EXP_CLICK, REG_EXP_GO_TO, REG_EXP_OFF, REG_EXP_SEARCH, REG_EXP_CHECK, REG_EXP_SELECT, REG_EXP_SCROLL_DOWN,
+    REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM,REG_EXP_STOP_TYPE, REG_EXP_SCROLL_UP,
+    MODE_TYPE, MODE_SELECT, MODE_NO_MODE} from './const';
 /*import frequencyAnalyser from './frequencyAnalyser';*/
 
 
@@ -38,33 +43,47 @@ window.onload = function () {
         let userInput = input.toString().toLowerCase().trim();
         let t0 = performance.now();
 
-        console.log(regExpClick.test(userInput));
+        switch (true){
+            case REG_EXP_SCROLL_DOWN.test(userInput):
+                scrollDown();
+            break;
+            case REG_EXP_SCROLL_UP.test(userInput):
+                scrollUp();
+            break;
+        }
+        /*if (REG_EXP_SCROLL_DOWN.test(userInput)){
+            scrollDown();
+        }*/
 
-        if (regExpClick.test(userInput)) {
+        if (REG_EXP_CLICK.test(userInput)) {
 
             changeInputMode('click');
 
-            let result = userInput.slice((userInput.indexOf('click') + 5)).trim();
+            let result = userInput.slice((userInput.indexOf(CLICK) + 5)).trim();
             if (result != undefined) {
                 console.log('Search string for CLICKS: ' + result);
-                searchElements(INPUT_SELECTORS, result);
+                searchElements(CLICK_SELECTORS, result);
             }
         }
-        else if (regExpGo.test(userInput)) {
+        else if (REG_EXP_GO_TO.test(userInput)) {
 
-            changeInputMode('typing');
-
-            let result = userInput.slice((userInput.indexOf('go to') + 5)).trim();
+            let result = userInput.slice((userInput.indexOf(GO_TO) + 5)).trim();
 
             if (result) {
                 console.log('Search string: ' + result);
-                searchElements(FORM_SELECTORS, result)
+                searchElements(GO_TO_SELECTORS, result)
             }
-        }else if (inputMode === 'typing' && selectedInputField){
+        } else if (inputMode === MODE_TYPE && selectedInputField) {
             console.log('---------Typing text......: ' + userInput);
-            //selectedInputField.value += userInput;
-            document.getElementById($(selectedInputField).attr('id')).value += ' ' + userInput;
-
+            let textContent = $(selectedInputField).val();
+            if (textContent.trim().length === 0) {
+                console.log('++++VALUE in undefinedn+++++: ' + textContent);
+                textContent += userInput;
+            } else {
+                console.log('++++VALUE in defined+++++: ' + textContent);
+                textContent += ' ' + userInput;
+            }
+            $(selectedInputField).val(textContent);
         }
         selectElements(elements);
         elements = [];
@@ -77,7 +96,7 @@ window.onload = function () {
         let selectedElements = $(selector);
         if (selectedElements.length > 0) {
             for (let i = 0; i < selectedElements.length; i++) {
-                console.log('######Found Elemets#####: ' + selectedElements[i].textContent);
+                //console.log('######Found Elemets#####: ' + selectedElements[i].textContent);
                 if (selectedElements[i].textContent.toLowerCase().trim() === userInput
                     || hasValue(selectedElements[i], userInput)) {
                     elements.push(selectedElements[i]);
@@ -87,7 +106,7 @@ window.onload = function () {
     }
 
     function selectElements() {
-        console.log('++++Count Elemets+++++: ' + elements.length);
+        //console.log('++++Count Elemets+++++: ' + elements.length);
         if (elements.length >= 2) {
             for (let i = 0; i < elements.length; i++) {
                 elements[i].style.border = 'black 5px solid';
@@ -95,6 +114,7 @@ window.onload = function () {
             }
         } else if (elements.length === 1 && elements[0] !== undefined) {
             if ($(elements).is('label')) {
+                changeInputMode(MODE_TYPE);
                 $(elements).next().focus();
                 selectedInputField = $(elements).next();
             } else {
@@ -116,15 +136,28 @@ window.onload = function () {
         }
         return false;
     }
+
     function changeInputMode(newInputMode) {
         inputMode = newInputMode;
-        if (inputMode !== 'typing'){
+        if (inputMode !== 'typing') {
             $(selectedInputField).blur();
             selectedInputField = null;
         }
-
         console.log('------MODUS------' + inputMode);
+    }
 
+    function scrollDown() {
+        //window.scrollBy(0, window.innerHeight / 2); // horizontal and vertical scroll increments
+        $('html, body').animate({
+            scrollTop: $(window).scrollTop() + (window.innerHeight / 2)
+        });
+    }
+
+    function scrollUp() {
+        //window.scrollBy(0, window.innerHeight / 2); // horizontal and vertical scroll increments
+        $('html, body').animate({
+            scrollTop: $(window).scrollTop() - (window.innerHeight / 2)
+        });
     }
 
     function sendRequest() {
@@ -142,6 +175,7 @@ window.onload = function () {
             console.log('AJAx error: ' + error);
         });
     }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -162,16 +196,14 @@ window.onload = function () {
             }
         });
     }*/
-    recognition.onresult = function(event) {
+    recognition.onresult = function (event) {
         let result = event.results[0][0].transcript;
-        console.info('-----ON RESULT------: '  + result);
-        if(result){
+        console.info('-----ON RESULT------: ' + result);
+        if (result) {
             checkInputType(result);
         }
     };
     recognition.addEventListener('end', recognition.start);
-
-
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
