@@ -74,31 +74,20 @@ var _dependencies = _interopRequireDefault(__webpack_require__(1));
 
 var _const = __webpack_require__(2);
 
+var _visualizer = _interopRequireDefault(__webpack_require__(4));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Created by Pastuh on 19.10.2017.
  */
-
-/*import frequencyAnalyser from './frequencyAnalyser';*/
 (0, _dependencies.default)();
 var elements = [];
-var INPUT_SELECTORS = 'a, li, :button';
-var FORM_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],input[type="search"], input[type="tel"]';
 var selectedInputField;
 var inputMode = '';
-var regExpClick = /(click)\s[[a-zA-Z0-9\.]/;
-var regExpGo = /(go to)\s[[a-zA-Z0-9\.]/;
-var regExpCheck = /(check)\s[[a-zA-Z0-9\.]/;
-console.log('Test Click: ' + regExpClick.test('please click Link kek'));
-console.log('Test Go: ' + regExpGo.test('please go to Email address:'));
-console.log('Test Check: ' + regExpCheck.test('please check male'));
 
 window.onload = function () {
-  //frequencyAnalyser();
-  $('#request').click(function () {
-    sendRequest();
-  });
+  (0, _visualizer.default)();
   $('#start-search').click(function () {
     checkInputType($('#search-input').val());
   });
@@ -106,55 +95,87 @@ window.onload = function () {
   function checkInputType(input) {
     var userInput = input.toString().toLowerCase().trim();
     var t0 = performance.now();
+    var result;
 
-    switch (true) {
-      case _const.REG_EXP_SCROLL_DOWN.test(userInput):
-        scrollDown();
-        break;
-
-      case _const.REG_EXP_SCROLL_UP.test(userInput):
-        scrollUp();
-        break;
+    if (_const.REG_EXP_STOP.test(userInput)) {
+      changeInputMode(_const.MODE_NO_MODE);
     }
-    /*if (REG_EXP_SCROLL_DOWN.test(userInput)){
-        scrollDown();
-    }*/
 
+    if (inputMode !== _const.MODE_TYPE && inputMode !== _const.MODE_SELECT) {
+      switch (true) {
+        case _const.REG_EXP_CLICK.test(userInput):
+          changeInputMode(_const.MODE_NO_MODE);
+          result = userInput.slice(userInput.indexOf(_const.CLICK) + 5).trim();
 
-    if (_const.REG_EXP_CLICK.test(userInput)) {
-      changeInputMode('click');
-      var result = userInput.slice(userInput.indexOf(_const.CLICK) + 5).trim();
+          if (result.length > 0) {
+            console.log('Search string for CLICKS: ' + result);
+            searchElements(_const.CLICK_SELECTORS, result);
+          }
 
-      if (result != undefined) {
-        console.log('Search string for CLICKS: ' + result);
-        searchElements(_const.CLICK_SELECTORS, result);
-      }
-    } else if (_const.REG_EXP_GO_TO.test(userInput)) {
-      var _result = userInput.slice(userInput.indexOf(_const.GO_TO) + 5).trim();
+          break;
 
-      if (_result) {
-        console.log('Search string: ' + _result);
-        searchElements(_const.GO_TO_SELECTORS, _result);
+        case _const.REG_EXP_SCROLL_DOWN.test(userInput):
+          scrollDown();
+          break;
+
+        case _const.REG_EXP_SCROLL_UP.test(userInput):
+          scrollUp();
+          break;
+
+        case _const.REG_EXP_SCROLL_TO_TOP.test(userInput):
+          scrollDown();
+          break;
+
+        case _const.REG_EXP_SCROLL_TO_BOTTOM.test(userInput):
+          scrollUp();
+          break;
+
+        case _const.REG_EXP_GO_TO.test(userInput):
+          result = userInput.slice(userInput.indexOf(_const.GO_TO) + 5).trim();
+
+          if (result) {
+            console.log('Search string: ' + result);
+            searchElements(_const.GO_TO_SELECTORS, result);
+          }
+
+          break;
+
+        case _const.REG_EXP_SELECT.test(userInput):
+          break;
+
+        case _const.REG_EXP_SEARCH.test(userInput):
+          break;
+
+        case _const.REG_EXP_CHECK.test(userInput):
+          break;
+
+        case _const.REG_EXP_OFF.test(userInput):
+          break;
+
+        case _const.REG_EXP_STOP.test(userInput):
+          changeInputMode(_const.MODE_NO_MODE);
+          break;
+
+        default:
       }
     } else if (inputMode === _const.MODE_TYPE && selectedInputField) {
       console.log('---------Typing text......: ' + userInput);
       var textContent = $(selectedInputField).val();
 
       if (textContent.trim().length === 0) {
-        console.log('++++VALUE in undefinedn+++++: ' + textContent);
         textContent += userInput;
       } else {
-        console.log('++++VALUE in defined+++++: ' + textContent);
         textContent += ' ' + userInput;
       }
 
       $(selectedInputField).val(textContent);
+    } else if (inputMode === _const.MODE_SELECT) {//Kommt
     }
 
     selectElements(elements);
     elements = [];
     var t1 = performance.now();
-    console.log('Execution time: ' + (t1 - t0) + 'mil');
+    console.log('Execution time: ' + (t1 - t0) + ' mil');
   }
 
   function searchElements(selector, userInput) {
@@ -164,7 +185,7 @@ window.onload = function () {
     if (selectedElements.length > 0) {
       for (var i = 0; i < selectedElements.length; i++) {
         //console.log('######Found Elemets#####: ' + selectedElements[i].textContent);
-        if (selectedElements[i].textContent.toLowerCase().trim() === userInput || hasValue(selectedElements[i], userInput)) {
+        if (selectedElements[i].textContent.toLowerCase().trim() === userInput || hasValueAttribut(selectedElements[i], userInput)) {
           elements.push(selectedElements[i]);
         }
       }
@@ -194,7 +215,7 @@ window.onload = function () {
     }
   }
 
-  function hasValue(element, userInput) {
+  function hasValueAttribut(element, userInput) {
     if (element.value !== undefined) {
       if (element.value.toString().toLowerCase() === userInput) {
         return true;
@@ -212,18 +233,16 @@ window.onload = function () {
       selectedInputField = null;
     }
 
-    console.log('------MODUS------' + inputMode);
+    console.log('------MODE------ ' + inputMode);
   }
 
   function scrollDown() {
-    //window.scrollBy(0, window.innerHeight / 2); // horizontal and vertical scroll increments
     $('html, body').animate({
       scrollTop: $(window).scrollTop() + window.innerHeight / 2
     });
   }
 
   function scrollUp() {
-    //window.scrollBy(0, window.innerHeight / 2); // horizontal and vertical scroll increments
     $('html, body').animate({
       scrollTop: $(window).scrollTop() - window.innerHeight / 2
     });
@@ -243,7 +262,10 @@ window.onload = function () {
     }).fail(function (jqXHR, errorMessage, error) {
       console.log('AJAx error: ' + error);
     });
-  } ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  }
+  /**
+   *Setup Google Speech Recognition
+   */
 
 
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -272,7 +294,177 @@ window.onload = function () {
     }
   };
 
-  recognition.addEventListener('end', recognition.start); ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  recognition.addEventListener('end', recognition.start);
+  recognition.start();
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+/*
+* Bind needed Libraries in HTML
+* */
+function _default() {
+  console.log('IN Dependencies !!!!!!!!!');
+  var scriptJquery = document.createElement('script');
+  var scriptAnnyang = document.createElement('script');
+  var scriptSpeechKitt = document.createElement('script');
+  scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
+  scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
+  scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
+  console.log('SCRIPT !!!!!!!!!' + scriptJquery.src.toString());
+  document.getElementsByTagName('head')[0].appendChild(scriptJquery);
+  document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
+  document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
+
+/**
+ * Selectors
+ */
+var CLICK_SELECTORS = 'a, li, :button';
+exports.CLICK_SELECTORS = CLICK_SELECTORS;
+var GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"]';
+exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
+var CHECK_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
+exports.CHECK_SELECTORS = CHECK_SELECTORS;
+var SELECT_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
+exports.SELECT_SELECTORS = SELECT_SELECTORS;
+var SEARCH_SELECTORS = 'input[type="search"]';
+/**
+ * Keywords
+ */
+
+exports.SEARCH_SELECTORS = SEARCH_SELECTORS;
+var CLICK = 'click';
+exports.CLICK = CLICK;
+var GO_TO = 'go to';
+exports.GO_TO = GO_TO;
+var OFF = 'off';
+exports.OFF = OFF;
+var SELECT = 'select';
+exports.SELECT = SELECT;
+var SCROLL_UP = 'scroll up';
+exports.SCROLL_UP = SCROLL_UP;
+var SCROLL_DOWN = 'scroll down';
+exports.SCROLL_DOWN = SCROLL_DOWN;
+var SCROLL_TO_BOTTOM = 'scroll to bottom';
+exports.SCROLL_TO_BOTTOM = SCROLL_TO_BOTTOM;
+var SCROLL_TO_TOP = 'scroll to top';
+exports.SCROLL_TO_TOP = SCROLL_TO_TOP;
+var SEARCH = 'search';
+exports.SEARCH = SEARCH;
+var STOP = 'stop';
+/**
+ * RegExp
+ */
+
+exports.STOP = STOP;
+var REG_EXP_CLICK = /(click)\s[[a-zA-Z0-9\.]/;
+exports.REG_EXP_CLICK = REG_EXP_CLICK;
+var REG_EXP_GO_TO = /(go to)\s[[a-zA-Z0-9\.]/;
+exports.REG_EXP_GO_TO = REG_EXP_GO_TO;
+var REG_EXP_OFF = /^(off)$/;
+exports.REG_EXP_OFF = REG_EXP_OFF;
+var REG_EXP_SEARCH = /^(search)$/;
+exports.REG_EXP_SEARCH = REG_EXP_SEARCH;
+var REG_EXP_CHECK = /(check)\s[[a-zA-Z0-9\.]/;
+exports.REG_EXP_CHECK = REG_EXP_CHECK;
+var REG_EXP_SELECT = /(select)\s[[a-zA-Z0-9\.]/;
+exports.REG_EXP_SELECT = REG_EXP_SELECT;
+var REG_EXP_SCROLL_UP = /(scroll up)(\s[[a-zA-Z0-9\.])?/;
+exports.REG_EXP_SCROLL_UP = REG_EXP_SCROLL_UP;
+var REG_EXP_SCROLL_DOWN = /(scroll down)(\s[[a-zA-Z0-9\.])?/;
+exports.REG_EXP_SCROLL_DOWN = REG_EXP_SCROLL_DOWN;
+var REG_EXP_SCROLL_TO_TOP = /(scroll)\s(to\s)?(top)(\s[[a-zA-Z0-9\.])?/;
+exports.REG_EXP_SCROLL_TO_TOP = REG_EXP_SCROLL_TO_TOP;
+var REG_EXP_SCROLL_TO_BOTTOM = /(scroll)\s(to\s)?(bottom)(\s[[a-zA-Z0-9\.])?/;
+exports.REG_EXP_SCROLL_TO_BOTTOM = REG_EXP_SCROLL_TO_BOTTOM;
+var REG_EXP_STOP = /^(stop)$/;
+exports.REG_EXP_STOP = REG_EXP_STOP;
+console.log(REG_EXP_SCROLL_UP.test('scroll up'));
+/**
+ * Input Mode
+ * */
+
+var MODE_TYPE = 'type';
+exports.MODE_TYPE = MODE_TYPE;
+var MODE_SELECT = 'select';
+exports.MODE_SELECT = MODE_SELECT;
+var MODE_NO_MODE = '';
+/**
+ * Export consts
+ */
+
+exports.MODE_NO_MODE = MODE_NO_MODE;
+
+/***/ }),
+/* 3 */,
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = speechRecognition;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function speechRecognition() {
+  $('#startRecord').click(function () {
+    /*if (typeof (Storage) !== 'undefined') {
+     console.log('audio value : ' + localStorage.getItem('audio'));
+     if (localStorage.getItem('audio') == true) {
+         runAudioContext();
+         startAudioRecord();
+         $('#startRecord').textContent = 'Stop';
+         console.log('Audio settings stored');
+    } else {
+     console.log('Storage is undefined: ' + Storage);
+    }*/
+    if (this.textContent.toLowerCase().trim() === 'start') {
+      if ((typeof Storage === "undefined" ? "undefined" : _typeof(Storage)) == undefined) {
+        if (localStorage.getItem('audio') !== true) {
+          localStorage.setItem('audio', true);
+          console.log('Save audio settings');
+        }
+      } //recognition.start();
+
+
+      runAudioContext();
+      startAudioRecord();
+      this.textContent = 'Stop';
+    } else {
+      stopAudioContext();
+      this.textContent = 'Start';
+    }
+  });
+  /**
+   * Setup Web Audio API
+   * */
 
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia; // set up forked web audio context, for multiple browsers
   // window. is needed otherwise Safari explodes
@@ -296,37 +488,7 @@ window.onload = function () {
   var canvasCtx = canvas.getContext("2d");
   var WIDTH = canvas.width;
   var HEIGHT = canvas.height;
-  var drawVisual;
-  /*if (typeof (Storage) !== 'undefined') {
-      console.log('audio value : ' + localStorage.getItem('audio'));
-      if (localStorage.getItem('audio') == true) {
-          runAudioContext();
-          startAudioRecord();
-          $('#startRecord').textContent = 'Stop';
-          console.log('Audio settings stored');
-      }
-  } else {
-      console.log('Storage is undefined: ' + Storage);
-  }*/
-
-  $('#startRecord').click(function () {
-    if (this.textContent.toLowerCase().trim() === 'start') {
-      if (typeof Storage === 'undefined') {
-        if (localStorage.getItem('audio') !== true) {
-          localStorage.setItem('audio', true);
-          console.log('Save audio settings');
-        }
-      }
-
-      recognition.start();
-      runAudioContext();
-      startAudioRecord();
-      this.textContent = 'Stop';
-    } else {
-      stopAudioContext();
-      this.textContent = 'Start';
-    }
-  }); //main block for doing the audio recording
+  var drawVisual; //main block for doing the audio recording
 
   function startAudioRecord() {
     console.log('Start Audio Record');
@@ -386,7 +548,7 @@ window.onload = function () {
       var drawAlt = function drawAlt() {
         drawVisual = requestAnimationFrame(drawAlt);
         analyser.getByteFrequencyData(dataArrayAlt);
-        canvasCtx.fillStyle = 'white';
+        canvasCtx.fillStyle = '#f5f5f5';
         canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
         var barWidth = WIDTH / bufferLengthAlt * 2.5;
         var barHeight;
@@ -459,127 +621,7 @@ window.onload = function () {
       console.log('...Stopping recorder');
     }, 1500);
   }
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-/*
-* Bind needed Libraries in HTML
-* */
-function _default() {
-  console.log('IN Dependencies !!!!!!!!!');
-  var scriptJquery = document.createElement('script');
-  var scriptAnnyang = document.createElement('script');
-  var scriptSpeechKitt = document.createElement('script');
-  scriptJquery.src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
-  scriptAnnyang.src = '//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js';
-  scriptSpeechKitt.src = '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js';
-  console.log('SCRIPT !!!!!!!!!' + scriptJquery.src.toString());
-  document.getElementsByTagName('head')[0].appendChild(scriptJquery);
-  document.getElementsByTagName('head')[0].appendChild(scriptAnnyang);
-  document.getElementsByTagName('head')[0].appendChild(scriptSpeechKitt);
 }
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP_TYPE = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP_TYPE = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
-
-/**
- * Selectors
- */
-var CLICK_SELECTORS = 'a, li, :button';
-exports.CLICK_SELECTORS = CLICK_SELECTORS;
-var GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"]';
-exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
-var CHECK_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
-exports.CHECK_SELECTORS = CHECK_SELECTORS;
-var SELECT_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
-exports.SELECT_SELECTORS = SELECT_SELECTORS;
-var SEARCH_SELECTORS = 'input[type="search"]';
-/**
- * Keywords
- */
-
-exports.SEARCH_SELECTORS = SEARCH_SELECTORS;
-var CLICK = 'click';
-exports.CLICK = CLICK;
-var GO_TO = 'go to';
-exports.GO_TO = GO_TO;
-var OFF = 'off';
-exports.OFF = OFF;
-var SELECT = 'select';
-exports.SELECT = SELECT;
-var SCROLL_UP = 'scroll up';
-exports.SCROLL_UP = SCROLL_UP;
-var SCROLL_DOWN = 'scroll down';
-exports.SCROLL_DOWN = SCROLL_DOWN;
-var SCROLL_TO_BOTTOM = 'scroll to bottom';
-exports.SCROLL_TO_BOTTOM = SCROLL_TO_BOTTOM;
-var SCROLL_TO_TOP = 'scroll to top';
-exports.SCROLL_TO_TOP = SCROLL_TO_TOP;
-var SEARCH = 'search';
-exports.SEARCH = SEARCH;
-var STOP_TYPE = 'stop type';
-/**
- * RegExp
- */
-
-exports.STOP_TYPE = STOP_TYPE;
-var REG_EXP_CLICK = /(click)\s[[a-zA-Z0-9\.]/;
-exports.REG_EXP_CLICK = REG_EXP_CLICK;
-var REG_EXP_GO_TO = /(go to)\s[[a-zA-Z0-9\.]/;
-exports.REG_EXP_GO_TO = REG_EXP_GO_TO;
-var REG_EXP_OFF = /^(off)$/;
-exports.REG_EXP_OFF = REG_EXP_OFF;
-var REG_EXP_SEARCH = /^(search)$/;
-exports.REG_EXP_SEARCH = REG_EXP_SEARCH;
-var REG_EXP_CHECK = /(check)\s[[a-zA-Z0-9\.]/;
-exports.REG_EXP_CHECK = REG_EXP_CHECK;
-var REG_EXP_SELECT = /(select)\s[[a-zA-Z0-9\.]/;
-exports.REG_EXP_SELECT = REG_EXP_SELECT;
-var REG_EXP_SCROLL_UP = /(scroll up)(\s[[a-zA-Z0-9\.])?/;
-exports.REG_EXP_SCROLL_UP = REG_EXP_SCROLL_UP;
-var REG_EXP_SCROLL_DOWN = /(scroll down)(\s[[a-zA-Z0-9\.])?/;
-exports.REG_EXP_SCROLL_DOWN = REG_EXP_SCROLL_DOWN;
-var REG_EXP_SCROLL_TO_TOP = /(scroll)\s(to\s)?(top)(\s[[a-zA-Z0-9\.])?/;
-exports.REG_EXP_SCROLL_TO_TOP = REG_EXP_SCROLL_TO_TOP;
-var REG_EXP_SCROLL_TO_BOTTOM = /(scroll)\s(to\s)?(bottom)(\s[[a-zA-Z0-9\.])?/;
-exports.REG_EXP_SCROLL_TO_BOTTOM = REG_EXP_SCROLL_TO_BOTTOM;
-var REG_EXP_STOP_TYPE = /^(stop type)$/;
-exports.REG_EXP_STOP_TYPE = REG_EXP_STOP_TYPE;
-console.log(REG_EXP_SCROLL_UP.test('scroll up'));
-/**
- * Input Mode
- * */
-
-var MODE_TYPE = 'type';
-exports.MODE_TYPE = MODE_TYPE;
-var MODE_SELECT = 'select';
-exports.MODE_SELECT = MODE_SELECT;
-var MODE_NO_MODE = '';
-/**
- * Export consts
- */
-
-exports.MODE_NO_MODE = MODE_NO_MODE;
 
 /***/ })
 /******/ ]);

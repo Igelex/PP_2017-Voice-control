@@ -19,7 +19,7 @@ const SCROLL_DOWN = 'scroll down';
 const SCROLL_TO_BOTTOM = 'scroll to bottom';
 const SCROLL_TO_TOP = 'scroll to top';
 const SEARCH = 'search';
-const STOP_TYPE = 'stop type';
+const STOP = 'stop';
 /**
  * RegExp
  */
@@ -33,7 +33,7 @@ let REG_EXP_SCROLL_UP = /(scroll up)(\s[[a-zA-Z0-9\.])?/;
 let REG_EXP_SCROLL_DOWN = /(scroll down)(\s[[a-zA-Z0-9\.])?/;
 let REG_EXP_SCROLL_TO_TOP = /(scroll)\s(to\s)?(top)(\s[[a-zA-Z0-9\.])?/;
 let REG_EXP_SCROLL_TO_BOTTOM = /(scroll)\s(to\s)?(bottom)(\s[[a-zA-Z0-9\.])?/;
-let REG_EXP_STOP_TYPE = /^(stop type)$/;
+let REG_EXP_STOP = /^(stop)$/;
 console.log(REG_EXP_SCROLL_UP.test('scroll up'));
 /**
  * Input Mode
@@ -45,8 +45,8 @@ const MODE_NO_MODE = '';
  * Export consts
  */
 export {SELECT_SELECTORS, CHECK_SELECTORS, CLICK_SELECTORS, SEARCH_SELECTORS, GO_TO_SELECTORS,
-        CLICK, GO_TO, OFF, SELECT,SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP_TYPE,
+        CLICK, GO_TO, OFF, SELECT,SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP,
         REG_EXP_CLICK, REG_EXP_GO_TO, REG_EXP_OFF, REG_EXP_SEARCH, REG_EXP_CHECK, REG_EXP_SELECT, REG_EXP_SCROLL_DOWN,
-                                 REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM,REG_EXP_STOP_TYPE, REG_EXP_SCROLL_UP,
+                                 REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM,REG_EXP_STOP, REG_EXP_SCROLL_UP,
         MODE_TYPE, MODE_SELECT, MODE_NO_MODE};
 
