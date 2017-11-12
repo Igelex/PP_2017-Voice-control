@@ -5,7 +5,7 @@ const CLICK_SELECTORS = 'a, li, :button';
 const GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
     'input[type="search"], input[type="tel"]';
 const CHECK_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
-const SELECT_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
+const SELECT_SELECTORS = 'select';
 const SEARCH_SELECTORS = 'input[type="search"]';
 /**
  * Keywords
@@ -41,7 +41,7 @@ console.log(REG_EXP_SCROLL_UP.test('scroll up'));
  * */
 const MODE_TYPE = 'type';
 const MODE_SELECT = 'select';
-const MODE_NO_MODE = '';
+const MODE_NO_MODE = 'no_mode';
 /**
  * Export consts
  */

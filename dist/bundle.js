@@ -84,24 +84,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _dependencies.default)();
 var elements = [];
 var selectedInputField;
-var inputMode = '';
+var inputMode = _const.MODE_NO_MODE;
 
 window.onload = function () {
   (0, _visualizer.default)();
   $('#start-search').click(function () {
-    checkInputType($('#search-input').val());
+    checkInputMode($('#search-input').val());
   });
 
-  function checkInputType(userCommand) {
+  function checkInputMode(input) {
     var t0 = performance.now();
-    userCommand.toString().toLowerCase().trim();
+    var userCommand = input.toString().toLowerCase().trim();
     var result;
 
     if (_const.REG_EXP_STOP.test(userCommand)) {
       changeInputMode(_const.MODE_NO_MODE);
+      return;
     }
 
-    if (inputMode !== _const.MODE_TYPE && inputMode !== _const.MODE_SELECT) {
+    if (inputMode === _const.MODE_NO_MODE) {
       switch (true) {
         case _const.REG_EXP_CLICK.test(userCommand):
           changeInputMode(_const.MODE_NO_MODE);
@@ -134,8 +135,8 @@ window.onload = function () {
           result = splitUserCommand(userCommand, _const.GO_TO);
 
           if (result) {
-            console.log('Search string: ' + result);
-            searchForInputfields(_const.GO_TO_SELECTORS, result);
+            console.log('Search string for GO_TO: ' + result);
+            searchForInputFields(_const.GO_TO_SELECTORS, result);
           }
 
           break;
@@ -149,8 +150,7 @@ window.onload = function () {
         case _const.REG_EXP_CHECK.test(userCommand):
           result = splitUserCommand(userCommand, _const.CHECK);
 
-          if (result) {
-            searchElements(_const.CHECK_SELECTORS, userCommand);
+          if (result) {//searchElements(CHECK_SELECTORS, userCommand);
           }
 
           break;
@@ -178,23 +178,42 @@ window.onload = function () {
     } else if (inputMode === _const.MODE_SELECT) {//Kommt
     }
 
-    selectElements(elements);
+    if (elements.length === 0) {
+      console.error('-------------No element found------------------');
+    }
+
     elements = [];
     var t1 = performance.now();
     console.log('Execution time: ' + (t1 - t0) + ' mil');
   }
 
-  function searchForInputfields(selector, userInput) {
+  function searchForInputFields(selector, userInput) {
     selectedInputField = null;
     var selectedElements = $(selector);
+    var elem;
 
     if (selectedElements.length > 0) {
-      for (var i = 0; i < selectedElements.length; i++) {
-        console.log('######Found Inputfields#####: ' + selectedElements[i].textContent);
+      changeInputMode(_const.MODE_TYPE);
 
-        if (selectedElements[i].textContent.toLowerCase().trim().search(userInput) !== -1 || hasValueAttribut(selectedElements[i], userInput)) {
-          elements.push(selectedElements[i]);
+      for (var i = 0; i < selectedElements.length; i++) {
+        elem = selectedElements[i];
+        console.log('######Found input fields#####: ' + selectedElements[i].textContent);
+
+        if (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput) || hasPlaceholderAttribute(elem, userInput)) {
+          elements.push(elem);
         }
+      }
+
+      if (elements.length === 1) {
+        if ($(elements).is('label')) {
+          selectedInputField = $(elements).next();
+          selectedInputField.focus();
+        } else {
+          selectedInputField = $(elements);
+          selectedInputField.focus();
+        }
+      } else {
+        multipleElementsSelected();
       }
     }
   }
@@ -206,39 +225,31 @@ window.onload = function () {
       for (var i = 0; i < selectedElements.length; i++) {
         console.log('######Found Buttons#####: ' + selectedElements[i].textContent);
 
-        if (selectedElements[i].textContent.toLowerCase().trim().search(userInput) !== -1 || hasValueAttribut(selectedElements[i], userInput)) {
+        if (selectedElements[i].textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(selectedElements[i], userInput)) {
           elements.push(selectedElements[i]);
         }
       }
-    }
-  }
 
-  function selectElements() {
-    //console.log('++++Count Elemets+++++: ' + elements.length);
-    if (elements.length >= 2) {
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].style.border = 'black 5px solid';
-        console.log('++++Selected Elemets+++++: ' + elements[i].textContent);
-      }
-    } else if (elements.length === 1 && elements[0] !== undefined) {
-      if ($(elements).is('label')) {
-        changeInputMode(_const.MODE_TYPE);
-        $(elements).next().focus();
-        selectedInputField = $(elements).next();
-      } else {
-        console.log('++++Selected Elemets+++++: ' + elements[0].textContent);
+      if (elements.length === 1) {
         elements[0].style.backgroundColor = 'black';
         elements[0].style.color = 'white';
         elements[0].click();
+      } else {
+        multipleElementsSelected();
       }
-    } else {
-      console.error('-------------No element found------------------------------');
     }
   }
 
-  function hasValueAttribut(element, userInput) {
+  function multipleElementsSelected() {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.border = 'black 5px solid';
+      console.log('++++Selected Elements+++++: ' + elements[i].textContent);
+    }
+  }
+
+  function hasValueAttribute(element, userInput) {
     if (element.value !== undefined) {
-      if (element.value.toString().toLowerCase().search(userInput) !== -1) {
+      if (element.value.toString().toLowerCase().startsWith(userInput)) {
         return true;
       }
     }
@@ -246,9 +257,9 @@ window.onload = function () {
     return false;
   }
 
-  function hasPlaceholderAttribut(element, userInput) {
+  function hasPlaceholderAttribute(element, userInput) {
     if (element.placeholder !== undefined) {
-      if (element.placeholder.toString().toLowerCase().search(userInput) !== -1) {
+      if (element.placeholder.toString().toLowerCase().startsWith(userInput)) {
         return true;
       }
     }
@@ -264,7 +275,7 @@ window.onload = function () {
       selectedInputField = null;
     }
 
-    console.log('------MODE------ ' + inputMode);
+    console.log('------MODE------: ' + inputMode);
   }
 
   function scrollDown() {
@@ -289,7 +300,7 @@ window.onload = function () {
     }).done(function (data) {
       //alert('Greetings from Server: ' + data);
       console.log(data);
-      checkInputType(data);
+      checkInputMode(data);
     }).fail(function (jqXHR, errorMessage, error) {
       console.log('AJAX error: ' + error);
     });
@@ -321,7 +332,7 @@ window.onload = function () {
                 .join('')
             console.log('**********'  + transcript);
             if (e.results[0].isFinal){
-                checkInputType(result);
+                checkInputMode(result);
             }
         });
     }*/
@@ -331,7 +342,7 @@ window.onload = function () {
       console.info('-----ON RESULT------: ' + result);
 
       if (result) {
-        checkInputType(result);
+        checkInputMode(result);
       }
     };
 
@@ -392,7 +403,7 @@ var GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[typ
 exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
 var CHECK_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
 exports.CHECK_SELECTORS = CHECK_SELECTORS;
-var SELECT_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
+var SELECT_SELECTORS = 'select';
 exports.SELECT_SELECTORS = SELECT_SELECTORS;
 var SEARCH_SELECTORS = 'input[type="search"]';
 /**
@@ -457,7 +468,7 @@ var MODE_TYPE = 'type';
 exports.MODE_TYPE = MODE_TYPE;
 var MODE_SELECT = 'select';
 exports.MODE_SELECT = MODE_SELECT;
-var MODE_NO_MODE = '';
+var MODE_NO_MODE = 'no_mode';
 /**
  * Export consts
  */
