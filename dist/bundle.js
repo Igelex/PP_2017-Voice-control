@@ -74,7 +74,7 @@ var _dependencies = _interopRequireDefault(__webpack_require__(1));
 
 var _const = __webpack_require__(2);
 
-var _visualizer = _interopRequireDefault(__webpack_require__(4));
+var _visualizer = _interopRequireDefault(__webpack_require__(3));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -92,80 +92,86 @@ window.onload = function () {
     checkInputType($('#search-input').val());
   });
 
-  function checkInputType(input) {
-    var userInput = input.toString().toLowerCase().trim();
+  function checkInputType(userCommand) {
     var t0 = performance.now();
+    userCommand.toString().toLowerCase().trim();
     var result;
 
-    if (_const.REG_EXP_STOP.test(userInput)) {
+    if (_const.REG_EXP_STOP.test(userCommand)) {
       changeInputMode(_const.MODE_NO_MODE);
     }
 
     if (inputMode !== _const.MODE_TYPE && inputMode !== _const.MODE_SELECT) {
       switch (true) {
-        case _const.REG_EXP_CLICK.test(userInput):
+        case _const.REG_EXP_CLICK.test(userCommand):
           changeInputMode(_const.MODE_NO_MODE);
-          result = userInput.slice(userInput.indexOf(_const.CLICK) + 5).trim();
+          result = splitUserCommand(userCommand, _const.CLICK);
 
-          if (result.length > 0) {
+          if (result) {
             console.log('Search string for CLICKS: ' + result);
-            searchElements(_const.CLICK_SELECTORS, result);
+            searchForButtons(_const.CLICK_SELECTORS, result);
           }
 
           break;
 
-        case _const.REG_EXP_SCROLL_DOWN.test(userInput):
+        case _const.REG_EXP_SCROLL_DOWN.test(userCommand):
           scrollDown();
           break;
 
-        case _const.REG_EXP_SCROLL_UP.test(userInput):
+        case _const.REG_EXP_SCROLL_UP.test(userCommand):
           scrollUp();
           break;
 
-        case _const.REG_EXP_SCROLL_TO_TOP.test(userInput):
+        case _const.REG_EXP_SCROLL_TO_TOP.test(userCommand):
           scrollDown();
           break;
 
-        case _const.REG_EXP_SCROLL_TO_BOTTOM.test(userInput):
+        case _const.REG_EXP_SCROLL_TO_BOTTOM.test(userCommand):
           scrollUp();
           break;
 
-        case _const.REG_EXP_GO_TO.test(userInput):
-          result = userInput.slice(userInput.indexOf(_const.GO_TO) + 5).trim();
+        case _const.REG_EXP_GO_TO.test(userCommand):
+          result = splitUserCommand(userCommand, _const.GO_TO);
 
           if (result) {
             console.log('Search string: ' + result);
-            searchElements(_const.GO_TO_SELECTORS, result);
+            searchForInputfields(_const.GO_TO_SELECTORS, result);
           }
 
           break;
 
-        case _const.REG_EXP_SELECT.test(userInput):
+        case _const.REG_EXP_SELECT.test(userCommand):
           break;
 
-        case _const.REG_EXP_SEARCH.test(userInput):
+        case _const.REG_EXP_SEARCH.test(userCommand):
           break;
 
-        case _const.REG_EXP_CHECK.test(userInput):
+        case _const.REG_EXP_CHECK.test(userCommand):
+          result = splitUserCommand(userCommand, _const.CHECK);
+
+          if (result) {
+            searchElements(_const.CHECK_SELECTORS, userCommand);
+          }
+
           break;
 
-        case _const.REG_EXP_OFF.test(userInput):
+        case _const.REG_EXP_OFF.test(userCommand):
           break;
 
-        case _const.REG_EXP_STOP.test(userInput):
+        case _const.REG_EXP_STOP.test(userCommand):
           changeInputMode(_const.MODE_NO_MODE);
           break;
 
         default:
       }
     } else if (inputMode === _const.MODE_TYPE && selectedInputField) {
-      console.log('---------Typing text......: ' + userInput);
+      console.log('---------Typing text......: ' + userCommand);
       var textContent = $(selectedInputField).val();
 
       if (textContent.trim().length === 0) {
-        textContent += userInput;
+        textContent += userCommand;
       } else {
-        textContent += ' ' + userInput;
+        textContent += ' ' + userCommand;
       }
 
       $(selectedInputField).val(textContent);
@@ -178,14 +184,29 @@ window.onload = function () {
     console.log('Execution time: ' + (t1 - t0) + ' mil');
   }
 
-  function searchElements(selector, userInput) {
+  function searchForInputfields(selector, userInput) {
     selectedInputField = null;
     var selectedElements = $(selector);
 
     if (selectedElements.length > 0) {
       for (var i = 0; i < selectedElements.length; i++) {
-        //console.log('######Found Elemets#####: ' + selectedElements[i].textContent);
-        if (selectedElements[i].textContent.toLowerCase().trim() === userInput || hasValueAttribut(selectedElements[i], userInput)) {
+        console.log('######Found Inputfields#####: ' + selectedElements[i].textContent);
+
+        if (selectedElements[i].textContent.toLowerCase().trim().search(userInput) !== -1 || hasValueAttribut(selectedElements[i], userInput)) {
+          elements.push(selectedElements[i]);
+        }
+      }
+    }
+  }
+
+  function searchForButtons(selector, userInput) {
+    var selectedElements = $(selector);
+
+    if (selectedElements.length > 0) {
+      for (var i = 0; i < selectedElements.length; i++) {
+        console.log('######Found Buttons#####: ' + selectedElements[i].textContent);
+
+        if (selectedElements[i].textContent.toLowerCase().trim().search(userInput) !== -1 || hasValueAttribut(selectedElements[i], userInput)) {
           elements.push(selectedElements[i]);
         }
       }
@@ -217,7 +238,17 @@ window.onload = function () {
 
   function hasValueAttribut(element, userInput) {
     if (element.value !== undefined) {
-      if (element.value.toString().toLowerCase() === userInput) {
+      if (element.value.toString().toLowerCase().search(userInput) !== -1) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function hasPlaceholderAttribut(element, userInput) {
+    if (element.placeholder !== undefined) {
+      if (element.placeholder.toString().toLowerCase().search(userInput) !== -1) {
         return true;
       }
     }
@@ -228,7 +259,7 @@ window.onload = function () {
   function changeInputMode(newInputMode) {
     inputMode = newInputMode;
 
-    if (inputMode !== 'typing') {
+    if (inputMode !== _const.MODE_TYPE) {
       $(selectedInputField).blur();
       selectedInputField = null;
     }
@@ -260,42 +291,55 @@ window.onload = function () {
       console.log(data);
       checkInputType(data);
     }).fail(function (jqXHR, errorMessage, error) {
-      console.log('AJAx error: ' + error);
+      console.log('AJAX error: ' + error);
     });
+  }
+
+  function splitUserCommand(userCommand, command) {
+    return userCommand.slice(userCommand.indexOf(command) + command.length).trim();
+  }
+
+  function isVisible(elem) {
+    var docViewTop = $(window).scrollTop();
+    return elemBottom = docViewTop;
   }
   /**
    *Setup Google Speech Recognition
    */
 
 
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  var recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-  /*if (inputMode){
-      recognition.addEventListener('result', e => {
-          const transcript = Array.from(e.results)
-              .map(result => result[0])
-              .map(result => result.transcript)
-              .join('')
-          console.log('**********'  + transcript);
-          if (e.results[0].isFinal){
-              checkInputType(result);
-          }
-      });
-  }*/
+  try {
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    /*if (inputMode){
+        recognition.addEventListener('result', e => {
+            const transcript = Array.from(e.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('')
+            console.log('**********'  + transcript);
+            if (e.results[0].isFinal){
+                checkInputType(result);
+            }
+        });
+    }*/
 
-  recognition.onresult = function (event) {
-    var result = event.results[0][0].transcript;
-    console.info('-----ON RESULT------: ' + result);
+    recognition.onresult = function (event) {
+      var result = event.results[0][0].transcript;
+      console.info('-----ON RESULT------: ' + result);
 
-    if (result) {
-      checkInputType(result);
-    }
-  };
+      if (result) {
+        checkInputType(result);
+      }
+    };
 
-  recognition.addEventListener('end', recognition.start);
-  recognition.start();
+    recognition.addEventListener('end', recognition.start);
+    recognition.start();
+  } catch (e) {
+    console.log('Web Speech error: ' + e);
+  }
 };
 
 /***/ }),
@@ -337,7 +381,7 @@ function _default() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
+exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.CHECK = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
 
 /**
  * Selectors
@@ -358,6 +402,8 @@ var SEARCH_SELECTORS = 'input[type="search"]';
 exports.SEARCH_SELECTORS = SEARCH_SELECTORS;
 var CLICK = 'click';
 exports.CLICK = CLICK;
+var CHECK = 'check';
+exports.CHECK = CHECK;
 var GO_TO = 'go to';
 exports.GO_TO = GO_TO;
 var OFF = 'off';
@@ -419,8 +465,7 @@ var MODE_NO_MODE = '';
 exports.MODE_NO_MODE = MODE_NO_MODE;
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
