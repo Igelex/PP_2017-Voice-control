@@ -4,7 +4,7 @@
 const CLICK_SELECTORS = 'a, li, :button';
 const GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
     'input[type="search"], input[type="tel"]';
-const CHECK_SELECTORS = 'input[type="checkbox"], input[type="radio"]';
+const CHECK_SELECTORS = 'label';
 const SELECT_SELECTORS = 'select';
 const SEARCH_SELECTORS = 'input[type="search"]';
 /**

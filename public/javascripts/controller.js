@@ -26,6 +26,10 @@ window.onload = function () {
         checkInputMode($('#search-input').val());
     });
 
+    $('html, body').click(function () {
+        changeInputMode(MODE_NO_MODE);
+    });
+
     function checkInputMode(input) {
 
         let t0 = performance.now();
@@ -66,7 +70,9 @@ window.onload = function () {
                     scrollUp();
                     break;
                 case REG_EXP_GO_TO.test(userCommand):
+
                     result = splitUserCommand(userCommand, GO_TO);
+
                     if (result) {
                         console.log('Search string for GO_TO: ' + result);
                         searchForInputFields(GO_TO_SELECTORS, result)
@@ -79,16 +85,18 @@ window.onload = function () {
 
                     break;
                 case REG_EXP_CHECK.test(userCommand):
+
+                    changeInputMode(MODE_NO_MODE);
+
                     result = splitUserCommand(userCommand, CHECK);
+
                     if (result) {
-                        //searchElements(CHECK_SELECTORS, userCommand);
+                        console.log('Search string for CHECK: ' + result);
+                        searchForCheckboxesAndRadios(CHECK_SELECTORS, userCommand);
                     }
                     break;
                 case REG_EXP_OFF.test(userCommand):
 
-                    break;
-                case REG_EXP_STOP.test(userCommand):
-                    changeInputMode(MODE_NO_MODE);
                     break;
                 default:
             }
@@ -105,7 +113,7 @@ window.onload = function () {
             //Kommt
         }
 
-        if (elements.length === 0){
+        if (elements.length === 0) {
             console.error('-------------No element found------------------');
         }
         elements = [];
@@ -123,16 +131,14 @@ window.onload = function () {
 
         if (selectedElements.length > 0) {
 
-            changeInputMode(MODE_TYPE);
-
             for (let i = 0; i < selectedElements.length; i++) {
 
                 elem = selectedElements[i];
 
-                console.log('######Found input fields#####: ' + selectedElements[i].textContent);
+                //console.log('######Found input fields#####: ' + selectedElements[i].textContent);
 
-                if (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput)
-                    || hasPlaceholderAttribute(elem, userInput)) {
+                if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput)
+                        || hasPlaceholderAttribute(elem, userInput))) {
                     elements.push(elem);
                 }
             }
@@ -142,11 +148,12 @@ window.onload = function () {
                 if ($(elements).is('label')) {
                     selectedInputField = $(elements).next();
                     selectedInputField.focus();
+                    changeInputMode(MODE_TYPE);
 
                 } else {
                     selectedInputField = $(elements);
                     selectedInputField.focus();
-
+                    changeInputMode(MODE_TYPE);
                 }
             } else {
                 multipleElementsSelected();
@@ -156,16 +163,20 @@ window.onload = function () {
 
     function searchForButtons(selector, userInput) {
 
+        let elem;
+
         let selectedElements = $(selector);
 
         if (selectedElements.length > 0) {
             for (let i = 0; i < selectedElements.length; i++) {
 
-                console.log('######Found Buttons#####: ' + selectedElements[i].textContent);
+                elem = selectedElements[i];
 
-                if (selectedElements[i].textContent.toLowerCase().trim().startsWith(userInput)
-                    || hasValueAttribute(selectedElements[i], userInput)) {
-                    elements.push(selectedElements[i]);
+                //console.log('######Found Buttons#####: ' + elem.textContent);
+
+                if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput)
+                    || hasValueAttribute(selectedElements[i], userInput))) {
+                    elements.push(elem);
                 }
             }
 
@@ -173,6 +184,31 @@ window.onload = function () {
                 elements[0].style.backgroundColor = 'black';
                 elements[0].style.color = 'white';
                 elements[0].click();
+            } else {
+                multipleElementsSelected();
+            }
+        }
+    }
+
+    function searchForCheckboxesAndRadios(selector, userInput) {
+
+        let selectedElements = $(selector);
+
+        if (selectedElements.length > 0) {
+            for (let i = 0; i < selectedElements.length; i++) {
+
+                console.log('######Found Checks#####: ' + selectedElements[i].textContent.toLowerCase());
+
+                if (selectedElements[i].textContent.toLowerCase().trim().startsWith(userInput)) {
+                    elements.push(selectedElements[i]);
+                }
+            }
+
+            if (elements.length === 1) {
+                $(elements).first().click();
+                /*elements[0].style.backgroundColor = 'black';
+                elements[0].style.color = 'white';
+                elements[0].click();*/
             } else {
                 multipleElementsSelected();
             }
@@ -210,7 +246,7 @@ window.onload = function () {
             $(selectedInputField).blur();
             selectedInputField = null;
         }
-        console.log('------MODE------: ' + inputMode);
+        console.log('------Current MODE------: ' + inputMode);
     }
 
     function scrollDown() {
@@ -225,31 +261,21 @@ window.onload = function () {
         });
     }
 
-    function sendRequest() {
-        $.ajax({
-            host: 'localhost',
-            port: '3000',
-            dataType: 'text',
-            url: '/test',
-            type: 'POST'
-        }).done(function (data) {
-            //alert('Greetings from Server: ' + data);
-            console.log(data);
-            checkInputMode(data);
-        }).fail(function (jqXHR, errorMessage, error) {
-            console.log('AJAX error: ' + error);
-        });
-    }
-
     function splitUserCommand(userCommand, command) {
         return userCommand.slice((userCommand.indexOf(command) + command.length)).trim();
     }
 
     function isVisible(elem) {
-
-        let docViewTop = $(window).scrollTop();
-
-        return ((elemBottom = docViewTop));
+        let top_of_element = $(elem).offset().top;
+        let bottom_of_element = $(elem).offset().top + $(elem).outerHeight();
+        let bottom_of_screen = $(window).scrollTop() + $(window).height();
+        let top_of_screen = $(window).scrollTop();
+        if ((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)) {
+            console.log('ELEMENT VISIBLE');
+        } else {
+            console.log('ELEMENT NOT VISIBLE');
+        }
+        return (bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element);
     }
 
     /**
