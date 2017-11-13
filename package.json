@@ -20,6 +20,7 @@
     "express": "~4.15.5",
     "express-watcher": "^1.0.3",
     "helmet": "^3.9.0",
+    "jquery": "^3.2.1",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"
   },

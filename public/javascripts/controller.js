@@ -10,9 +10,12 @@ import {
     REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM, REG_EXP_STOP, REG_EXP_SCROLL_UP,
     MODE_TYPE, MODE_SELECT, MODE_NO_MODE
 } from './const';
+
+import $ from 'jquery';
+
 import speechRecognition from './visualizer';
 
-bindDependencies();
+//bindDependencies();
 
 let elements = [];
 let selectedInputField;
@@ -92,7 +95,7 @@ window.onload = function () {
 
                     if (result) {
                         console.log('Search string for CHECK: ' + result);
-                        searchForCheckboxesAndRadios(CHECK_SELECTORS, userCommand);
+                        searchForCheckboxesAndRadios(CHECK_SELECTORS, result);
                     }
                     break;
                 case REG_EXP_OFF.test(userCommand):
@@ -175,7 +178,7 @@ window.onload = function () {
                 //console.log('######Found Buttons#####: ' + elem.textContent);
 
                 if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput)
-                    || hasValueAttribute(selectedElements[i], userInput))) {
+                        || hasValueAttribute(selectedElements[i], userInput))) {
                     elements.push(elem);
                 }
             }
@@ -192,15 +195,20 @@ window.onload = function () {
 
     function searchForCheckboxesAndRadios(selector, userInput) {
 
+        let elem;
+
         let selectedElements = $(selector);
 
         if (selectedElements.length > 0) {
             for (let i = 0; i < selectedElements.length; i++) {
 
-                console.log('######Found Checks#####: ' + selectedElements[i].textContent.toLowerCase());
+                elem = selectedElements[i];
 
-                if (selectedElements[i].textContent.toLowerCase().trim().startsWith(userInput)) {
-                    elements.push(selectedElements[i]);
+                console.log('######Found Checks#####: ' + elem.textContent.toLowerCase());
+
+                if (isVisible(elem) && elem.textContent.toLowerCase().trim().startsWith(userInput)) {
+                    console.log('TRUE. add element: ' + elem.textContent);
+                    elements.push(elem);
                 }
             }
 
