@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/stylesheets/jquery-ui.min.css">
     <script src="./javascripts/index-scripts/external/jquery/jquery.js"></script>
     <script src="./javascripts/index-scripts/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 </head>
 <body>
 <div id="main">
@@ -40,6 +41,7 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-xs-12">
+                        <!--Buttons ////////////////////////////////////////////////////////////////////////////////-->
                         <h4>Buttons</h4>
                         <div class="card">
                             <div class="row" style="margin-bottom: 10px ">
@@ -106,44 +108,155 @@
                 </div>
                 <div class="row row-margin">
                     <div class="col-xs-12">
+                        <!--Checkbox ////////////////////////////////////////////////////////////////////////////////-->
                         <h4>Checkboxes and Radios </h4>
                         <div class="card">
-                            <div class="checkbox">
-                                <label><input type="checkbox">Remember me</label>
-                                <label><input type="checkbox">Male</label>
-                                <label><input type="checkbox">Female</label>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="checkbox">
+                                                <div class="checkbox-success">
+                                                    <input type="checkbox" id="remember" value="option1">
+                                                    <label for="remember">Remember</label>
+                                                </div>
+                                                <div class="checkbox-success">
+                                                    <input type="checkbox" id="male" value="option1">
+                                                    <label for="male">Male</label>
+                                                </div>
+                                                <div class="checkbox-success">
+                                                    <input type="checkbox" id="female" value="option1">
+                                                    <label for="female">Female</label>
+                                                </div>
+                                            </div>
+
+                                            <label for="car" class=""><input id="car" type="checkbox"
+                                                                             value="">Car</label>
+                                            <label for="bike" class=""><input id="bike" type="checkbox"
+                                                                              value="">Bike</label>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="[ form-group ]">
+                                                <input type="checkbox" name="fancy-checkbox-default"
+                                                       id="fancy-checkbox-default" autocomplete="off"/>
+                                                <div class="[ btn-group ]">
+                                                    <label for="fancy-checkbox-default" class="[ btn btn-default ]">
+                                                        <span class="[ glyphicon glyphicon-ok ]"></span>
+                                                        <span> </span>
+                                                    </label>
+                                                    <label for="fancy-checkbox-default"
+                                                           class="[ btn btn-default active ]">
+                                                        White
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="[ form-group ]">
+                                                <input type="checkbox" name="fancy-checkbox-primary"
+                                                       id="fancy-checkbox-primary" autocomplete="off"/>
+                                                <div class="[ btn-group ]">
+                                                    <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
+                                                        <span class="[ glyphicon glyphicon-ok ]"></span>
+                                                        <span> </span>
+                                                    </label>
+                                                    <label for="fancy-checkbox-primary"
+                                                           class="[ btn btn-default active ]">
+                                                        Blue
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <label class="checkbox-inline"><input type="checkbox" value="test">Red</label>
-                            <label class="checkbox-inline"><input type="checkbox" value="">Black</label>
-                            <label class="checkbox-inline"><input type="checkbox" value="">BLue</label><br>
-                            <label class="radio-inline">
-                                <input type="radio" name="optradio">Option 1</label>
+
+                            <div class="row">
+                                <div class="col-sm-5">
+
+
+                                </div>
+                            </div>
+
+                            <label class="radio-inline"><input type="radio" name="optradio">Option 1</label>
                             <label class="radio-inline"><input type="radio" name="optradio">Option 2</label>
                             <label class="radio-inline"><input type="radio" name="optradio">Option 3</label>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12">
-                    <div class="row row-margin">
-                        <div class="">
 
+                <div class="row row-margin">
+                    <div class="col-xs-12">
+                        <!--Selection ////////////////////////////////////////////////////////////////////////////////-->
+                        <h4>Selection </h4>
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <fieldset>
+                                                <label for="speed">Select a speed</label>
+                                                <select name="speed" id="speed">
+                                                    <option>Slower</option>
+                                                    <option>Slow</option>
+                                                    <option selected="selected">Medium</option>
+                                                    <option>Fast</option>
+                                                    <option>Faster</option>
+                                                </select>
+                                            </fieldset>
+
+                                        </div>
+
+                                        <div class="col-sm-6">
+
+                                            <fieldset>
+                                                <label for="files">Choice </label>
+                                                <select name="files" id="files">
+                                                    <optgroup label="Scripts">
+                                                        <option value="jquery">jQuery.js</option>
+                                                        <option value="jqueryui">ui.jQuery.js</option>
+                                                    </optgroup>
+                                                    <optgroup label="Other files">
+                                                        <option value="somefile">Some unknown file</option>
+                                                        <option value="someotherfile">Some other file with a very long
+                                                            option text
+                                                        </option>
+                                                    </optgroup>
+                                                </select>
+                                            </fieldset>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
             <!--////////////////////////////////////////////////////////////////////////// Right-->
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-xs-12 ">
+                        <!--Inputfields ////////////////////////////////////////////////////////////////////////////////-->
                         <h4>Inputfields</h4>
                         <div class="card">
+
+                            <!--<form>
+                                <div class="">
+                                    <input class="" type="search" id="search">
+                                </div>
+                                <input type="submit">
+                            </form>-->
+
                             <form>
                                 <div class="form-group">
                                     <label id="l1" for="email">Email address:</label>
                                     <input type="email" class="form-control" id="email">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="pwd" placeholder="mama">
+                                    <input type="password" class="form-control" id="pwd" placeholder="pass">
                                 </div>
                                 <div class="form-group">
                                     <label for="comment">Comments extra long name</label>
@@ -151,7 +264,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="test">Input test field</label>
-                                    <input class="form-control" type="text" rows="5" id="test">
+                                    <input class="form-control" type="text" id="test">
                                 </div>
                                 <button type="submit" class="btn btn-default">Submit</button>
                             </form>
@@ -160,29 +273,24 @@
                 </div>
                 <div class="row row-margin">
                     <div class="col-xs-12">
+                        <!--Tabs ////////////////////////////////////////////////////////////////////////////////-->
                         <h4>Tabs</h4>
                         <div class="card">
                             <div id="tabs">
                                 <ul>
                                     <li><a href="#tabs-1">Element</a></li>
-                                    <li><a href="#tabs-2">Element 1</a></li>
-                                    <li><a href="#tabs-3">Element 2</a></li>
-                                    <li><a href="#tabs-4">Page</a></li>
+                                    <li><a href="#tabs-2">Some Text</a></li>
+                                    <li><a href="#tabs-3">Text</a></li>
                                 </ul>
                                 <div id="tabs-1">
                                     <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus.</p>
                                 </div>
                                 <div id="tabs-2">
                                     <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut
-                                        pharetra massa metus
-                                        id
-                                        nunc.</p>
+                                        pharetra massa metus id nunc.</p>
                                 </div>
                                 <div id="tabs-3">
                                     <p>Mauris eleifend est et turpis.</p>
-                                </div>
-                                <div id="tabs-4">
-                                    <p>Test sefksd sldjglfd kljsdlkjfkljsd klsjdgkljsdg sldg jsl.</p>
                                 </div>
                             </div>
                         </div>
@@ -200,11 +308,24 @@
     </div>
 </div>
 
-
 <script>
     $(function () {
         $("#tabs").tabs();
     });
+
+    $(function () {
+        $("#speed").selectmenu();
+
+        $("#files").selectmenu();
+
+        $("#number")
+            .selectmenu()
+            .selectmenu("menuWidget")
+            .addClass("overflow");
+
+        $("#salutation").selectmenu();
+    });
 </script>
+
 </body>
 </html>

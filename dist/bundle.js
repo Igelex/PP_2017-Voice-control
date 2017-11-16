@@ -229,8 +229,10 @@ window.onload = function () {
       for (var i = 0; i < selectedElements.length; i++) {
         elem = selectedElements[i]; //console.log('######Found Buttons#####: ' + elem.textContent);
 
-        if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(selectedElements[i], userInput))) {
-          elements.push(elem);
+        if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput))) {
+          if ((0, _jquery.default)(elem).is('a') && (0, _jquery.default)(elem).parent().is('li')) {} else {
+            elements.push(elem);
+          }
         }
       }
 
@@ -254,16 +256,13 @@ window.onload = function () {
         console.log('######Found Checks#####: ' + elem.textContent.toLowerCase());
 
         if (isVisible(elem) && elem.textContent.toLowerCase().trim().startsWith(userInput)) {
-          console.log('TRUE. add element: ' + elem.textContent);
+          console.log('TRUE add element: ' + elem.textContent);
           elements.push(elem);
         }
       }
 
       if (elements.length === 1) {
-        (0, _jquery.default)(elements).first().click();
-        /*elements[0].style.backgroundColor = 'black';
-        elements[0].style.color = 'white';
-        elements[0].click();*/
+        (0, _jquery.default)(elements).prev().click();
       } else {
         multipleElementsSelected();
       }
@@ -329,13 +328,6 @@ window.onload = function () {
     var bottom_of_element = (0, _jquery.default)(elem).offset().top + (0, _jquery.default)(elem).outerHeight();
     var bottom_of_screen = (0, _jquery.default)(window).scrollTop() + (0, _jquery.default)(window).height();
     var top_of_screen = (0, _jquery.default)(window).scrollTop();
-
-    if (bottom_of_screen > top_of_element && top_of_screen < bottom_of_element) {
-      console.log('ELEMENT VISIBLE');
-    } else {
-      console.log('ELEMENT NOT VISIBLE');
-    }
-
     return bottom_of_screen > top_of_element && top_of_screen < bottom_of_element;
   }
   /**
@@ -417,9 +409,9 @@ exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP
  */
 var CLICK_SELECTORS = 'a, li, :button';
 exports.CLICK_SELECTORS = CLICK_SELECTORS;
-var GO_TO_SELECTORS = 'label, input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"]';
+var GO_TO_SELECTORS = 'label,input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"] , label:has(:text),label:has(:password),' + 'label:has(input[type="tel"]), label:has(input[type="number"]), label:has(input[type="url"]), label:has(input[type="tel"]),label:has(input[type="search"])';
 exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
-var CHECK_SELECTORS = 'label:has(input[type="radio"], label:has(input[type="checkbox"])';
+var CHECK_SELECTORS = ':radio + label, :checkbox + label, label:has(input[type="radio"], label:has(input[type="checkbox"])';
 exports.CHECK_SELECTORS = CHECK_SELECTORS;
 var SELECT_SELECTORS = 'select';
 exports.SELECT_SELECTORS = SELECT_SELECTORS;
