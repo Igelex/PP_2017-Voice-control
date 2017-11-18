@@ -230,15 +230,18 @@ window.onload = function () {
         elem = selectedElements[i]; //console.log('######Found Buttons#####: ' + elem.textContent);
 
         if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput))) {
-          if ((0, _jquery.default)(elem).is('a') && (0, _jquery.default)(elem).parent().is('li')) {} else {
+          if ((0, _jquery.default)(elem).is('li') && (0, _jquery.default)(elem).children('a')) {
+            var temp = (0, _jquery.default)(elem).children('a');
+            console.log('TAB FOUND: ');
+          } else {
             elements.push(elem);
           }
         }
       }
 
       if (elements.length === 1) {
-        elements[0].style.backgroundColor = 'black';
-        elements[0].style.color = 'white';
+        elements[0].style.backgroundColor = '#e5e5e5'; //$(elements[0]).trigger('click');
+
         elements[0].click();
       } else {
         multipleElementsSelected();
@@ -367,6 +370,15 @@ window.onload = function () {
   } catch (e) {
     console.log('Web Speech error: ' + e);
   }
+  /*$('#startRecord').click(function () {
+      if ($('#control-img').attr('src') === './images/play_icon.svg') {
+          recignition.start();
+      } else {
+          $('#control-img').attr('src', './images/play_icon.svg');
+          recignition.stop();
+      }
+    });*/
+
 };
 
 /***/ }),
@@ -411,7 +423,7 @@ var CLICK_SELECTORS = 'a, li, :button';
 exports.CLICK_SELECTORS = CLICK_SELECTORS;
 var GO_TO_SELECTORS = 'label,input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"] , label:has(:text),label:has(:password),' + 'label:has(input[type="tel"]), label:has(input[type="number"]), label:has(input[type="url"]), label:has(input[type="tel"]),label:has(input[type="search"])';
 exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
-var CHECK_SELECTORS = ':radio + label, :checkbox + label, label:has(input[type="radio"], label:has(input[type="checkbox"])';
+var CHECK_SELECTORS = ':radio + label, :checkbox + label, label:has(:radio), label:has(:radio)';
 exports.CHECK_SELECTORS = CHECK_SELECTORS;
 var SELECT_SELECTORS = 'select';
 exports.SELECT_SELECTORS = SELECT_SELECTORS;
@@ -10771,8 +10783,8 @@ function speechRecognition() {
     } else {
      console.log('Storage is undefined: ' + Storage);
     }*/
-    if (this.textContent.toLowerCase().trim() === 'start') {
-      if ((typeof Storage === "undefined" ? "undefined" : _typeof(Storage)) == undefined) {
+    if ($('#control-img').attr('src') === './images/play_icon.svg') {
+      if ((typeof Storage === "undefined" ? "undefined" : _typeof(Storage)) === undefined) {
         if (localStorage.getItem('audio') !== true) {
           localStorage.setItem('audio', true);
           console.log('Save audio settings');
@@ -10782,10 +10794,10 @@ function speechRecognition() {
 
       runAudioContext();
       startAudioRecord();
-      this.textContent = 'Stop';
+      $('#control-img').attr('src', './images/stop_icon.svg');
     } else {
       stopAudioContext();
-      this.textContent = 'Start';
+      $('#control-img').attr('src', './images/play_icon.svg');
     }
   });
   /**
@@ -10866,25 +10878,33 @@ function speechRecognition() {
 
     function visualize() {
       analyser.fftSize = 512;
-      var bufferLengthAlt = analyser.frequencyBinCount;
-      console.log(bufferLengthAlt);
-      var dataArrayAlt = new Uint8Array(bufferLengthAlt);
+      var bufferLength = analyser.fftSize;
+      console.log(bufferLength);
+      var dataArray = new Uint8Array(bufferLength);
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
       var drawAlt = function drawAlt() {
         drawVisual = requestAnimationFrame(drawAlt);
-        analyser.getByteFrequencyData(dataArrayAlt);
+        analyser.getByteTimeDomainData(dataArray);
         canvasCtx.fillStyle = '#f5f5f5';
         canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-        var barWidth = WIDTH / bufferLengthAlt * 2.5;
-        var barHeight;
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+        canvasCtx.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength;
         var x = 0;
 
-        for (var i = 0; i < bufferLengthAlt; i++) {
-          barHeight = dataArrayAlt[i];
-          canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
-          canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
-          x += barWidth + 1;
+        for (var i = 0; i < bufferLength; i++) {
+          var v = dataArray[i] / 128.0;
+          var y = v * HEIGHT / 2;
+
+          if (i === 0) {
+            canvasCtx.moveTo(x, y);
+          } else {
+            canvasCtx.lineTo(x, y);
+          }
+
+          x += sliceWidth + 1;
           /*if (barHeight >= 100) {
               /!*console.log('#####' + barHeight);*!/
               if (isRecording === false) {
@@ -10895,6 +10915,9 @@ function speechRecognition() {
               }
           }*/
         }
+
+        canvasCtx.lineTo(canvas.width, canvas.height / 2);
+        canvasCtx.stroke();
       };
 
       drawAlt();

@@ -26,8 +26,10 @@
         </div>
 
         <div class="row row-margin">
-            <div class="col-xs-6">
-                <button id="startRecord" type="button" class="btn btn-info">Start</button>
+            <div class="col-xs-12">
+                <div id="controll-button">
+                    <button id="startRecord" type="button" class=" btn btn-default btn-circle btn-xl"><img id="control-img" src="./images/play_icon.svg"></button>
+                </div>
             </div>
         </div>
         <!--<div class="row">
@@ -130,38 +132,36 @@
                                                 </div>
                                             </div>
 
-                                            <label for="car" class=""><input id="car" type="checkbox"
-                                                                             value="">Car</label>
-                                            <label for="bike" class=""><input id="bike" type="checkbox"
-                                                                              value="">Bike</label>
+                                            <input id="car" type="checkbox" value=""><label for="car" class="">Car</label>
+                                            <input id="bike" type="checkbox" value=""><label for="bike" class="">Bike</label>
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <div class="[ form-group ]">
+                                            <div class="form-group">
                                                 <input type="checkbox" name="fancy-checkbox-default"
                                                        id="fancy-checkbox-default" autocomplete="off"/>
-                                                <div class="[ btn-group ]">
-                                                    <label for="fancy-checkbox-default" class="[ btn btn-default ]">
-                                                        <span class="[ glyphicon glyphicon-ok ]"></span>
+                                                <div class="btn-group">
+                                                    <label for="fancy-checkbox-default" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-ok"></span>
                                                         <span> </span>
                                                     </label>
                                                     <label for="fancy-checkbox-default"
-                                                           class="[ btn btn-default active ]">
+                                                           class="btn btn-default active">
                                                         White
                                                     </label>
                                                 </div>
                                             </div>
 
-                                            <div class="[ form-group ]">
+                                            <div class="form-group">
                                                 <input type="checkbox" name="fancy-checkbox-primary"
                                                        id="fancy-checkbox-primary" autocomplete="off"/>
-                                                <div class="[ btn-group ]">
-                                                    <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
-                                                        <span class="[ glyphicon glyphicon-ok ]"></span>
+                                                <div class="btn-group">
+                                                    <label for="fancy-checkbox-primary" class="btn btn-primary">
+                                                        <span class="glyphicon glyphicon-ok"></span>
                                                         <span> </span>
                                                     </label>
                                                     <label for="fancy-checkbox-primary"
-                                                           class="[ btn btn-default active ]">
+                                                           class="btn btn-default active">
                                                         Blue
                                                     </label>
                                                 </div>
@@ -171,16 +171,27 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-5">
+                            <!--<div class="row row-margin">
+                                <div class="col-sm-12">
+                                    <label class="radio-inline"><input type="radio" name="optradio">Apple</label>
+                                    <label class="radio-inline"><input type="radio" name="optradio">banana</label>
+                                    <label class="radio-inline"><input type="radio" name="optradio">orange</label>
+                                </div>
+                            </div>-->
 
-
+                            <div class="row row-margin">
+                                <div class="col-sm-12">
+                                    <div class="radio radio-inline">
+                                        <input type="radio" id="inlineRadio1" value="option1" name="radioInline">
+                                        <label for="inlineRadio1">Apple</label>
+                                    </div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" id="inlineRadio2" value="option1" name="radioInline">
+                                        <label for="inlineRadio2"> Orange </label>
+                                    </div>
                                 </div>
                             </div>
 
-                            <label class="radio-inline"><input type="radio" name="optradio">Option 1</label>
-                            <label class="radio-inline"><input type="radio" name="optradio">Option 2</label>
-                            <label class="radio-inline"><input type="radio" name="optradio">Option 3</label>
                         </div>
                     </div>
                 </div>
@@ -325,6 +336,10 @@
 
         $("#salutation").selectmenu();
     });
+    let tabAnim = {
+        show: {effect: "fade", duration: "fast"}
+    };
+    $('#tabs').tabs(tabAnim);
 </script>
 
 </body>

@@ -179,7 +179,9 @@ window.onload = function () {
 
                 if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput)
                         || hasValueAttribute(elem, userInput))) {
-                    if($(elem).is('a') && $(elem).parent().is('li')){
+                    if($(elem).is('li') && $(elem).children('a')){
+                        let temp = $(elem).children('a');
+                        console.log('TAB FOUND: ');
                     }else {
                         elements.push(elem);
                     }
@@ -188,8 +190,8 @@ window.onload = function () {
             }
 
             if (elements.length === 1) {
-                elements[0].style.backgroundColor = 'black';
-                elements[0].style.color = 'white';
+                elements[0].style.backgroundColor = '#e5e5e5';
+                //$(elements[0]).trigger('click');
                 elements[0].click();
             } else {
                 multipleElementsSelected();
@@ -286,6 +288,8 @@ window.onload = function () {
     /**
      *Setup Google Speech Recognition
      */
+
+
     try {
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
@@ -318,6 +322,16 @@ window.onload = function () {
     catch (e) {
         console.log('Web Speech error: ' + e);
     }
+
+    /*$('#startRecord').click(function () {
+        if ($('#control-img').attr('src') === './images/play_icon.svg') {
+            recignition.start();
+        } else {
+            $('#control-img').attr('src', './images/play_icon.svg');
+            recignition.stop();
+        }
+
+    });*/
 
 
 };

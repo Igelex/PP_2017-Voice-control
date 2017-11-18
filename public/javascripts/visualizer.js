@@ -12,8 +12,8 @@ export default function speechRecognition() {
          console.log('Storage is undefined: ' + Storage);
         }*/
 
-        if (this.textContent.toLowerCase().trim() === 'start') {
-            if (typeof (Storage) == undefined) {
+        if ($('#control-img').attr('src') === './images/play_icon.svg') {
+            if (typeof (Storage) === undefined) {
                 if (localStorage.getItem('audio') !== true) {
                     localStorage.setItem('audio', true);
                     console.log('Save audio settings');
@@ -22,10 +22,10 @@ export default function speechRecognition() {
             //recognition.start();
             runAudioContext();
             startAudioRecord();
-            this.textContent = 'Stop';
+            $('#control-img').attr('src', './images/stop_icon.svg');
         } else {
             stopAudioContext();
-            this.textContent = 'Start';
+            $('#control-img').attr('src', './images/play_icon.svg');
         }
     });
 
@@ -120,30 +120,39 @@ export default function speechRecognition() {
 
         function visualize() {
             analyser.fftSize = 512;
-            let bufferLengthAlt = analyser.frequencyBinCount;
-            console.log(bufferLengthAlt);
-            let dataArrayAlt = new Uint8Array(bufferLengthAlt);
+            let bufferLength = analyser.fftSize;
+            console.log(bufferLength);
+            let dataArray = new Uint8Array(bufferLength);
 
             canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
             let drawAlt = function () {
                 drawVisual = requestAnimationFrame(drawAlt);
 
-                analyser.getByteFrequencyData(dataArrayAlt);
+                analyser.getByteTimeDomainData(dataArray);
 
                 canvasCtx.fillStyle = '#f5f5f5';
                 canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
-                let barWidth = (WIDTH / bufferLengthAlt) * 2.5;
-                let barHeight;
+                canvasCtx.lineWidth = 2;
+                canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+
+                canvasCtx.beginPath();
+
+                let sliceWidth = WIDTH * 1.0 / bufferLength;
                 let x = 0;
 
-                for (let i = 0; i < bufferLengthAlt; i++) {
-                    barHeight = dataArrayAlt[i];
-                    canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
-                    canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+                for (let i = 0; i < bufferLength; i++) {
+                    let v = dataArray[i] / 128.0;
+                    let y = v * HEIGHT / 2;
 
-                    x += barWidth + 1;
+                    if (i === 0) {
+                        canvasCtx.moveTo(x, y);
+                    } else {
+                        canvasCtx.lineTo(x, y);
+                    }
+
+                    x += sliceWidth + 1;
 
                     /*if (barHeight >= 100) {
                         /!*console.log('#####' + barHeight);*!/
@@ -155,6 +164,9 @@ export default function speechRecognition() {
                         }
                     }*/
                 }
+
+                canvasCtx.lineTo(canvas.width, canvas.height / 2);
+                canvasCtx.stroke();
             };
             drawAlt();
         }
