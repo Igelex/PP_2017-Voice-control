@@ -2,39 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d5e2526-8fc7-4f5b-9108-3394a5152ea8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/images/ui-icons_444444_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/images/ui-icons_555555_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/images/ui-icons_777620_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/images/ui-icons_777777_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/images/ui-icons_cc0000_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/images/ui-icons_ffffff_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/AUTHORS.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/LICENSE.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/external/jquery/jquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.structure.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.structure.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.theme.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/jquery-ui.theme.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/components/jquery-ui-dist/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bundle.js" afterPath="$PROJECT_DIR$/dist/bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bundle.js.map" afterPath="$PROJECT_DIR$/dist/bundle.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/controller.js" afterPath="$PROJECT_DIR$/public/js/controller.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/style_index.css" afterPath="$PROJECT_DIR$/public/stylesheets/style_index.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/index.ejs" afterPath="$PROJECT_DIR$/views/index.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webpack.config.js" afterPath="$PROJECT_DIR$/webpack.config.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/backup.js" afterPath="$PROJECT_DIR$/public/js/backup.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/const.js" afterPath="$PROJECT_DIR$/public/js/const.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/controller.js" afterPath="$PROJECT_DIR$/public/js/controller.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/dependencies.js" afterPath="$PROJECT_DIR$/public/js/dependencies.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/requestTransmitter.js" afterPath="$PROJECT_DIR$/public/js/requestTransmitter.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/visualizer.js" afterPath="$PROJECT_DIR$/public/js/visualizer.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -48,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/index.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+            <state relative-caret-position="352">
+              <caret line="16" column="13" lean-forward="true" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -60,11 +35,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="controller.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="style_index.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/stylesheets/style_index.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="792">
+              <caret line="36" column="1" lean-forward="false" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="19" column="29" lean-forward="true" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+            <state relative-caret-position="1870">
+              <caret line="276" column="58" lean-forward="false" selection-start-line="276" selection-start-column="58" selection-end-line="276" selection-end-column="58" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#45#513#0" expanded="true" />
@@ -107,6 +92,8 @@
       <find>radio</find>
       <find>chek</find>
       <find>rec</find>
+      <find>#</find>
+      <find>selec</find>
     </findStrings>
     <dirStrings>
       <dir>G:\Projects\PP_2017-Voice-control</dir>
@@ -114,6 +101,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -144,12 +136,12 @@
         <option value="$PROJECT_DIR$/public/javascripts/frequencyAnalyser.js" />
         <option value="$PROJECT_DIR$/public/javascripts/dependencies.js" />
         <option value="$PROJECT_DIR$/public/javascripts/visualizer.js" />
-        <option value="$PROJECT_DIR$/public/stylesheets/style_index.css" />
         <option value="$PROJECT_DIR$/public/javascripts/const.js" />
         <option value="$PROJECT_DIR$/webpack.config.js" />
-        <option value="$PROJECT_DIR$/views/index.ejs" />
         <option value="$PROJECT_DIR$/public/javascripts/controller.js" />
+        <option value="$PROJECT_DIR$/public/stylesheets/style_index.css" />
         <option value="$PROJECT_DIR$/public/js/controller.js" />
+        <option value="$PROJECT_DIR$/views/index.ejs" />
       </list>
     </option>
   </component>
@@ -189,17 +181,6 @@
             <path>
               <item name="PP_2017-Voice-control" type="b2602c69:ProjectViewProjectNode" />
               <item name="PP_2017-Voice-control" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PP_2017-Voice-control" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PP_2017-Voice-control" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PP_2017-Voice-control" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PP_2017-Voice-control" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -275,7 +256,7 @@
       <workItem from="1510832757616" duration="13109000" />
       <workItem from="1510921683202" duration="1352000" />
       <workItem from="1511000505728" duration="20233000" />
-      <workItem from="1511433698211" duration="5444000" />
+      <workItem from="1511433698211" duration="14865000" />
     </task>
     <task id="LOCAL-00001" summary="init server">
       <created>1509280352016</created>
@@ -417,11 +398,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511018615223</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="cleanup and debugging">
+      <created>1511439240107</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1511439240107</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="203890000" />
+    <option name="totallyTimeSpent" value="213311000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -498,7 +486,8 @@
     <MESSAGE value="implement check for checkboxes" />
     <MESSAGE value="fix issue with tabs selecting, more selectors for inputs added" />
     <MESSAGE value="implement check for radios" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement check for radios" />
+    <MESSAGE value="cleanup and debugging" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup and debugging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -640,6 +629,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="18" column="50" lean-forward="false" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -647,13 +637,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/stylesheets/style_index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4488">
-          <caret line="204" column="26" lean-forward="false" selection-start-line="204" selection-start-column="26" selection-end-line="204" selection-end-column="26" />
           <folding />
         </state>
       </provider>
@@ -663,9 +646,9 @@
         <state relative-caret-position="154">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
           <folding>
-            <marker date="1511437444561" expanded="true" signature="0:871" ph="{&quot;name&quot;: &quot;pp-2017-voice-control&quot;...}" />
-            <marker date="1511437444561" expanded="true" signature="205:717" ph="{&quot;@babel/core&quot;: &quot;^7.0.0-beta.5&quot;...}" />
-            <marker date="1511437444561" expanded="true" signature="740:869" ph="{&quot;babel-core&quot;: &quot;^6.26.0&quot;...}" />
+            <marker date="1511449667724" expanded="true" signature="0:921" ph="{&quot;name&quot;: &quot;pp-2017-voice-control&quot;...}" />
+            <marker date="1511449667724" expanded="true" signature="205:767" ph="{&quot;@babel/core&quot;: &quot;^7.0.0-beta.5&quot;...}" />
+            <marker date="1511449667724" expanded="true" signature="790:919" ph="{&quot;babel-core&quot;: &quot;^6.26.0&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -675,10 +658,10 @@
         <state relative-caret-position="-240153">
           <caret line="70" column="6" lean-forward="false" selection-start-line="70" selection-start-column="6" selection-end-line="70" selection-end-column="6" />
           <folding>
-            <marker date="1511438865976" expanded="true" signature="291850:291859" ph="{...}" />
-            <marker date="1511438865976" expanded="true" signature="291850:291871" ph="[...]" />
-            <marker date="1511438865976" expanded="true" signature="291852:291857" ph="/*...*/" />
-            <marker date="1511438865976" expanded="true" signature="291861:291869" ph="/*...*/" />
+            <marker date="1511450658686" expanded="true" signature="594027:594036" ph="{...}" />
+            <marker date="1511450658686" expanded="true" signature="594027:594048" ph="[...]" />
+            <marker date="1511450658686" expanded="true" signature="594029:594034" ph="/*...*/" />
+            <marker date="1511450658686" expanded="true" signature="594038:594046" ph="/*...*/" />
           </folding>
         </state>
       </provider>
@@ -698,23 +681,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
             <marker date="1473899646000" expanded="true" signature="22659:22730" ph="..." />
             <marker date="1473899646000" expanded="true" signature="22753:22777" ph="..." />
             <marker date="1473899646000" expanded="true" signature="204626:204670" ph="..." />
             <marker date="1473899646000" expanded="true" signature="314143:314160" ph="..." />
             <marker date="1473899646000" expanded="true" signature="328775:328791" ph="..." />
             <marker date="1473899646000" expanded="true" signature="449813:449819" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/index.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -735,13 +708,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/stylesheets/style_index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="36" column="1" lean-forward="false" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="19" column="29" lean-forward="true" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+        <state relative-caret-position="1870">
+          <caret line="276" column="58" lean-forward="false" selection-start-line="276" selection-start-column="58" selection-end-line="276" selection-end-column="58" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#45#513#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="13" lean-forward="true" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

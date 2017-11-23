@@ -6,6 +6,10 @@ li{
     margin-right: 10px
 }
 
+#files{
+    width: 60%;
+}
+
 #main{
     background-color: #f5f5f5;
 }

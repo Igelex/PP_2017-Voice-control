@@ -10,6 +10,9 @@ import {
     MODE_TYPE, MODE_SELECT, MODE_NO_MODE
 } from './const';
 
+import 'jquery-ui-dist/jquery-ui.min'
+import 'chosen-js'
+
 import speechRecognition from './visualizer';
 
 //bindDependencies();
@@ -25,6 +28,10 @@ window.onload = function () {
 
     $('#search').click(function () {
         checkInputMode($('#search-input').val());
+    });
+
+    $('#hide').click(function () {
+        selectedSelect.hide().blur();
     });
 
     $('html, body').click(function () {
@@ -258,8 +265,20 @@ window.onload = function () {
 
                 } else {
                     selectedSelect = $(elements);
-                    $(elements[0 ]).click();
-                    $('#speed').focus();
+                    /*$(elements).on('click', function(){
+                        let size = $(elements).attr('size');
+                        let openSize = size <= 5 ? size : 5;
+                        $(elements).attr('size', openSize);
+                    });*/
+                    //$(elements).click();
+                    //$(elements).selectmenu('open');
+                    //selectedSelect.show().click();
+                    try {
+                        selectedSelect.selectmenu('open');
+                    }catch (e){
+                        alert('hui' + e);
+                        selectedSelect.selectmenu().selectmenu('open');
+                    }
                     changeInputMode(MODE_SELECT);
                 }
             } else {
