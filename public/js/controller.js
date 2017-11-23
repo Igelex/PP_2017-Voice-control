@@ -2,7 +2,6 @@
  * Created by Pastuh on 19.10.2017.
  */
 
-import bindDependencies from './dependencies';
 import {
     SELECT_SELECTORS, CHECK_SELECTORS, CLICK_SELECTORS, SEARCH_SELECTORS, GO_TO_SELECTORS,
     CLICK, GO_TO, OFF, SELECT, CHECK, SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP,
@@ -11,21 +10,20 @@ import {
     MODE_TYPE, MODE_SELECT, MODE_NO_MODE
 } from './const';
 
-import $ from 'jquery';
-
 import speechRecognition from './visualizer';
 
 //bindDependencies();
 
 let elements = [];
 let selectedInputField;
+let selectedSelect;
 let inputMode = MODE_NO_MODE;
 
 window.onload = function () {
 
     speechRecognition();
 
-    $('#start-search').click(function () {
+    $('#search').click(function () {
         checkInputMode($('#search-input').val());
     });
 
@@ -83,6 +81,11 @@ window.onload = function () {
                     break;
                 case REG_EXP_SELECT.test(userCommand):
 
+                    result = splitUserCommand(userCommand, SELECT);
+
+                    if (result){
+                        searchForSelect(SELECT_SELECTORS, result);
+                    }
                     break;
                 case REG_EXP_SEARCH.test(userCommand):
 
@@ -227,6 +230,44 @@ window.onload = function () {
         }
     }
 
+    function searchForSelect(selector, userInput) {
+
+        let elem;
+
+        let selectedElements = $(selector);
+
+        if (selectedElements.length > 0) {
+            for (let i = 0; i < selectedElements.length; i++) {
+
+                elem = selectedElements[i];
+
+                console.log('######Found Selects#####: ' + elem.textContent.toLowerCase());
+
+                if (/*isVisible(elem) && */(elem.textContent.toLowerCase().trim().startsWith(userInput) || hasOption(elem, userInput))) {
+                    console.log('Select found: ' + elem.textContent);
+                    elements.push(elem);
+                }
+            }
+
+            if (elements.length === 1) {
+
+                if ($(elements).is('label')) {
+                    selectedSelect = $(elements).next();
+                    $(elements).click();
+                    changeInputMode(MODE_SELECT);
+
+                } else {
+                    selectedSelect = $(elements);
+                    $(elements[0 ]).click();
+                    $('#speed').focus();
+                    changeInputMode(MODE_SELECT);
+                }
+            } else {
+                multipleElementsSelected();
+            }
+        }
+    }
+
     function multipleElementsSelected() {
         for (let i = 0; i < elements.length; i++) {
             elements[i].style.border = 'black 5px solid';
@@ -246,6 +287,16 @@ window.onload = function () {
     function hasPlaceholderAttribute(element, userInput) {
         if (element.placeholder !== undefined) {
             if (element.placeholder.toString().toLowerCase().startsWith(userInput)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function hasOption(element, userInput) {
+        if ($(element).is('select')){
+            console.log('********Selects content: ' + element.textContent.toString().toLowerCase());
+            if (element.textContent.toString().toLowerCase().indexOf(userInput) > 0){
                 return true;
             }
         }
@@ -317,7 +368,7 @@ window.onload = function () {
             }
         };
         recognition.addEventListener('end', recognition.start);
-        recognition.start();
+        //recognition.start();
     }
     catch (e) {
         console.log('Web Speech error: ' + e);

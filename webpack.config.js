@@ -4,7 +4,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './public/javascripts/controller.js',
+    entry: './public/js/controller.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -21,6 +21,10 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             NODE_ENV: JSON.stringify(NODE_ENV)
+        }),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
         })
     ],
 
@@ -28,7 +32,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
