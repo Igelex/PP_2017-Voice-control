@@ -11,7 +11,7 @@ import {
 } from './const';
 
 import 'jquery-ui-dist/jquery-ui.min'
-import '../stylesheets/style_controller.css'
+//import '../stylesheets/style_controller.css'
 //import 'chosen-js'
 
 
@@ -30,9 +30,9 @@ window.onload = function () {
         performUserAction($('#search-input').val());
     });
 
-    $('#hide').click(function () {
+    /*$('#hide').click(function () {
         selectedSelect.hide().blur();
-    });
+    });*/
 
     $('html, body').click(function () {
         changeInputMode(MODE_NO_MODE);
@@ -154,6 +154,9 @@ window.onload = function () {
         console.log('Execution time: ' + (t1 - t0) + ' mil');
     }
 
+    /**
+     * INPUTS
+     * */
     function searchForInputFields(selector, userInput) {
         selectedInputField = null;
 
@@ -187,12 +190,15 @@ window.onload = function () {
                     selectedInputField.focus();
                     changeInputMode(MODE_TYPE);
                 }
-            } else {
+            } else if (elements.length > 1){
                 multipleElementsSelected();
             }
         }
     }
 
+    /**
+     * Buttons
+     * */
     function searchForButtons(selector, userInput) {
 
         let elem;
@@ -208,8 +214,7 @@ window.onload = function () {
 
                 if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput)
                         || hasValueAttribute(elem, userInput))) {
-                    if ($(elem).is('li') && $(elem).children('a')) {
-                        let temp = $(elem).children('a');
+                    if ($(elem).is('li') && $(elem).has('a')) {
                         console.log('TAB FOUND: ');
                     } else {
                         elements.push(elem);
@@ -222,12 +227,15 @@ window.onload = function () {
                 elements[0].style.backgroundColor = '#e5e5e5';
                 //$(elements[0]).trigger('click');
                 elements[0].click();
-            } else {
+            } else if (elements.length > 1) {
                 multipleElementsSelected();
             }
         }
     }
 
+    /**
+     * CHECKS
+     * */
     function searchForCheckboxesAndRadios(selector, userInput) {
 
         let elem;
@@ -250,12 +258,15 @@ window.onload = function () {
             if (elements.length === 1) {
                 $(elements).prev().click();
 
-            } else {
+            } else if (elements.length > 1) {
                 multipleElementsSelected();
             }
         }
     }
 
+    /**
+     * SELECT
+     * */
     function searchForSelect(selector, userInput) {
 
         let elem;
@@ -282,31 +293,26 @@ window.onload = function () {
                 } else {
                     selectedSelect = $(elements);
                 }
-                /*$(elements).on('click', function(){
-                    let size = $(elements).attr('size');
-                    let openSize = size <= 5 ? size : 5;
-                    $(elements).attr('size', openSize);
-                });*/
-                //$(elements).click();
-                //$(elements).selectmenu('open');
-                //selectedSelect.show().focus().click();
                 try {
                     selectedSelect.selectmenu('open');
                 } catch (e) {
-                    console.log('Can not select: ' + e);
                     selectedSelect.selectmenu().selectmenu('open');
                 }
                 changeInputMode(MODE_SELECT);
-            } else {
+
+            } else if (elements.length > 1) {
                 multipleElementsSelected();
             }
         }
     }
 
     function multipleElementsSelected() {
+
+        console.log('^^^^^^Amount of Elements^^^^^^: ' + elements.length);
+
         for (let i = 0; i < elements.length; i++) {
-            elements[i].style.border = 'black 5px solid';
-            console.log('++++Selected Elements+++++: ' + elements[i].textContent);
+            $(elements).addClass('vocs_multiple_selected');
+            console.log('++++Multiple Selected Elements+++++: ' + elements[i].textContent);
         }
     }
 

@@ -1,7 +1,7 @@
 /**
  * Selectors
  */
-const CLICK_SELECTORS = 'a, li, :button';
+const CLICK_SELECTORS = 'a, li, :button, :submit, :reset';
 const GO_TO_SELECTORS = 'label, input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
     'input[type="search"], input[type="tel"], input[type="url"] , label:has(:text),label:has(:password),' +
     'label:has(input[type="tel"]), label:has(input[type="number"]), label:has(input[type="url"]), label:has(input[type="tel"]),label:has(input[type="search"])';
@@ -38,7 +38,7 @@ let REG_EXP_SCROLL_TO_BOTTOM = /(scroll)\s(to\s)?(bottom)(\s[[a-zA-Z0-9\.])?/;
 let REG_EXP_STOP = /^(stop)$/;
 console.log(REG_EXP_SCROLL_UP.test('scroll up'));
 /**
- * Input Mode
+ * Input Modes
  * */
 const MODE_TYPE = 'type';
 const MODE_SELECT = 'select';

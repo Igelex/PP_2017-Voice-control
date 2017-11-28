@@ -231,3 +231,11 @@ fieldset {
     border-color: #5bc0de; }
 .radio-info input[type="radio"]:checked + label::after {
     background-color: #5bc0de; }
+
+.vocs_selected {
+    border: 2px #07dc64 solid !important;
+}
+
+.vocs_multiple_selected {
+    border: 2px #dcdb00 solid !important;
+}
