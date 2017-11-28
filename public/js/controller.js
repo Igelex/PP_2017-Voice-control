@@ -11,11 +11,9 @@ import {
 } from './const';
 
 import 'jquery-ui-dist/jquery-ui.min'
-import 'chosen-js'
+//import 'chosen-js'
 
 import speechRecognition from './visualizer';
-
-//bindDependencies();
 
 let elements = [];
 let selectedInputField;
@@ -27,7 +25,7 @@ window.onload = function () {
     speechRecognition();
 
     $('#search').click(function () {
-        checkInputMode($('#search-input').val());
+        performUserAction($('#search-input').val());
     });
 
     $('#hide').click(function () {
@@ -38,7 +36,7 @@ window.onload = function () {
         changeInputMode(MODE_NO_MODE);
     });
 
-    function checkInputMode(input) {
+    function performUserAction(input) {
 
         let t0 = performance.now();
 
@@ -72,10 +70,10 @@ window.onload = function () {
                     scrollUp();
                     break;
                 case REG_EXP_SCROLL_TO_TOP.test(userCommand):
-                    scrollDown();
+                    scrollToTop();
                     break;
                 case REG_EXP_SCROLL_TO_BOTTOM.test(userCommand):
-                    scrollUp();
+                    scrollToBottom();
                     break;
                 case REG_EXP_GO_TO.test(userCommand):
 
@@ -260,11 +258,9 @@ window.onload = function () {
 
                 if ($(elements).is('label')) {
                     selectedSelect = $(elements).next();
-                    $(elements).click();
-                    changeInputMode(MODE_SELECT);
-
-                } else {
+                }else {
                     selectedSelect = $(elements);
+                }
                     /*$(elements).on('click', function(){
                         let size = $(elements).attr('size');
                         let openSize = size <= 5 ? size : 5;
@@ -272,16 +268,15 @@ window.onload = function () {
                     });*/
                     //$(elements).click();
                     //$(elements).selectmenu('open');
-                    //selectedSelect.show().click();
-                    try {
-                        selectedSelect.selectmenu('open');
-                    }catch (e){
-                        alert('hui' + e);
-                        selectedSelect.selectmenu().selectmenu('open');
-                    }
-                    changeInputMode(MODE_SELECT);
+                    //selectedSelect.show().focus().click();
+                try {
+                    selectedSelect.selectmenu('open');
+                }catch (e){
+                    console.log('Can not select: ' + e);
+                    selectedSelect.selectmenu().selectmenu('open');
                 }
-            } else {
+                changeInputMode(MODE_SELECT);
+            }else {
                 multipleElementsSelected();
             }
         }
@@ -343,6 +338,14 @@ window.onload = function () {
         });
     }
 
+    function scrollToTop() {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    }
+
+    function scrollToBottom() {
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+    }
+
     function splitUserCommand(userCommand, command) {
         return userCommand.slice((userCommand.indexOf(command) + command.length)).trim();
     }
@@ -375,7 +378,7 @@ window.onload = function () {
                     .join('')
                 console.log('**********'  + transcript);
                 if (e.results[0].isFinal){
-                    checkInputMode(result);
+                    performUserAction(result);
                 }
             });
         }*/
@@ -383,11 +386,11 @@ window.onload = function () {
             let result = event.results[0][0].transcript;
             console.info('-----ON RESULT------: ' + result);
             if (result) {
-                checkInputMode(result);
+                performUserAction(result);
             }
         };
         recognition.addEventListener('end', recognition.start);
-        //recognition.start();
+        recognition.start();
     }
     catch (e) {
         console.log('Web Speech error: ' + e);
