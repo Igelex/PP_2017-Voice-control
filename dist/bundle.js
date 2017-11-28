@@ -10453,7 +10453,6 @@ window.onload = function () {
         console.log('//////FOUND option////////: ' + $(this).text().toLowerCase().trim());
 
         if ($(this).text().toLowerCase().trim().startsWith(input.toLowerCase().trim())) {
-          //$(selectedSelect).selectmenu($(this), {selected: true});
           $(this).prop('selected', true);
           $(selectedSelect).selectmenu("refresh");
           changeInputMode(_const.MODE_NO_MODE);
@@ -10694,32 +10693,36 @@ window.onload = function () {
     var recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
-    /*if (inputMode){
-        recognition.addEventListener('result', e => {
-            const transcript = Array.from(e.results)
-                .map(result => result[0])
-                .map(result => result.transcript)
-                .join('')
-            console.log('**********'  + transcript);
-            if (e.results[0].isFinal){
-                performUserAction(result);
-            }
-        });
-    }*/
+    recognition.continuous = false;
+    recognition.start();
 
     recognition.onresult = function (event) {
-      var result = event.results[0][0].transcript;
-      console.info('-----ON RESULT------: ' + result);
+      var recognitionResult = event.results[0][0].transcript;
+      /*if (inputMode === MODE_TYPE) {
+            const transcript = Array.from(event.results)
+              .map(result => result[0])
+              .map(result => result.transcript)
+              .join('');
+            performUserAction(transcript);
+        } else if (recognitionResult) {
+            console.info('-----ON RESULT------: ' + recognitionResult);
+            if (event.results[0].isFinal) {
+              performUserAction(recognitionResult);
+          }
+      }*/
 
-      if (result) {
-        performUserAction(result);
+      if (recognitionResult) {
+        performUserAction(recognitionResult);
       }
     };
 
     recognition.addEventListener('end', recognition.start);
-    recognition.start();
+
+    recognition.onerror = function (e) {
+      console.error('Error on recognition: ' + e);
+    };
   } catch (e) {
-    console.log('Web Speech error: ' + e);
+    console.error('Web Speech error: ' + e);
   }
   /*$('#startRecord').click(function () {
       if ($('#control-img').attr('src') === './images/play_icon.svg') {

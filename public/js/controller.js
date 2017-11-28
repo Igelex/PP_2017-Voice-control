@@ -11,7 +11,9 @@ import {
 } from './const';
 
 import 'jquery-ui-dist/jquery-ui.min'
+import '../stylesheets/style_controller.css'
 //import 'chosen-js'
+
 
 import speechRecognition from './visualizer';
 
@@ -88,7 +90,7 @@ window.onload = function () {
 
                     result = splitUserCommand(userCommand, SELECT);
 
-                    if (result){
+                    if (result) {
                         searchForSelect(SELECT_SELECTORS, result);
                     }
                     break;
@@ -129,15 +131,14 @@ window.onload = function () {
 
             console.log('//////INPUT////////: ' + input.toLowerCase().trim());
 
-            $(selectedSelect).find('option').each(function() {
+            $(selectedSelect).find('option').each(function () {
 
                 console.log('//////FOUND option////////: ' + $(this).text().toLowerCase().trim());
 
-                if ($(this).text().toLowerCase().trim().startsWith(input.toLowerCase().trim())){
+                if ($(this).text().toLowerCase().trim().startsWith(input.toLowerCase().trim())) {
 
-                    //$(selectedSelect).selectmenu($(this), {selected: true});
                     $(this).prop('selected', true);
-                    $(selectedSelect).selectmenu( "refresh" );
+                    $(selectedSelect).selectmenu("refresh");
                     changeInputMode(MODE_NO_MODE);
                 }
             });
@@ -207,10 +208,10 @@ window.onload = function () {
 
                 if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput)
                         || hasValueAttribute(elem, userInput))) {
-                    if($(elem).is('li') && $(elem).children('a')){
+                    if ($(elem).is('li') && $(elem).children('a')) {
                         let temp = $(elem).children('a');
                         console.log('TAB FOUND: ');
-                    }else {
+                    } else {
                         elements.push(elem);
                     }
 
@@ -278,25 +279,25 @@ window.onload = function () {
 
                 if ($(elements).is('label')) {
                     selectedSelect = $(elements).next();
-                }else {
+                } else {
                     selectedSelect = $(elements);
                 }
-                    /*$(elements).on('click', function(){
-                        let size = $(elements).attr('size');
-                        let openSize = size <= 5 ? size : 5;
-                        $(elements).attr('size', openSize);
-                    });*/
-                    //$(elements).click();
-                    //$(elements).selectmenu('open');
-                    //selectedSelect.show().focus().click();
+                /*$(elements).on('click', function(){
+                    let size = $(elements).attr('size');
+                    let openSize = size <= 5 ? size : 5;
+                    $(elements).attr('size', openSize);
+                });*/
+                //$(elements).click();
+                //$(elements).selectmenu('open');
+                //selectedSelect.show().focus().click();
                 try {
                     selectedSelect.selectmenu('open');
-                }catch (e){
+                } catch (e) {
                     console.log('Can not select: ' + e);
                     selectedSelect.selectmenu().selectmenu('open');
                 }
                 changeInputMode(MODE_SELECT);
-            }else {
+            } else {
                 multipleElementsSelected();
             }
         }
@@ -328,9 +329,9 @@ window.onload = function () {
     }
 
     function hasOption(element, userInput) {
-        if ($(element).is('select')){
+        if ($(element).is('select')) {
             console.log('********Selects content: ' + element.textContent.toString().toLowerCase());
-            if (element.textContent.toString().toLowerCase().indexOf(userInput) > 0){
+            if (element.textContent.toString().toLowerCase().indexOf(userInput) > 0) {
                 return true;
             }
         }
@@ -361,11 +362,11 @@ window.onload = function () {
     }
 
     function scrollToTop() {
-        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $("html, body").animate({scrollTop: 0}, "slow");
     }
 
     function scrollToBottom() {
-        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+        $("html, body").animate({scrollTop: $(document).height()}, 1000);
     }
 
     function splitUserCommand(userCommand, command) {
@@ -383,39 +384,49 @@ window.onload = function () {
     /**
      *Setup Google Speech Recognition
      */
-
-
     try {
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
 
         recognition.lang = 'en-US';
         recognition.interimResults = false;
+        recognition.continuous = false;
+        recognition.start();
 
-        /*if (inputMode){
-            recognition.addEventListener('result', e => {
-                const transcript = Array.from(e.results)
+        recognition.onresult = function (event) {
+
+            let recognitionResult = event.results[0][0].transcript;
+
+            /*if (inputMode === MODE_TYPE) {
+
+                const transcript = Array.from(event.results)
                     .map(result => result[0])
                     .map(result => result.transcript)
-                    .join('')
-                console.log('**********'  + transcript);
-                if (e.results[0].isFinal){
-                    performUserAction(result);
+                    .join('');
+
+                performUserAction(transcript);
+
+            } else if (recognitionResult) {
+
+                console.info('-----ON RESULT------: ' + recognitionResult);
+
+                if (event.results[0].isFinal) {
+                    performUserAction(recognitionResult);
                 }
-            });
-        }*/
-        recognition.onresult = function (event) {
-            let result = event.results[0][0].transcript;
-            console.info('-----ON RESULT------: ' + result);
-            if (result) {
-                performUserAction(result);
+            }*/
+
+            if (recognitionResult) {
+                performUserAction(recognitionResult);
             }
+
         };
         recognition.addEventListener('end', recognition.start);
-        recognition.start();
+        recognition.onerror = function (e) {
+            console.error('Error on recognition: ' + e);
+        }
     }
     catch (e) {
-        console.log('Web Speech error: ' + e);
+        console.error('Web Speech error: ' + e);
     }
 
     /*$('#startRecord').click(function () {

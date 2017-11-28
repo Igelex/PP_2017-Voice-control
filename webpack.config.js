@@ -1,5 +1,5 @@
 const path = require('path');
-
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const webpack = require('webpack');
 
@@ -10,12 +10,12 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
 
-    watch: NODE_ENV == 'development',
+    watch: NODE_ENV === 'development',
     watchOptions: {
         aggregateTimeout: 100
     },
 
-    devtool: NODE_ENV == 'development' ? "source-map" : null,
+    devtool: NODE_ENV === 'development' ? 'source-map' : null,
 
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
@@ -25,7 +25,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
-        })
+        }),
+        new ExtractTextPlugin('[name].css')
     ],
 
     module: {
@@ -39,6 +40,13 @@ module.exports = {
                         presets: ['@babel/preset-env']
                     }
                 }
+            }
+        ],
+
+        loaders: [
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             }
         ]
     }
