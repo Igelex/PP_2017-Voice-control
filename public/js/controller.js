@@ -112,16 +112,36 @@ window.onload = function () {
                 default:
             }
         } else if (inputMode === MODE_TYPE && selectedInputField) {
+
             console.log('---------Typing text......: ' + userCommand);
+
             let textContent = $(selectedInputField).val();
+
             if (textContent.trim().length === 0) {
                 textContent += userCommand;
             } else {
                 textContent += ' ' + userCommand;
             }
+
             $(selectedInputField).val(textContent);
-        } else if (inputMode === MODE_SELECT) {
-            //Kommt
+
+        } else if (inputMode === MODE_SELECT && selectedSelect) {
+
+            console.log('//////INPUT////////: ' + input.toLowerCase().trim());
+
+            $(selectedSelect).find('option').each(function() {
+
+                console.log('//////FOUND option////////: ' + $(this).text().toLowerCase().trim());
+
+                if ($(this).text().toLowerCase().trim().startsWith(input.toLowerCase().trim())){
+
+                    //$(selectedSelect).selectmenu($(this), {selected: true});
+                    $(this).prop('selected', true);
+                    $(selectedSelect).selectmenu( "refresh" );
+                    changeInputMode(MODE_NO_MODE);
+                }
+            });
+
         }
 
         if (elements.length === 0) {
@@ -246,7 +266,7 @@ window.onload = function () {
 
                 elem = selectedElements[i];
 
-                console.log('######Found Selects#####: ' + elem.textContent.toLowerCase());
+                //console.log('######Found Selects#####: ' + elem.textContent.toLowerCase());
 
                 if (/*isVisible(elem) && */(elem.textContent.toLowerCase().trim().startsWith(userInput) || hasOption(elem, userInput))) {
                     console.log('Select found: ' + elem.textContent);
@@ -319,22 +339,24 @@ window.onload = function () {
 
     function changeInputMode(newInputMode) {
         inputMode = newInputMode;
-        if (inputMode !== MODE_TYPE) {
+        if (inputMode === MODE_NO_MODE) {
             $(selectedInputField).blur();
+            $(selectedSelect).selectmenu('close');
             selectedInputField = null;
+            selectedSelect = null;
         }
         console.log('------Current MODE------: ' + inputMode);
     }
 
     function scrollDown() {
         $('html, body').animate({
-            scrollTop: $(window).scrollTop() + (window.innerHeight / 2)
+            scrollTop: $(window).scrollTop() + (window.innerHeight * 0.7)
         });
     }
 
     function scrollUp() {
         $('html, body').animate({
-            scrollTop: $(window).scrollTop() - (window.innerHeight / 2)
+            scrollTop: $(window).scrollTop() - (window.innerHeight * 0.7)
         });
     }
 

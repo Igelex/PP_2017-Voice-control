@@ -2,11 +2,11 @@
  * Selectors
  */
 const CLICK_SELECTORS = 'a, li, :button';
-const GO_TO_SELECTORS = 'label,input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
+const GO_TO_SELECTORS = 'label, input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
     'input[type="search"], input[type="tel"], input[type="url"] , label:has(:text),label:has(:password),' +
     'label:has(input[type="tel"]), label:has(input[type="number"]), label:has(input[type="url"]), label:has(input[type="tel"]),label:has(input[type="search"])';
 const CHECK_SELECTORS = ':radio + label, :checkbox + label, label:has(:radio), label:has(:radio)';
-const SELECT_SELECTORS = 'select';
+const SELECT_SELECTORS = 'label, select';
 const SEARCH_SELECTORS = 'input[type="search"]';
 /**
  * Keywords

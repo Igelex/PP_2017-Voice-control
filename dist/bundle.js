@@ -10447,7 +10447,18 @@ window.onload = function () {
       }
 
       $(selectedInputField).val(textContent);
-    } else if (inputMode === _const.MODE_SELECT) {//Kommt
+    } else if (inputMode === _const.MODE_SELECT && selectedSelect) {
+      console.log('//////INPUT////////: ' + input.toLowerCase().trim());
+      $(selectedSelect).find('option').each(function () {
+        console.log('//////FOUND option////////: ' + $(this).text().toLowerCase().trim());
+
+        if ($(this).text().toLowerCase().trim().startsWith(input.toLowerCase().trim())) {
+          //$(selectedSelect).selectmenu($(this), {selected: true});
+          $(this).prop('selected', true);
+          $(selectedSelect).selectmenu("refresh");
+          changeInputMode(_const.MODE_NO_MODE);
+        }
+      });
     }
 
     if (elements.length === 0) {
@@ -10546,8 +10557,7 @@ window.onload = function () {
 
     if (selectedElements.length > 0) {
       for (var i = 0; i < selectedElements.length; i++) {
-        elem = selectedElements[i];
-        console.log('######Found Selects#####: ' + elem.textContent.toLowerCase());
+        elem = selectedElements[i]; //console.log('######Found Selects#####: ' + elem.textContent.toLowerCase());
 
         if (
         /*isVisible(elem) && */
@@ -10629,9 +10639,11 @@ window.onload = function () {
   function changeInputMode(newInputMode) {
     inputMode = newInputMode;
 
-    if (inputMode !== _const.MODE_TYPE) {
+    if (inputMode === _const.MODE_NO_MODE) {
       $(selectedInputField).blur();
+      $(selectedSelect).selectmenu('close');
       selectedInputField = null;
+      selectedSelect = null;
     }
 
     console.log('------Current MODE------: ' + inputMode);
@@ -10639,13 +10651,13 @@ window.onload = function () {
 
   function scrollDown() {
     $('html, body').animate({
-      scrollTop: $(window).scrollTop() + window.innerHeight / 2
+      scrollTop: $(window).scrollTop() + window.innerHeight * 0.7
     });
   }
 
   function scrollUp() {
     $('html, body').animate({
-      scrollTop: $(window).scrollTop() - window.innerHeight / 2
+      scrollTop: $(window).scrollTop() - window.innerHeight * 0.7
     });
   }
 
@@ -10738,11 +10750,11 @@ exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP
  */
 var CLICK_SELECTORS = 'a, li, :button';
 exports.CLICK_SELECTORS = CLICK_SELECTORS;
-var GO_TO_SELECTORS = 'label,input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"] , label:has(:text),label:has(:password),' + 'label:has(input[type="tel"]), label:has(input[type="number"]), label:has(input[type="url"]), label:has(input[type="tel"]),label:has(input[type="search"])';
+var GO_TO_SELECTORS = 'label, input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"] , label:has(:text),label:has(:password),' + 'label:has(input[type="tel"]), label:has(input[type="number"]), label:has(input[type="url"]), label:has(input[type="tel"]),label:has(input[type="search"])';
 exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
 var CHECK_SELECTORS = ':radio + label, :checkbox + label, label:has(:radio), label:has(:radio)';
 exports.CHECK_SELECTORS = CHECK_SELECTORS;
-var SELECT_SELECTORS = 'select';
+var SELECT_SELECTORS = 'label, select';
 exports.SELECT_SELECTORS = SELECT_SELECTORS;
 var SEARCH_SELECTORS = 'input[type="search"]';
 /**
