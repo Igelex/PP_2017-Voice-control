@@ -7,7 +7,7 @@ import {
     CLICK, GO_TO, OFF, SELECT, CHECK, SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP,
     REG_EXP_CLICK, REG_EXP_GO_TO, REG_EXP_OFF, REG_EXP_SEARCH, REG_EXP_CHECK, REG_EXP_SELECT, REG_EXP_SCROLL_DOWN,
     REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM, REG_EXP_STOP, REG_EXP_SCROLL_UP,
-    MODE_TYPE, MODE_SELECT, MODE_NO_MODE
+    MODE_TYPE, MODE_SELECT, MODE_NO_MODE, STATE_LISTENING, STATE_ERROR, STATE_YOU_SAY, STATE_NO_MATCH
 } from './const';
 
 import 'jquery-ui-dist/jquery-ui.min'
@@ -25,6 +25,9 @@ let inputMode = MODE_NO_MODE;
 window.onload = function () {
 
     speechRecognition();
+
+    let systemState = $('#vocs_text_status').text('Say something...');
+    let textOnRecognition = $('#vocs_text_onrecognition');
 
     $('#search').click(function () {
         performUserAction($('#search-input').val());
@@ -395,7 +398,7 @@ window.onload = function () {
         const recognition = new SpeechRecognition();
 
         recognition.lang = 'en-US';
-        recognition.interimResults = false;
+        recognition.interimResults = true;
         recognition.continuous = false;
         recognition.start();
 
@@ -403,26 +406,19 @@ window.onload = function () {
 
             let recognitionResult = event.results[0][0].transcript;
 
-            /*if (inputMode === MODE_TYPE) {
-
                 const transcript = Array.from(event.results)
                     .map(result => result[0])
                     .map(result => result.transcript)
                     .join('');
 
-                performUserAction(transcript);
-
-            } else if (recognitionResult) {
-
-                console.info('-----ON RESULT------: ' + recognitionResult);
-
-                if (event.results[0].isFinal) {
-                    performUserAction(recognitionResult);
-                }
-            }*/
+                provideSystemStatus(STATE_LISTENING, transcript);
 
             if (recognitionResult) {
-                performUserAction(recognitionResult);
+
+                if (event.results[0].isFinal) {
+                    provideSystemStatus(STATE_YOU_SAY, recognitionResult);
+                    performUserAction(recognitionResult);
+                }
             }
 
         };
@@ -444,6 +440,14 @@ window.onload = function () {
         }
 
     });*/
+
+    function provideSystemStatus(state, onRecognition) {
+        if (textOnRecognition.length === 10){
+            $(textOnRecognition).text(onRecognition);;
+        }
+        $(systemState).text(state);
+        $(textOnRecognition).text(onRecognition);
+    }
 
 
 };

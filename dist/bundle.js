@@ -10350,6 +10350,8 @@ var inputMode = _const.MODE_NO_MODE;
 
 window.onload = function () {
   (0, _visualizer.default)();
+  var systemState = $('#vocs_text_status').text('Say something...');
+  var textOnRecognition = $('#vocs_text_onrecognition');
   $('#search').click(function () {
     performUserAction($('#search-input').val());
   });
@@ -10701,27 +10703,24 @@ window.onload = function () {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     var recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
-    recognition.interimResults = false;
+    recognition.interimResults = true;
     recognition.continuous = false;
     recognition.start();
 
     recognition.onresult = function (event) {
       var recognitionResult = event.results[0][0].transcript;
-      /*if (inputMode === MODE_TYPE) {
-            const transcript = Array.from(event.results)
-              .map(result => result[0])
-              .map(result => result.transcript)
-              .join('');
-            performUserAction(transcript);
-        } else if (recognitionResult) {
-            console.info('-----ON RESULT------: ' + recognitionResult);
-            if (event.results[0].isFinal) {
-              performUserAction(recognitionResult);
-          }
-      }*/
+      var transcript = Array.from(event.results).map(function (result) {
+        return result[0];
+      }).map(function (result) {
+        return result.transcript;
+      }).join('');
+      provideSystemStatus(_const.STATE_LISTENING, transcript);
 
       if (recognitionResult) {
-        performUserAction(recognitionResult);
+        if (event.results[0].isFinal) {
+          provideSystemStatus(_const.STATE_YOU_SAY, recognitionResult);
+          performUserAction(recognitionResult);
+        }
       }
     };
 
@@ -10742,6 +10741,16 @@ window.onload = function () {
       }
     });*/
 
+
+  function provideSystemStatus(state, onRecognition) {
+    if (textOnRecognition.length === 10) {
+      $(textOnRecognition).text(onRecognition);
+      ;
+    }
+
+    $(systemState).text(state);
+    $(textOnRecognition).text(onRecognition);
+  }
 };
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
@@ -10755,7 +10764,7 @@ window.onload = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.CHECK = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
+exports.STATE_NO_MATCH = exports.STATE_YOU_SAY = exports.STATE_ERROR = exports.STATE_LISTENING = exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.CHECK = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
 
 /**
  * Selectors
@@ -10833,10 +10842,22 @@ var MODE_SELECT = 'select';
 exports.MODE_SELECT = MODE_SELECT;
 var MODE_NO_MODE = 'no_mode';
 /**
- * Export consts
+ * System States
  */
 
 exports.MODE_NO_MODE = MODE_NO_MODE;
+var STATE_LISTENING = 'Listening';
+exports.STATE_LISTENING = STATE_LISTENING;
+var STATE_ERROR = 'Some error';
+exports.STATE_ERROR = STATE_ERROR;
+var STATE_NO_MATCH = 'No element found';
+exports.STATE_NO_MATCH = STATE_NO_MATCH;
+var STATE_YOU_SAY = 'You said:';
+/**
+ * Export consts
+ */
+
+exports.STATE_YOU_SAY = STATE_YOU_SAY;
 
 /***/ }),
 /* 3 */
