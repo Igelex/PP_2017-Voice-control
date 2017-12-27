@@ -7,8 +7,8 @@ import {
     CLICK, GO_TO, OFF, SELECT, CHECK, SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP,
     REG_EXP_CLICK, REG_EXP_GO_TO, REG_EXP_OFF, REG_EXP_SEARCH, REG_EXP_CHECK, REG_EXP_SELECT, REG_EXP_SCROLL_DOWN,
     REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM, REG_EXP_STOP, REG_EXP_SCROLL_UP,
-    MODE_TYPE, MODE_SELECT, MODE_NO_MODE, STATE_LISTENING, STATE_ERROR, STATE_YOU_SAY, STATE_NO_MATCH
-} from './const';
+    MODE_TYPE, MODE_SELECT, MODE_NO_MODE, STATE_LISTENING, STATE_ERROR, STATE_YOU_SAY, STATE_NO_MATCH, STATE_ACTIV,
+    STATE_INACTIV} from './const';
 
 import 'jquery-ui-dist/jquery-ui.min'
 //import '../stylesheets/style_controller.css'
@@ -21,13 +21,14 @@ let elements = [];
 let selectedInputField;
 let selectedSelect;
 let inputMode = MODE_NO_MODE;
+let systemRecognitionState = false;
 
 window.onload = function () {
 
     speechRecognition();
 
-    let systemState = $('#vocs_text_status').text('Say something...');
-    let textOnRecognition = $('#vocs_text_onrecognition');
+    let systemState = $('#vocs_text_status');
+    let OnRecognition = $('#vocs_text_onrecognition');
 
     $('#search').click(function () {
         performUserAction($('#search-input').val());
@@ -400,7 +401,7 @@ window.onload = function () {
         recognition.lang = 'en-US';
         recognition.interimResults = true;
         recognition.continuous = false;
-        recognition.start();
+        //recognition.start();
 
         recognition.onresult = function (event) {
 
@@ -418,6 +419,7 @@ window.onload = function () {
                 if (event.results[0].isFinal) {
                     provideSystemStatus(STATE_YOU_SAY, recognitionResult);
                     performUserAction(recognitionResult);
+                    clearUI();
                 }
             }
 
@@ -425,28 +427,43 @@ window.onload = function () {
         recognition.addEventListener('end', recognition.start);
         recognition.onerror = function (e) {
             console.error('Error on recognition: ' + e);
-        }
+        };
+
+        $('#startRecord').click(function () {
+            if (!systemRecognitionState) {
+                provideSystemStatus('Say something', '');
+                recognition.start();
+                systemRecognitionState = STATE_ACTIV;
+                console.log('+++++STOP Recognition++++++');
+            } /*else {
+                recognition.start();
+                systemRecognitionState = STATE_ACTIV;
+                console.log('+++++START Recognition++++++');
+            }*/
+
+        });
     }
     catch (e) {
         console.error('Web Speech error: ' + e);
     }
 
-    /*$('#startRecord').click(function () {
-        if ($('#control-img').attr('src') === './images/play_icon.svg') {
-            recignition.start();
-        } else {
-            $('#control-img').attr('src', './images/play_icon.svg');
-            recignition.stop();
-        }
-
-    });*/
-
-    function provideSystemStatus(state, onRecognition) {
-        if (textOnRecognition.length === 10){
-            $(textOnRecognition).text(onRecognition);;
+    function provideSystemStatus(state, textOnRecognition) {
+        if (textOnRecognition.length > 35){
+            let limitedRecognitionText = textOnRecognition.slice(textOnRecognition.length - 35, textOnRecognition.length);
+            $(OnRecognition).text(limitedRecognitionText);
+        }else {
+            $(OnRecognition).text(textOnRecognition);
         }
         $(systemState).text(state);
-        $(textOnRecognition).text(onRecognition);
+    }
+
+    function clearUI() {
+        setTimeout(function () {
+            $(OnRecognition).text('');
+            $(systemState).text('Say something');
+            console.log('Reset UI');
+        }, 5000);
+
     }
 
 

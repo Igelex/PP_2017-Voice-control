@@ -271,4 +271,14 @@ fieldset {
     max-lines: 1;
     max-width: inherit;
 }
+
+#vocs_state_icon{
+    width: 5rem;
+    height: 5rem;
+    padding: 10px 16px;
+    border-radius: 35px;
+    user-select:none;
+    transform-origin:top left;
+    background-color: #1db14b;
+}
 /*System UI//////////////////////////////////////////////////////////////////////////////////////////////////////////*/

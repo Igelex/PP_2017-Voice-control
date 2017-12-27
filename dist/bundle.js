@@ -10347,11 +10347,12 @@ var elements = [];
 var selectedInputField;
 var selectedSelect;
 var inputMode = _const.MODE_NO_MODE;
+var systemRecognitionState = false;
 
 window.onload = function () {
   (0, _visualizer.default)();
-  var systemState = $('#vocs_text_status').text('Say something...');
-  var textOnRecognition = $('#vocs_text_onrecognition');
+  var systemState = $('#vocs_text_status');
+  var OnRecognition = $('#vocs_text_onrecognition');
   $('#search').click(function () {
     performUserAction($('#search-input').val());
   });
@@ -10704,8 +10705,7 @@ window.onload = function () {
     var recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = true;
-    recognition.continuous = false;
-    recognition.start();
+    recognition.continuous = false; //recognition.start();
 
     recognition.onresult = function (event) {
       var recognitionResult = event.results[0][0].transcript;
@@ -10720,6 +10720,7 @@ window.onload = function () {
         if (event.results[0].isFinal) {
           provideSystemStatus(_const.STATE_YOU_SAY, recognitionResult);
           performUserAction(recognitionResult);
+          clearUI();
         }
       }
     };
@@ -10729,27 +10730,42 @@ window.onload = function () {
     recognition.onerror = function (e) {
       console.error('Error on recognition: ' + e);
     };
+
+    $('#startRecord').click(function () {
+      if (!systemRecognitionState) {
+        provideSystemStatus('Say something', '');
+        recognition.start();
+        systemRecognitionState = _const.STATE_ACTIV;
+        console.log('+++++STOP Recognition++++++');
+      }
+      /*else {
+        recognition.start();
+        systemRecognitionState = STATE_ACTIV;
+        console.log('+++++START Recognition++++++');
+      }*/
+
+    });
   } catch (e) {
     console.error('Web Speech error: ' + e);
   }
-  /*$('#startRecord').click(function () {
-      if ($('#control-img').attr('src') === './images/play_icon.svg') {
-          recignition.start();
-      } else {
-          $('#control-img').attr('src', './images/play_icon.svg');
-          recignition.stop();
-      }
-    });*/
 
-
-  function provideSystemStatus(state, onRecognition) {
-    if (textOnRecognition.length === 10) {
-      $(textOnRecognition).text(onRecognition);
-      ;
+  function provideSystemStatus(state, textOnRecognition) {
+    if (textOnRecognition.length > 35) {
+      var limitedRecognitionText = textOnRecognition.slice(textOnRecognition.length - 35, textOnRecognition.length);
+      $(OnRecognition).text(limitedRecognitionText);
+    } else {
+      $(OnRecognition).text(textOnRecognition);
     }
 
     $(systemState).text(state);
-    $(textOnRecognition).text(onRecognition);
+  }
+
+  function clearUI() {
+    setTimeout(function () {
+      $(OnRecognition).text('');
+      $(systemState).text('Say something');
+      console.log('Reset UI');
+    }, 5000);
   }
 };
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
@@ -10764,7 +10780,7 @@ window.onload = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.STATE_NO_MATCH = exports.STATE_YOU_SAY = exports.STATE_ERROR = exports.STATE_LISTENING = exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.CHECK = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
+exports.STATE_INACTIV = exports.STATE_ACTIV = exports.STATE_NO_MATCH = exports.STATE_YOU_SAY = exports.STATE_ERROR = exports.STATE_LISTENING = exports.MODE_NO_MODE = exports.MODE_SELECT = exports.MODE_TYPE = exports.REG_EXP_SCROLL_UP = exports.REG_EXP_STOP = exports.REG_EXP_SCROLL_TO_BOTTOM = exports.REG_EXP_SCROLL_TO_TOP = exports.REG_EXP_SCROLL_DOWN = exports.REG_EXP_SELECT = exports.REG_EXP_CHECK = exports.REG_EXP_SEARCH = exports.REG_EXP_OFF = exports.REG_EXP_GO_TO = exports.REG_EXP_CLICK = exports.STOP = exports.CHECK = exports.SEARCH = exports.SCROLL_TO_TOP = exports.SCROLL_TO_BOTTOM = exports.SCROLL_UP = exports.SCROLL_DOWN = exports.SELECT = exports.OFF = exports.GO_TO = exports.CLICK = exports.GO_TO_SELECTORS = exports.SEARCH_SELECTORS = exports.CLICK_SELECTORS = exports.CHECK_SELECTORS = exports.SELECT_SELECTORS = void 0;
 
 /**
  * Selectors
@@ -10853,11 +10869,15 @@ exports.STATE_ERROR = STATE_ERROR;
 var STATE_NO_MATCH = 'No element found';
 exports.STATE_NO_MATCH = STATE_NO_MATCH;
 var STATE_YOU_SAY = 'You said:';
+exports.STATE_YOU_SAY = STATE_YOU_SAY;
+var STATE_ACTIV = true;
+exports.STATE_ACTIV = STATE_ACTIV;
+var STATE_INACTIV = false;
 /**
  * Export consts
  */
 
-exports.STATE_YOU_SAY = STATE_YOU_SAY;
+exports.STATE_INACTIV = STATE_INACTIV;
 
 /***/ }),
 /* 3 */
