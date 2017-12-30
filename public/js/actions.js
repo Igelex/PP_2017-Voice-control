@@ -18,7 +18,7 @@ export function executeAction(element) {
 }
 
 export function executeClick(element) {
-    $(element).click().focus();
+    $(element).click();
 }
 
 export function executeCheck(element) {

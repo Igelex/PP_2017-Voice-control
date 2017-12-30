@@ -16,8 +16,9 @@ export function searchForButtons(selector, userInput) {
 
             if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput)
                     || hasValueAttribute(elem, userInput))) {
+
                 if ($(elem).is('li') && $(elem).has('a')) {
-                    console.log('TAB FOUND: ');
+                    /*Special logic needed for Tabs*/
                 } else {
                     foundedElements.push(elem);
                 }
@@ -32,6 +33,10 @@ export function searchForButtons(selector, userInput) {
  * INPUTS
  * */
 export function searchForInputFields(selector, userInput) {
+
+    /**
+     * TODO: find input with text, but without label
+     */
 
     let foundedElements = [];
 

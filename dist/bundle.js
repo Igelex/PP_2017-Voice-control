@@ -14831,7 +14831,7 @@ function searchForButtons(selector, userInput) {
 
       if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput))) {
         if ($(elem).is('li') && $(elem).has('a')) {
-          console.log('TAB FOUND: ');
+          /*Special logic needed for Tabs*/
         } else {
           foundedElements.push(elem);
         }
@@ -14847,6 +14847,9 @@ function searchForButtons(selector, userInput) {
 
 
 function searchForInputFields(selector, userInput) {
+  /**
+   * TODO: find input with text, but without label
+   */
   var foundedElements = [];
   var selectedElements = $(selector);
   var elem;
@@ -15029,7 +15032,7 @@ function executeAction(element) {
 }
 
 function executeClick(element) {
-  $(element).click().focus();
+  $(element).click();
 }
 
 function executeCheck(element) {

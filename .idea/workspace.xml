@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2d5e2526-8fc7-4f5b-9108-3394a5152ea8" name="Default" comment="implement simple ui that shows system states">
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/js/actions.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/js/helper.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/js/search_for_elements.js" />
+    <list default="true" id="2d5e2526-8fc7-4f5b-9108-3394a5152ea8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/dist/bundle.js" afterPath="$PROJECT_DIR$/dist/bundle.js" />
       <change beforePath="$PROJECT_DIR$/dist/bundle.js.map" afterPath="$PROJECT_DIR$/dist/bundle.js.map" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change beforePath="$PROJECT_DIR$/public/js/const.js" afterPath="$PROJECT_DIR$/public/js/const.js" />
-      <change beforePath="$PROJECT_DIR$/public/js/controller.js" afterPath="$PROJECT_DIR$/public/js/controller.js" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/style_controller.css" afterPath="$PROJECT_DIR$/public/stylesheets/vocs_styles.css" />
+      <change beforePath="$PROJECT_DIR$/public/js/actions.js" afterPath="$PROJECT_DIR$/public/js/actions.js" />
+      <change beforePath="$PROJECT_DIR$/public/js/search_for_elements.js" afterPath="$PROJECT_DIR$/public/js/search_for_elements.js" />
       <change beforePath="$PROJECT_DIR$/views/index.ejs" afterPath="$PROJECT_DIR$/views/index.ejs" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -40,8 +34,8 @@
       <file leaf-file-name="search_for_elements.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/search_for_elements.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
-              <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+            <state relative-caret-position="3608">
+              <caret line="164" column="38" lean-forward="false" selection-start-line="164" selection-start-column="38" selection-end-line="164" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -50,8 +44,8 @@
       <file leaf-file-name="actions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="23" column="39" lean-forward="false" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="39" />
+            <state relative-caret-position="440">
+              <caret line="20" column="22" lean-forward="false" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
@@ -62,7 +56,7 @@
       <file leaf-file-name="controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="5082">
               <caret line="300" column="9" lean-forward="false" selection-start-line="300" selection-start-column="9" selection-end-line="300" selection-end-column="9" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -79,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="helper.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="helper.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/helper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="9" column="54" lean-forward="false" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+            <state relative-caret-position="462">
+              <caret line="21" column="31" lean-forward="false" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
               <folding>
                 <marker date="1514639732211" expanded="true" signature="414:455" ph="..." />
               </folding>
@@ -91,11 +85,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/index.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="19" column="32" lean-forward="false" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+            <state relative-caret-position="611">
+              <caret line="359" column="131" lean-forward="false" selection-start-line="359" selection-start-column="131" selection-end-line="359" selection-end-column="131" />
               <folding />
             </state>
           </provider>
@@ -154,7 +148,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="features" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -192,13 +186,13 @@
         <option value="$PROJECT_DIR$/public/stylesheets/style_controller.css" />
         <option value="$PROJECT_DIR$/public/stylesheets/style_index.css" />
         <option value="$PROJECT_DIR$/public/js/const.js" />
-        <option value="$PROJECT_DIR$/public/js/search_for_elements.js" />
-        <option value="$PROJECT_DIR$/public/js/actions.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/views/index.ejs" />
         <option value="$PROJECT_DIR$/public/stylesheets/vocs_styles.css" />
         <option value="$PROJECT_DIR$/public/js/controller.js" />
         <option value="$PROJECT_DIR$/public/js/helper.js" />
+        <option value="$PROJECT_DIR$/public/js/actions.js" />
+        <option value="$PROJECT_DIR$/public/js/search_for_elements.js" />
+        <option value="$PROJECT_DIR$/views/index.ejs" />
       </list>
     </option>
   </component>
@@ -361,7 +355,7 @@
       <workItem from="1514472773698" duration="12552000" />
       <workItem from="1514497258850" duration="6651000" />
       <workItem from="1514543537815" duration="18957000" />
-      <workItem from="1514631880441" duration="7961000" />
+      <workItem from="1514631880441" duration="9061000" />
     </task>
     <task id="LOCAL-00001" summary="init server">
       <created>1509280352016</created>
@@ -545,11 +539,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511899434865</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="reoginize code, add element hilighting bei multiple selected elements">
+      <created>1514640065956</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1514640065956</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="320172000" />
+    <option name="totallyTimeSpent" value="321272000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -622,7 +623,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cleanup project structure" />
     <MESSAGE value="add hemlet" />
     <MESSAGE value="add webpack with babel" />
     <MESSAGE value="implement test ajax request on client" />
@@ -647,7 +647,8 @@
     <MESSAGE value="debugging and optimization" />
     <MESSAGE value="fix issue with multiple selected elements" />
     <MESSAGE value="implement simple ui that shows system states" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement simple ui that shows system states" />
+    <MESSAGE value="reoginize code, add element hilighting bei multiple selected elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="reoginize code, add element hilighting bei multiple selected elements" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -825,24 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="23" column="39" lean-forward="false" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/index.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="19" column="32" lean-forward="false" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/stylesheets/vocs_styles.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -853,15 +836,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/search_for_elements.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
-          <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+        <state relative-caret-position="3608">
+          <caret line="164" column="38" lean-forward="false" selection-start-line="164" selection-start-column="38" selection-end-line="164" selection-end-column="38" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="22" lean-forward="false" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="5082">
           <caret line="300" column="9" lean-forward="false" selection-start-line="300" selection-start-column="9" selection-end-line="300" selection-end-column="9" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -879,11 +872,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/helper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="54" lean-forward="false" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+        <state relative-caret-position="462">
+          <caret line="21" column="31" lean-forward="false" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
           <folding>
             <marker date="1514639732211" expanded="true" signature="414:455" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="611">
+          <caret line="359" column="131" lean-forward="false" selection-start-line="359" selection-start-column="131" selection-end-line="359" selection-end-column="131" />
+          <folding />
         </state>
       </provider>
     </entry>
