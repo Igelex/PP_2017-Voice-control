@@ -27,7 +27,7 @@ ul{
 }
 
 #tabs-1,#tabs-2,#tabs-3,#tabs-4,#tabs-5,#tabs-6{
-    background-color: white; !important;
+    padding: 0; !important;
 }
 .card {
     padding:1.5rem;
@@ -368,3 +368,90 @@ fieldset {
     color: #fff;
     background-color: #5bc0de;
 }
+
+/* Checkbox and Radio buttons */
+.form-group input[type="radio"],
+.form-group input[type="checkbox"]{
+    display: none;
+}
+
+.form-group input[type="checkbox"] + .btn-group > label,
+.form-group input[type="radio"] + .btn-group > label{
+    white-space: normal;
+}
+
+.form-group input[type="checkbox"] + .btn-group > label.btn-default,
+.form-group input[type="radio"] + .btn-group > label.btn-default{
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.form-group input[type="checkbox"] + .btn-group > label.btn-primary,
+.form-group input[type="radio"] + .btn-group > label.btn-primary{
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+.form-group input[type="checkbox"] + .btn-group > label.btn-success,
+.form-group input[type="radio"] + .btn-group > label.btn-success{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.form-group input[type="checkbox"] + .btn-group > label.btn-info,
+.form-group input[type="radio"] + .btn-group > label.btn-info{
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.form-group input[type="checkbox"] + .btn-group > label.btn-warning,
+.form-group input[type="radio"] + .btn-group > label.btn-warning{
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+.form-group input[type="checkbox"] + .btn-group > label.btn-danger,
+.form-group input[type="radio"] + .btn-group > label.btn-danger{
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.form-group input[type="checkbox"] + .btn-group > label.btn-link,
+.form-group input[type="radio"] + .btn-group > label.btn-link {
+    font-weight: normal;
+    color: #428bca;
+    border-radius: 0;
+}
+
+.form-group input[type="radio"] + .btn-group > label span:first-child,
+.form-group input[type="checkbox"] + .btn-group > label span:first-child{
+    display: none;
+}
+
+.form-group input[type="radio"] + .btn-group > label span:first-child + span,
+.form-group input[type="checkbox"] + .btn-group > label span:first-child + span{
+    display: inline-block;
+}
+
+.form-group input[type="radio"]:checked + .btn-group > label span:first-child,
+.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child{
+    display: inline-block;
+}
+
+.form-group input[type="radio"]:checked + .btn-group > label span:first-child + span,
+.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child + span{
+    display: none;
+}
+
+.form-group input[type="checkbox"] + .btn-group > label span[class*="fa-"],
+.form-group input[type="radio"] + .btn-group > label span[class*="fa-"]{
+    width: 15px;
+    float: left;
+    margin: 4px 0 2px -2px;
+}
+
+.form-group input[type="checkbox"] + .btn-group > label span.content,
+.form-group input[type="radio"] + .btn-group > label span.content{
+    margin-left: 10px;
+}
+/* End::Checkbox and Radio buttons */
