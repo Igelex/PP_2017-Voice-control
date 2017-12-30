@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>POCs</title>
     <link rel="stylesheet" href="/stylesheets/style_index.css" type="text/css">
-    <link rel="stylesheet" href="/stylesheets/style_controller.css" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/vocs_styles.css" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="./components/jquery-ui-dist/jquery-ui.min.js"></script>
@@ -27,18 +27,20 @@
         <div class="row row-margin">
             <div class="col-xs-12">
                 <div id="controll-button">
-                    <button id="startRecord" type="button" class=" btn btn-default btn-circle btn-xl"><img id="control-img" src="./images/play_icon.svg"></button>
+                    <button id="startRecord" type="button" class=" btn btn-default btn-circle btn-xl"><img
+                                id="control-img" src="./images/play_icon.svg"></button>
                 </div>
             </div>
         </div>
 
         <!--Input field for testing ////////////////////////////////////////////////////////////////////////////////-->
 
-        <!--<div class="form-group">
+        <div class="form-group">
             <input class="form-control" type="text" id="search-input" placeholder="search">
         </div>
         <button id="search" type="button" class="btn btn-default">Search</button>
-        <button id="hide" type="button" class="btn btn-default">hide</button>-->
+        <button id="hide" type="button" class="btn btn-default">hide</button>
+        <button id="unwrap" type="button" class="btn btn-danger">Unwrap</button>
 
         <!--<div class="row">
             <div class="col-sm-6">
@@ -79,8 +81,8 @@
                                                role="button">link</a>
                                         </div>
                                         <div class="col-sm-6">
-                                            <a href="#" id="click1" class="btn btn-success btn-block" role="button">Test
-                                                Link</a>
+                                            <a href="#" id="click1" class="btn btn-success btn-block" role="button"
+                                               onclick=alert('Test')>Test Link</a>
                                         </div>
                                     </div>
                                 </div>
@@ -136,22 +138,31 @@
                                                 </div>
                                                 <div class="checkbox-success">
                                                     <input type="checkbox" id="female" value="option1">
-                                                    <label for="female">Female</label>
+                                                    <label for="female">Male</label>
+                                                </div>
+                                                <div class="checkbox-success">
+                                                    <input type="checkbox" id="female2" value="option1">
+                                                    <label for="female2">Male</label>
                                                 </div>
                                             </div>
 
-                                            <input id="car" type="checkbox" value=""><label for="car" class="">Car</label>
-                                            <input id="bike" type="checkbox" value=""><label for="bike" class="">Bike</label>
+                                            <input id="car" type="checkbox" value=""><label for="car"
+                                                                                            class="">Car</label>
+                                            <div>
+                                                <input id="bike" type="checkbox" value=""><label for="bike" class="">Bike</label>
+                                            </div>
+                                            <input id="bike2" type="checkbox" value=""><label for="bike2"
+                                                                                              class="">Bike</label>
                                         </div>
 
-                                        <!--<div class="col-sm-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <input type="checkbox" name="fancy-checkbox-default"
                                                        id="fancy-checkbox-default" autocomplete="off"/>
                                                 <div class="btn-group">
                                                     <label for="fancy-checkbox-default" class="btn btn-default">
                                                         <span class="glyphicon glyphicon-ok"></span>
-                                                        <span> </span>
+                                                        <span></span>
                                                     </label>
                                                     <label for="fancy-checkbox-default"
                                                            class="btn btn-default active">
@@ -174,18 +185,33 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        </div>-->
+
+                                            <div class="form-group">
+                                                <input type="checkbox" name="fancy2"
+                                                       id="fancy2" autocomplete="off"/>
+                                                <div class="btn-group">
+                                                    <label for="fancy2" class="btn btn-primary">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                        <span> </span>
+                                                    </label>
+                                                    <label for="fancy2"
+                                                           class="btn btn-default active">
+                                                        Blue
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!--<div class="row row-margin">
+                            <div class="row row-margin">
                                 <div class="col-sm-12">
-                                    <label class="radio-inline"><input type="radio" name="optradio">Apple</label>
-                                    <label class="radio-inline"><input type="radio" name="optradio">banana</label>
-                                    <label class="radio-inline"><input type="radio" name="optradio">orange</label>
+                                    <label for="r1" class="radio-inline"><input id="r1" type="radio" name="optradio">Apple</label>
+                                    <label for="r2" class="radio-inline"><input id="r2" type="radio" name="optradio">banana</label>
+                                    <label for="r3" class="radio-inline"><input id="r3" type="radio" name="optradio">orange</label>
                                 </div>
-                            </div>-->
+                            </div>
 
                             <div class="row row-margin">
                                 <div class="col-sm-12">
@@ -277,12 +303,34 @@
                                     <label for="comment">Comments extra long name</label>
                                     <textarea class="form-control" rows="5" id="comment"></textarea>
                                 </div>
-                                <div class="form-group">
-                                    <label for="test">Input test field</label>
-                                    <input class="form-control" type="text" id="test">
-                                </div>
                                 <button type="submit" class="btn btn-default">Submit</button>
                             </form>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="test">Test</label>
+                                        <input type="email" class="form-control" id="test">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="test1">Test</label>
+                                        <input type="email" class="form-control" id="test1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <input type="email" placeholder="Test" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="email" placeholder="Test" class="form-control">
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -293,9 +341,12 @@
                         <div class="card">
                             <div id="tabs">
                                 <ul>
+
+                                    <li><a href="#tabs-1">Element</a></li>
                                     <li><a href="#tabs-1">Element</a></li>
                                     <li><a href="#tabs-2">Some Text</a></li>
                                     <li><a href="#tabs-3">Text</a></li>
+                                    <li><a href="#tabs-4">Text</a></li>
                                 </ul>
                                 <div id="tabs-1">
                                     <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus.</p>
@@ -316,32 +367,32 @@
         <div id="scroll-test-block" class="row">
             <div class="col-xs-12">
                 <div class="card" style="height: auto; margin-bottom: 10rem; text-align: center; font-size: 10em">
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
-                    Test scroll                    Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
+                    Test scroll Test scroll
                 </div>
             </div>
         </div>
@@ -353,7 +404,8 @@
         <div class="vocs_ui_container">
             <div class="vocs_ui_content">
                 <!--<img id="vocs_state_icon" src="./images/mic_icon.svg"></div>-->
-                <p id="vocs_text_status"></p><p id="vocs_text_onrecognition"></p>
+                <p id="vocs_text_status"></p>
+                <p id="vocs_text_onrecognition"></p>
             </div>
         </div>
     </div>

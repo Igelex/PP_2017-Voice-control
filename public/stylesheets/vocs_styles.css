@@ -1,0 +1,32 @@
+.vocs_selected {
+    border: 2px #07dc64
+}
+
+.vocs_multiple_select_wrapper {
+    margin: 10px 0 10px 0;
+    padding: 5px;
+    position:relative; !important;
+    box-shadow: 0 0 0 2px #48b1ff; !important;
+}
+
+.vocs_multiple_select_wrapper[data-number]:after {
+    content:attr(data-number);
+    position:absolute;
+    top:-10px;
+    right:-10px;
+    font-size: 1.1em;
+    background: #474747;
+    color:white;
+    width:30px;
+    height:30px;
+    text-align:center;
+    line-height: 26px;
+    border: 2px solid white;
+    border-radius:50%;
+    box-shadow:0 0 1px #333;
+}
+
+.vocs_multiple_select_label{}
+
+
+

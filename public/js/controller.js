@@ -1,26 +1,46 @@
 /**
  * Created by Pastuh on 19.10.2017.
  */
-
 import {
     SELECT_SELECTORS, CHECK_SELECTORS, CLICK_SELECTORS, SEARCH_SELECTORS, GO_TO_SELECTORS,
     CLICK, GO_TO, OFF, SELECT, CHECK, SCROLL_DOWN, SCROLL_UP, SCROLL_TO_BOTTOM, SCROLL_TO_TOP, SEARCH, STOP,
     REG_EXP_CLICK, REG_EXP_GO_TO, REG_EXP_OFF, REG_EXP_SEARCH, REG_EXP_CHECK, REG_EXP_SELECT, REG_EXP_SCROLL_DOWN,
     REG_EXP_SCROLL_TO_TOP, REG_EXP_SCROLL_TO_BOTTOM, REG_EXP_STOP, REG_EXP_SCROLL_UP,
-    MODE_TYPE, MODE_SELECT, MODE_NO_MODE, STATE_LISTENING, STATE_ERROR, STATE_YOU_SAY, STATE_NO_MATCH, STATE_ACTIV,
-    STATE_INACTIV} from './const';
+    MODE_TYPE, MODE_SELECT, MODE_NO_MODE, STATE_LISTENING, STATE_ERROR, STATE_YOU_SAY, STATE_NO_MATCH, STATE_ACTIVE,
+    STATE_INACTIVE, STATE_MULTIPLE_MATCH, MODE_MULTIPLE, TYPE_FOCUSABLE
+} from './const';
+import {
+    searchForButtons,
+    searchForInputFields,
+    searchForCheckboxesAndRadios,
+    searchForSelect,
+    getLabel
+} from './search_for_elements';
+import {
+    scrollUp,
+    scrollDown,
+    scrollToBottom,
+    scrollToTop,
+    executeClick,
+    executeSetText,
+    executeFocus,
+    executeCheck, executeAction
+} from './actions';
+import {buildMultipleWrapper, splitUserCommand, getTypeOfElement} from "./helper";
 
 import 'jquery-ui-dist/jquery-ui.min'
-//import '../stylesheets/style_controller.css'
+import wordsToNumbers from 'words-to-numbers';
+//import '../stylesheets/vocs_styles.css'
 //import 'chosen-js'
 
 
 import speechRecognition from './visualizer';
 
-let elements = [];
-let selectedInputField;
-let selectedSelect;
-let inputMode = MODE_NO_MODE;
+let currentElements = [];
+let currentMultipleElements = [];
+let currentInputfield;
+let currentSelect;
+let currentMode = MODE_NO_MODE;
 let systemRecognitionState = false;
 
 window.onload = function () {
@@ -35,12 +55,12 @@ window.onload = function () {
     });
 
     /*$('#hide').click(function () {
-        selectedSelect.hide().blur();
+        currentSelect.hide().blur();
     });*/
 
-    $('html, body').click(function () {
+    /*$('html, body').click(function () {
         changeInputMode(MODE_NO_MODE);
-    });
+    });*/
 
     function performUserAction(input) {
 
@@ -50,24 +70,59 @@ window.onload = function () {
 
         let result;
 
+        if (currentMode === MODE_MULTIPLE) {
+            try {
+
+                /**
+                 * TODO: fix words to number
+                 */
+                userCommand = wordsToNumbers(userCommand, {fuzzy: true});
+                console.log('NUmbER after convert: ' + userCommand);
+                let elem = currentMultipleElements[parseInt(userCommand) - 1];
+
+                executeAction(elem);
+                changeInputMode(MODE_NO_MODE);
+
+                if(getTypeOfElement(elem) === TYPE_FOCUSABLE){
+                    currentInputfield = elem;
+                    changeInputMode(MODE_TYPE);
+                }
+
+                for (let i = 0; i < currentMultipleElements.length; i++) {
+                    $(currentMultipleElements[i]).unwrap('.vocs_multiple_select_wrapper');
+                }
+                currentMultipleElements = [];
+
+                $( '.vocs_multiple_select_label' ).each(function() {
+                    $( this ).unwrap('.vocs_multiple_select_wrapper').removeClass('vocs_multiple_select_label');
+                });
+
+                provideSystemStatus('You choose:', userCommand);
+
+            } catch (e) {
+                console.error('Error im MULTIPLE mode: ' + e);
+            }
+            return;
+        }
+
         if (REG_EXP_STOP.test(userCommand)) {
             changeInputMode(MODE_NO_MODE);
             return;
         }
 
-        if (inputMode === MODE_NO_MODE) {
+        if (currentMode === MODE_NO_MODE) {
             switch (true) {
                 case REG_EXP_CLICK.test(userCommand):
-
-                    changeInputMode(MODE_NO_MODE);
 
                     result = splitUserCommand(userCommand, CLICK);
 
                     if (result) {
                         console.log('Search string for CLICKS: ' + result);
-                        searchForButtons(CLICK_SELECTORS, result);
+                        currentElements.push(...searchForButtons(CLICK_SELECTORS, result));
+                        if (currentElements.length === 1) {
+                            executeClick(currentElements[0]);
+                        }
                     }
-
                     break;
                 case REG_EXP_SCROLL_DOWN.test(userCommand):
                     scrollDown();
@@ -86,8 +141,13 @@ window.onload = function () {
                     result = splitUserCommand(userCommand, GO_TO);
 
                     if (result) {
-                        console.log('Search string for GO_TO: ' + result);
-                        searchForInputFields(GO_TO_SELECTORS, result)
+                        currentElements.push(...searchForInputFields(GO_TO_SELECTORS, result));
+                        if (currentElements.length === 1) {
+                            executeFocus(currentElements[0]);
+                            currentInputfield = $(currentElements[0]);
+                            changeInputMode(MODE_TYPE);
+                        }
+
                     }
                     break;
                 case REG_EXP_SELECT.test(userCommand):
@@ -95,7 +155,7 @@ window.onload = function () {
                     result = splitUserCommand(userCommand, SELECT);
 
                     if (result) {
-                        searchForSelect(SELECT_SELECTORS, result);
+                        currentElements.push(...searchForSelect(SELECT_SELECTORS, result));
                     }
                     break;
                 case REG_EXP_SEARCH.test(userCommand):
@@ -108,8 +168,10 @@ window.onload = function () {
                     result = splitUserCommand(userCommand, CHECK);
 
                     if (result) {
-                        console.log('Search string for CHECK: ' + result);
-                        searchForCheckboxesAndRadios(CHECK_SELECTORS, result);
+                        currentElements.push(...searchForCheckboxesAndRadios(CHECK_SELECTORS, result));
+                        if (currentElements.length === 1) {
+                            executeCheck(currentElements[0]);
+                        }
                     }
                     break;
                 case REG_EXP_OFF.test(userCommand):
@@ -117,43 +179,40 @@ window.onload = function () {
                     break;
                 default:
             }
-        } else if (inputMode === MODE_TYPE && selectedInputField) {
+        } else if (currentMode === MODE_TYPE && currentInputfield) {
+            executeSetText(currentInputfield, userCommand);
 
-            console.log('---------Typing text......: ' + userCommand);
-
-            let textContent = $(selectedInputField).val();
-
-            if (textContent.trim().length === 0) {
-                textContent += userCommand;
-            } else {
-                textContent += ' ' + userCommand;
-            }
-
-            $(selectedInputField).val(textContent);
-
-        } else if (inputMode === MODE_SELECT && selectedSelect) {
+        } else if (currentMode === MODE_SELECT && currentSelect) {
 
             console.log('//////INPUT////////: ' + input.toLowerCase().trim());
 
-            $(selectedSelect).find('option').each(function () {
+            $(currentSelect).find('option').each(function () {
 
                 console.log('//////FOUND option////////: ' + $(this).text().toLowerCase().trim());
 
                 if ($(this).text().toLowerCase().trim().startsWith(input.toLowerCase().trim())) {
 
                     $(this).prop('selected', true);
-                    $(selectedSelect).selectmenu("refresh");
+                    $(currentSelect).selectmenu("refresh");
                     changeInputMode(MODE_NO_MODE);
                 }
             });
 
         }
 
-        if (elements.length === 0) {
+        if (currentElements.length === 0) {
+            provideSystemStatus(STATE_NO_MATCH, 'Please try again');
             console.error('-------------No element found------------------');
         }
-        elements = [];
+        console.log(currentElements);
+        console.log(currentElements.length);
 
+        if (currentElements.length > 1) {
+            multipleElementsSelected();
+            provideSystemStatus(STATE_MULTIPLE_MATCH, 'Please choose a NUMBER');
+        }
+
+        currentElements = [];
         let t1 = performance.now();
         console.log('Execution time: ' + (t1 - t0) + ' mil');
     }
@@ -161,8 +220,8 @@ window.onload = function () {
     /**
      * INPUTS
      * */
-    function searchForInputFields(selector, userInput) {
-        selectedInputField = null;
+    /*function searchForInputFields(selector, userInput) {
+        currentInputfield = null;
 
         let selectedElements = $(selector);
 
@@ -178,32 +237,32 @@ window.onload = function () {
 
                 if (isVisible(elem) && (elem.textContent.toLowerCase().trim().startsWith(userInput) || hasValueAttribute(elem, userInput)
                         || hasPlaceholderAttribute(elem, userInput))) {
-                    elements.push(elem);
+                    currentElements.push(elem);
                 }
             }
 
-            if (elements.length === 1) {
+            if (currentElements.length === 1) {
 
-                if ($(elements).is('label')) {
-                    selectedInputField = $(elements).next();
-                    selectedInputField.focus();
+                if ($(currentElements).is('label')) {
+                    currentInputfield = $(currentElements).next();
+                    currentInputfield.focus();
                     changeInputMode(MODE_TYPE);
 
                 } else {
-                    selectedInputField = $(elements);
-                    selectedInputField.focus();
+                    currentInputfield = $(currentElements);
+                    currentInputfield.focus();
                     changeInputMode(MODE_TYPE);
                 }
-            } else if (elements.length > 1){
+            } else if (currentElements.length > 1){
                 multipleElementsSelected();
             }
         }
-    }
+    }*/
 
     /**
      * Buttons
      * */
-    function searchForButtons(selector, userInput) {
+    /*function searchForButtons(selector, userInput) {
 
         let elem;
 
@@ -221,26 +280,26 @@ window.onload = function () {
                     if ($(elem).is('li') && $(elem).has('a')) {
                         console.log('TAB FOUND: ');
                     } else {
-                        elements.push(elem);
+                        currentElements.push(elem);
                     }
 
                 }
             }
 
-            if (elements.length === 1) {
-                elements[0].style.backgroundColor = '#e5e5e5';
-                //$(elements[0]).trigger('click');
-                elements[0].click();
-            } else if (elements.length > 1) {
+            if (currentElements.length === 1) {
+                currentElements[0].style.backgroundColor = '#e5e5e5';
+                //$(currentElements[0]).trigger('click');
+                currentElements[0].click();
+            } else if (currentElements.length > 1) {
                 multipleElementsSelected();
             }
         }
-    }
+    }*/
 
     /**
      * CHECKS
      * */
-    function searchForCheckboxesAndRadios(selector, userInput) {
+    /*function searchForCheckboxesAndRadios(selector, userInput) {
 
         let elem;
 
@@ -255,23 +314,24 @@ window.onload = function () {
 
                 if (isVisible(elem) && elem.textContent.toLowerCase().trim().startsWith(userInput)) {
                     console.log('TRUE add element: ' + elem.textContent);
-                    elements.push(elem);
+                    currentElements.push(elem);
                 }
             }
 
-            if (elements.length === 1) {
-                $(elements).prev().click();
+            if (currentElements.length === 1) {
+                $(currentElements).prev().click();
 
-            } else if (elements.length > 1) {
+            } else if (currentElements.length > 1) {
                 multipleElementsSelected();
             }
         }
-    }
+    }*/
 
     /**
      * SELECT
      * */
-    function searchForSelect(selector, userInput) {
+
+    /*function searchForSelect(selector, userInput) {
 
         let elem;
 
@@ -284,111 +344,68 @@ window.onload = function () {
 
                 //console.log('######Found Selects#####: ' + elem.textContent.toLowerCase());
 
-                if (/*isVisible(elem) && */(elem.textContent.toLowerCase().trim().startsWith(userInput) || hasOption(elem, userInput))) {
+                if (/!*isVisible(elem) && *!/(elem.textContent.toLowerCase().trim().startsWith(userInput) || hasOption(elem, userInput))) {
                     console.log('Select found: ' + elem.textContent);
-                    elements.push(elem);
+                    currentElements.push(elem);
                 }
             }
 
-            if (elements.length === 1) {
+            if (currentElements.length === 1) {
 
-                if ($(elements).is('label')) {
-                    selectedSelect = $(elements).next();
+                if ($(currentElements).is('label')) {
+                    currentSelect = $(currentElements).next();
                 } else {
-                    selectedSelect = $(elements);
+                    currentSelect = $(currentElements);
                 }
                 try {
-                    selectedSelect.selectmenu('open');
+                    currentSelect.selectmenu('open');
                 } catch (e) {
-                    selectedSelect.selectmenu().selectmenu('open');
+                    currentSelect.selectmenu().selectmenu('open');
                 }
                 changeInputMode(MODE_SELECT);
 
-            } else if (elements.length > 1) {
+            } else if (currentElements.length > 1) {
                 multipleElementsSelected();
             }
         }
-    }
+    }*/
 
     function multipleElementsSelected() {
 
-        console.log('^^^^^^Amount of Elements^^^^^^: ' + elements.length);
+        console.log('^^^^^^Amount of Elements^^^^^^: ' + currentElements.length);
 
-        for (let i = 0; i < elements.length; i++) {
-            $(elements).addClass('vocs_multiple_selected');
-            console.log('++++Multiple Selected Elements+++++: ' + elements[i].textContent);
-        }
-    }
+        for (let i = 0; i < currentElements.length; i++) {
 
-    function hasValueAttribute(element, userInput) {
-        if (element.value !== undefined) {
-            if (element.value.toString().toLowerCase().startsWith(userInput)) {
-                return true;
+            if ($(currentElements[i]).is('input') && getLabel($(currentElements[i]).attr('id'))) {
+
+                let label = getLabel($(currentElements[i]).attr('id'));
+                let wrapperWidth = $(label).outerWidth(true);
+                /*let position = $(label).offset();
+                $('<div class="vocs_multiple_select_wrapper">').css({top: position.top, left: position.left}).appendTo('body');*/
+
+                $(label).wrap(buildMultipleWrapper(i, wrapperWidth));
+                $(label).addClass('vocs_multiple_select_label');
+
+                //$('#' + generateId(i)).width(wrapperWidth);
+
+            } else {
+                let wrapperWidth = $(currentElements[i]).outerWidth(true);
+                $(currentElements[i]).wrap(buildMultipleWrapper(i, wrapperWidth));
             }
+            changeInputMode(MODE_MULTIPLE);
+            currentMultipleElements.push(currentElements[i]);
         }
-        return false;
-    }
-
-    function hasPlaceholderAttribute(element, userInput) {
-        if (element.placeholder !== undefined) {
-            if (element.placeholder.toString().toLowerCase().startsWith(userInput)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function hasOption(element, userInput) {
-        if ($(element).is('select')) {
-            console.log('********Selects content: ' + element.textContent.toString().toLowerCase());
-            if (element.textContent.toString().toLowerCase().indexOf(userInput) > 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     function changeInputMode(newInputMode) {
-        inputMode = newInputMode;
-        if (inputMode === MODE_NO_MODE) {
-            $(selectedInputField).blur();
-            $(selectedSelect).selectmenu('close');
-            selectedInputField = null;
-            selectedSelect = null;
+        currentMode = newInputMode;
+        if (currentMode === MODE_NO_MODE) {
+            $(currentInputfield).blur();
+            $(currentSelect).selectmenu('close');
+            currentInputfield = null;
+            currentSelect = null;
         }
-        console.log('------Current MODE------: ' + inputMode);
-    }
-
-    function scrollDown() {
-        $('html, body').animate({
-            scrollTop: $(window).scrollTop() + (window.innerHeight * 0.7)
-        });
-    }
-
-    function scrollUp() {
-        $('html, body').animate({
-            scrollTop: $(window).scrollTop() - (window.innerHeight * 0.7)
-        });
-    }
-
-    function scrollToTop() {
-        $("html, body").animate({scrollTop: 0}, "slow");
-    }
-
-    function scrollToBottom() {
-        $("html, body").animate({scrollTop: $(document).height()}, 1000);
-    }
-
-    function splitUserCommand(userCommand, command) {
-        return userCommand.slice((userCommand.indexOf(command) + command.length)).trim();
-    }
-
-    function isVisible(elem) {
-        let top_of_element = $(elem).offset().top;
-        let bottom_of_element = $(elem).offset().top + $(elem).outerHeight();
-        let bottom_of_screen = $(window).scrollTop() + $(window).height();
-        let top_of_screen = $(window).scrollTop();
-        return (bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element);
+        console.log('------Current MODE------: ' + currentMode);
     }
 
     /**
@@ -407,12 +424,12 @@ window.onload = function () {
 
             let recognitionResult = event.results[0][0].transcript;
 
-                const transcript = Array.from(event.results)
-                    .map(result => result[0])
-                    .map(result => result.transcript)
-                    .join('');
+            const transcript = Array.from(event.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('');
 
-                provideSystemStatus(STATE_LISTENING, transcript);
+            provideSystemStatus(STATE_LISTENING, transcript);
 
             if (recognitionResult) {
 
@@ -433,13 +450,14 @@ window.onload = function () {
             if (!systemRecognitionState) {
                 provideSystemStatus('Say something', '');
                 recognition.start();
-                systemRecognitionState = STATE_ACTIV;
+                systemRecognitionState = STATE_ACTIVE;
                 console.log('+++++STOP Recognition++++++');
-            } /*else {
-                recognition.start();
-                systemRecognitionState = STATE_ACTIV;
-                console.log('+++++START Recognition++++++');
-            }*/
+            }
+            /*else {
+                           recognition.start();
+                           systemRecognitionState = STATE_ACTIVE;
+                           console.log('+++++START Recognition++++++');
+                       }*/
 
         });
     }
@@ -448,13 +466,14 @@ window.onload = function () {
     }
 
     function provideSystemStatus(state, textOnRecognition) {
-        if (textOnRecognition.length > 35){
+        if (textOnRecognition.length > 35) {
             let limitedRecognitionText = textOnRecognition.slice(textOnRecognition.length - 35, textOnRecognition.length);
             $(OnRecognition).text(limitedRecognitionText);
-        }else {
+        } else {
             $(OnRecognition).text(textOnRecognition);
         }
         $(systemState).text(state);
+        clearUI();
     }
 
     function clearUI() {
@@ -465,8 +484,6 @@ window.onload = function () {
         }, 5000);
 
     }
-
-
 };
 
 
