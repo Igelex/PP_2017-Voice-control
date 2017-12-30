@@ -473,7 +473,6 @@ window.onload = function () {
             $(OnRecognition).text(textOnRecognition);
         }
         $(systemState).text(state);
-        clearUI();
     }
 
     function clearUI() {
