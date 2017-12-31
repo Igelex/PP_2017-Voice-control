@@ -5,8 +5,13 @@
     <title>VOCS</title>
     <link rel="stylesheet" href="/stylesheets/style_index.css" type="text/css">
     <link rel="stylesheet" href="/stylesheets/vocs_styles.css" type="text/css">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="./components/jquery-ui-dist/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="/components/jquery-ui-dist/jquery-ui.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -29,7 +34,7 @@
         </div>
 
         <!--Input field for testing ////////////////////////////////////////////////////////////////////////////////-->
-        <div class=" row row-margin">
+        <div class="row row-margin">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3">
                 <div class="form-group">
                     <input class="form-control" type="text" id="search-input" placeholder="search">
@@ -61,7 +66,7 @@
                 <!--MAIN NAV/////////////////////////////////////////////////////////////////////////////////////////-->
                 <div id="tabs">
                     <div class="card">
-                        <ul>
+                        <ul class="main-tabs">
                             <li><a href="#tabs-1">HOME</a></li>
                             <li><a href="#tabs-2">BUTTONS</a></li>
                             <li><a href="#tabs-3">CHECKBOXES</a></li>
@@ -82,7 +87,7 @@
                     <!--///////////////////////////Buttons TAB //////////////////////////////////////////////////////-->
                     <div id="tabs-2" class="row-margin">
                         <!--Buttons ////////////////////////////////////////////////////////////////////////////////-->
-                        <h4 class="tab-header">Buttons</h4>
+                        <h4 class="tab-header">Buttons and Links</h4>
                         <div class="card">
                             <div class="row" style="margin-bottom: 10px">
                                 <div class="col-sm-6">
@@ -130,8 +135,18 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="row" style="margin-bottom: 10px">
+                                <div class="col-sm-2">
+                                    <a class="waves-effect waves-light btn" style="display: block" onclick="alert(this.textContent + ' says hello')">button</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="waves-effect waves-light btn" style="display: block" onclick="alert(this.textContent + ' says hello')"><i class="material-icons left">cloud</i>Materia</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="waves-effect waves-light btn" style="display: block" onclick="alert(this.textContent + ' says hello')"><i class="material-icons right">cloud</i>Test</a>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
 
                     <!--///////////////////////////CHECKBOXES TAB ///////////////////////////////////////////////////-->
@@ -349,9 +364,67 @@
 
                     <!--///////////////////////////DROPDOWNS TAB ////////////////////////////////////////////////////-->
                     <div id="tabs-5" class="row-margin">
-                        tab
+                        <h4 class="tab-header">Selection </h4>
                         <div class="card">
 
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <fieldset>
+                                                <label for="fruit">Select a Fruit</label>
+                                                <select name="fruit" id="fruit">
+                                                    <option>Apple</option>
+                                                    <option selected="selected">Banana</option>
+                                                    <option>Orange</option>
+                                                </select>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <fieldset>
+                                                <label for="fc">Choice best FC in the World </label>
+                                                <select name="fc" id="fc">
+                                                    <optgroup label="FC">
+                                                        <option value="jquery">Manchester United</option>
+                                                        <option value="jqueryui">Manchester United</option>
+                                                    </optgroup>
+                                                    <optgroup label="Other FC">
+                                                        <option value="somefile">Manchester United</option>
+                                                        <option value="someotherfile">Manchester United</option>
+                                                    </optgroup>
+                                                </select>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <fieldset>
+                                                <label for="fruit2">Select a Fruit</label>
+                                                <select name="fruit2" id="fruit2">
+                                                    <option>Apple</option>
+                                                    <option selected="selected">Banana</option>
+                                                    <option>Orange</option>
+                                                </select>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <fieldset>
+                                                <label for="speed">Choice Speed</label>
+                                                <select name="speed" id="speed">
+                                                    <optgroup label="Fast">
+                                                        <option value="jquery">Fast</option>
+                                                        <option value="jqueryui">Super fast</option>
+                                                    </optgroup>
+                                                    <optgroup label="Slow">
+                                                        <option value="somefile">Slow</option>
+                                                        <option value="someotherfile">Super slow</option>
+                                                    </optgroup>
+                                                </select>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -372,14 +445,16 @@
                                             <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus.</p>
                                         </div>
                                         <div id="tabs-2">
-                                            <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut
+                                            <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante,
+                                                ut
                                                 pharetra massa metus id nunc.</p>
                                         </div>
                                         <div id="tabs-3">
                                             <p>Mauris eleifend est et turpis.</p>
                                         </div>
                                         <div id="tabs-4">
-                                            <p>Mauris eleifend est et turpis. Mauris eleifend est et turpis. Mauris eleifend est
+                                            <p>Mauris eleifend est et turpis. Mauris eleifend est et turpis. Mauris
+                                                eleifend est
                                                 et turpis.</p>
                                         </div>
                                     </div>
@@ -394,106 +469,40 @@
 
                     <!--///////////////////////////SCROLL TAB ///////////////////////////////////////////////////////-->
                     <div id="tabs-7" class="row-margin">
-                        SCROLL
+                        <h4 class="tab-header">Test Scrolling </h4>
                         <div class="card">
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-
-            <div class="row row-margin">
-                <div class="col-xs-12">
-                    <!--Selection ////////////////////////////////////////////////////////////////////////////////-->
-                    <h4>Selection </h4>
-                    <div class="card">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-6">
-
-                                        <fieldset>
-                                            <label for="speed">Select a Fruit</label>
-                                            <select name="speed" id="speed">
-                                                <option>Apple</option>
-                                                <option selected="selected">Banana</option>
-                                                <option>Orange</option>
-                                            </select>
-                                        </fieldset>
-
-                                    </div>
-
-                                    <div class="col-sm-6">
-
-                                        <fieldset>
-                                            <label for="files">Choice best FC in the World </label>
-                                            <select name="files" id="files">
-                                                <optgroup label="FC">
-                                                    <option value="jquery">Manchester United</option>
-                                                    <option value="jqueryui">Manchester United</option>
-                                                </optgroup>
-                                                <optgroup label="Other FC">
-                                                    <option value="somefile">Manchester United</option>
-                                                    <option value="someotherfile">Manchester United</option>
-                                                </optgroup>
-                                            </select>
-                                        </fieldset>
-
-                                    </div>
+                            <div class="row">
+                                <div class="scroll-test-container">
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
+                                    Test scroll Test scroll
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-        </div>
-        <!--////////////////////////////////////////////////////////////////////////// Right-->
-        <div class="col-sm-6">
-            <div class="row">
-                <div class="row row-margin">
-                    <div class="col-xs-12">
-                        <!--Tabs ////////////////////////////////////////////////////////////////////////////////-->
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="scroll-test-block" class="row">
-            <div class="col-xs-12">
-                <div class="card" style="height: auto; margin-bottom: 10rem; text-align: center; font-size: 10em">
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
-                    Test scroll Test scroll
                 </div>
             </div>
         </div>
@@ -523,14 +532,12 @@
     });
 
     $(function () {
-        //$("#speed").selectmenu();
-
-        /*$("#number")
+        $("#fruit2, #fc, #speed")
             .selectmenu()
             .selectmenu("menuWidget")
             .addClass("overflow");
 
-        $("#salutation").selectmenu();*/
+        $("#salutation").selectmenu();
     });
 
     let tabAnim = {
