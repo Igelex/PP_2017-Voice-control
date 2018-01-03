@@ -1,12 +1,15 @@
 .vocs_selected {
     border: 2px #07dc64
 }
-
+.vocs_multiple_select_wrapper_container{
+    position: absolute;
+}
 .vocs_multiple_select_wrapper {
-    margin: 10px 0 10px 0;
-    padding: 5px;
+    padding: 10px 0 10px 0;
     position:relative; !important;
-    box-shadow: 0 0 0 2px #48b1ff; !important;
+    box-shadow: 0 0 0 3px #48b1ff; !important;
+    min-width: 70px; !important;
+    z-index: 1000;
 }
 
 .vocs_multiple_select_wrapper[data-number]:after {
@@ -24,9 +27,22 @@
     border: 2px solid white;
     border-radius:50%;
     box-shadow:0 0 1px #333;
+    z-index: 1001
 }
 
 .vocs_multiple_select_label{}
+
+.vocs_overlay {
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent; /* Black background with opacity */
+    z-index: 999; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
 
 
 

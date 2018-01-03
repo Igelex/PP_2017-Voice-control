@@ -371,26 +371,16 @@ window.onload = function () {
     }*/
 
     function multipleElementsSelected() {
-
+        $('body').prepend('<div class="vocs_overlay"></div>');
         console.log('^^^^^^Amount of Elements^^^^^^: ' + currentElements.length);
 
         for (let i = 0; i < currentElements.length; i++) {
 
             if ($(currentElements[i]).is('input') && getLabel($(currentElements[i]).attr('id'))) {
-
                 let label = getLabel($(currentElements[i]).attr('id'));
-                let wrapperWidth = $(label).outerWidth(true);
-                /*let position = $(label).offset();
-                $('<div class="vocs_multiple_select_wrapper">').css({top: position.top, left: position.left}).appendTo('body');*/
-
-                $(label).wrap(buildMultipleWrapper(i, wrapperWidth));
-                $(label).addClass('vocs_multiple_select_label');
-
-                //$('#' + generateId(i)).width(wrapperWidth);
-
+                buildMultipleWrapper(i, label);
             } else {
-                let wrapperWidth = $(currentElements[i]).outerWidth(true);
-                $(currentElements[i]).wrap(buildMultipleWrapper(i, wrapperWidth));
+                buildMultipleWrapper(i, currentElements[i]);
             }
             changeInputMode(MODE_MULTIPLE);
             currentMultipleElements.push(currentElements[i]);

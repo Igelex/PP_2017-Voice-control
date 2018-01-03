@@ -12860,9 +12860,19 @@ function generateId(i) {
   return 'vocs_multiple_select_wrapper_' + i;
 }
 
-function buildMultipleWrapper(i, wrapperWidth) {
-  var wrapperTemplate = "<div id=\"".concat(generateId(i), "\" data-number=\"").concat(i + 1, "\" class=\"vocs_multiple_select_wrapper\">     \n                             </div>");
-  return $(wrapperTemplate).width(wrapperWidth <= 100 ? wrapperWidth + 40 : wrapperWidth);
+function buildMultipleWrapper(i, currentElement) {
+  var position = $(currentElement).offset();
+  var wrapperWidth = $(currentElement).outerWidth(true);
+  var wrapperHeight = $(currentElement).outerHeight(true);
+  var id = generateId(i);
+  var wrapperTemplate = "<div class=\"vocs_multiple_select_wrapper_container\" id=\"".concat(id, "\"><div id=\"vocs_wrapper_").concat(i, "\" data-number=\"").concat(i + 1, "\" class=\"vocs_multiple_select_wrapper\"></div></div>");
+  $('.vocs_overlay').prepend(wrapperTemplate);
+  $('#vocs_wrapper_' + i).width(wrapperWidth <= 100 ? wrapperWidth + 40 : wrapperWidth);
+  $('#vocs_wrapper_' + i).outerHeight(wrapperHeight);
+  $('#' + id).offset({
+    top: position.top,
+    left: position.left
+  });
 }
 
 function splitUserCommand(userCommand, command) {
@@ -14691,21 +14701,15 @@ window.onload = function () {
 
 
   function multipleElementsSelected() {
+    $('body').prepend('<div class="vocs_overlay"></div>');
     console.log('^^^^^^Amount of Elements^^^^^^: ' + currentElements.length);
 
     for (var i = 0; i < currentElements.length; i++) {
       if ($(currentElements[i]).is('input') && (0, _search_for_elements.getLabel)($(currentElements[i]).attr('id'))) {
         var label = (0, _search_for_elements.getLabel)($(currentElements[i]).attr('id'));
-        var wrapperWidth = $(label).outerWidth(true);
-        /*let position = $(label).offset();
-        $('<div class="vocs_multiple_select_wrapper">').css({top: position.top, left: position.left}).appendTo('body');*/
-
-        $(label).wrap((0, _helper.buildMultipleWrapper)(i, wrapperWidth));
-        $(label).addClass('vocs_multiple_select_label'); //$('#' + generateId(i)).width(wrapperWidth);
+        (0, _helper.buildMultipleWrapper)(i, label);
       } else {
-        var _wrapperWidth = $(currentElements[i]).outerWidth(true);
-
-        $(currentElements[i]).wrap((0, _helper.buildMultipleWrapper)(i, _wrapperWidth));
+        (0, _helper.buildMultipleWrapper)(i, currentElements[i]);
       }
 
       changeInputMode(_const.MODE_MULTIPLE);
