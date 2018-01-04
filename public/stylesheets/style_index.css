@@ -1,7 +1,7 @@
-h1, p {
+/*h1, p {
     font: 2em Calibri;
     text-align: center
-}
+}*/
 
 li {
     margin-right: 10px
@@ -27,20 +27,20 @@ li {
     justify-content: space-between;
 }
 
-#tabs li a {
-    outline-color: transparent;
-    border: none;
+.tabs-content {
+    font-size: 2rem;
+    margin-top: 15px;
 }
 
-#tabs {
+#main-nav {
     background: transparent;
     border: none;
 }
-#tabs .ui-tabs-nav{
+#main-nav .ui-tabs-nav{
     border: none;
 }
 
-#tabs .ui-widget-header {
+#main-nav .ui-widget-header {
     background: transparent;
     border: none;
     border-bottom: 1px solid #c0c0c0;
@@ -49,25 +49,25 @@ li {
     border-radius: 0;
 }
 
-#tabs .ui-tabs-nav .ui-state-default {
+#main-nav .ui-tabs-nav .ui-state-default {
     background: transparent;
     border: none;
 }
 
-#tabs .ui-tabs-nav .ui-state-active {
+#main-nav .ui-tabs-nav .ui-state-active {
     background: transparent url(../images/uiTabsArrow.png) no-repeat bottom center;
     border: none;
 }
 
-#tabs .ui-tabs-nav .ui-state-default a {
+#main-nav .ui-tabs-nav .ui-state-default a {
     color: #c0c0c0;
 }
 
-#tabs .ui-tabs-nav .ui-state-active a {
+#main-nav .ui-tabs-nav .ui-state-active a {
     color: #3c7eff;
 }
 
-#tabs .ui-tabs-nav a {
+#main-nav .ui-tabs-nav a {
     text-decoration: none;
     font-size: 1.2em;
     border: none;
@@ -89,15 +89,13 @@ ul {
 }
 
 #tabs-1, #tabs-2, #tabs-3, #tabs-4, #tabs-5, #tabs-6, #tabs-7 {
-    padding: 0;
-!important;
+    padding: 0;!important;
 }
 
 .card {
     padding: 1.5rem;
     box-shadow: 0 1px 2px #aaa;
-    background-color: white;
-!important;
+    background-color: white;!important;
     border-radius: 3px;
     user-select: none;
     transform-origin: top left;

@@ -2633,10 +2633,10 @@ if (Vel) {
 
         // If no match is found, use the first link or any with class 'active' as the initial active tab.
         if ($active.length === 0) {
-          $active = $(this).find('li.tab a.active').first();
+          $active = $(this).find('li.tab-materia a.active').first();
         }
         if ($active.length === 0) {
-          $active = $(this).find('li.tab a').first();
+          $active = $(this).find('li.tab-materia a').first();
         }
 
         $active.addClass('active');
@@ -2715,7 +2715,7 @@ if (Vel) {
 
         // Bind the click event handler
         $this.off('click.tabs').on('click.tabs', 'a', function (e) {
-          if ($(this).parent().hasClass('disabled')) {
+          if ($(this).parent().hasClass('disabled-materia')) {
             e.preventDefault();
             return;
           }
@@ -2803,7 +2803,7 @@ if (Vel) {
   };
 
   $(document).ready(function () {
-    $('ul.tabs').tabs();
+    $('ul.tabs-materia').tabs();
   });
 })(jQuery);
 ;(function ($) {
@@ -4835,7 +4835,7 @@ if (Vel) {
           lastID = $select.attr('data-select-id'); // Tear down structure if Select needs to be rebuilt
 
       if (lastID) {
-        $select.parent().find('span.caret').remove();
+        $select.parent().find('span.caret-materia').remove();
         $select.parent().find('input').remove();
 
         $select.unwrap();
@@ -4910,7 +4910,7 @@ if (Vel) {
       options.find('li:not(.optgroup)').each(function (i) {
         $(this).click(function (e) {
           // Check if option element is disabled
-          if (!$(this).hasClass('disabled') && !$(this).hasClass('optgroup')) {
+          if (!$(this).hasClass('disabled-materia') && !$(this).hasClass('optgroup')) {
             var selected = true;
 
             if (multiple) {
@@ -4939,7 +4939,7 @@ if (Vel) {
       // Wrap Elements
       $select.wrap(wrapper);
       // Add Select Display Element
-      var dropdownIcon = $('<span class="caret">&#9660;</span>');
+      var dropdownIcon = $('<span class="caret-materia">&#9660;</span>');
 
       // escape double quotes
       var sanitizedLabelHtml = label.replace(/"/g, '&quot;');

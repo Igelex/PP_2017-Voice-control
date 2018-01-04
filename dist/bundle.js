@@ -14818,6 +14818,9 @@ exports.getLabel = getLabel;
  * Buttons
  * */
 function searchForButtons(selector, userInput) {
+  /**
+   * TODO: implement search for elements with span, <i>...
+   */
   var foundedElements = [];
   var elem;
   var selectedElements = $(selector);
@@ -15027,6 +15030,10 @@ function executeAction(element) {
     executeSelect(element);
   }
 }
+/**
+ * TODO: wrap actions with "try catch"
+ */
+
 
 function executeClick(element) {
   element.click();

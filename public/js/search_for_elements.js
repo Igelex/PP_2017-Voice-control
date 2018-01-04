@@ -3,6 +3,10 @@
  * */
 export function searchForButtons(selector, userInput) {
 
+    /**
+     * TODO: implement search for elements with span, <i>...
+     */
+
     let foundedElements = [];
 
     let elem;

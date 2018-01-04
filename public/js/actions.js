@@ -17,6 +17,9 @@ export function executeAction(element) {
     }
 }
 
+/**
+ * TODO: wrap actions with "try catch"
+ */
 export function executeClick(element) {
     element.click();
     element.focus();
