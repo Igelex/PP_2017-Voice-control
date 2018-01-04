@@ -14786,7 +14786,6 @@ window.onload = function () {
     }
 
     $(systemState).text(state);
-    clearUI();
   }
 
   function clearUI() {
