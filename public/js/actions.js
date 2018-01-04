@@ -18,7 +18,8 @@ export function executeAction(element) {
 }
 
 export function executeClick(element) {
-    $(element).click();
+    element.click();
+    element.focus();
 }
 
 export function executeCheck(element) {
@@ -26,7 +27,7 @@ export function executeCheck(element) {
 }
 
 export function executeFocus(element) {
-    $(element).focus();
+    element.focus();
 }
 
 export function executeSetText(element, text) {

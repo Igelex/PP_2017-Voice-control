@@ -15029,7 +15029,8 @@ function executeAction(element) {
 }
 
 function executeClick(element) {
-  $(element).click();
+  element.click();
+  element.focus();
 }
 
 function executeCheck(element) {
@@ -15037,7 +15038,7 @@ function executeCheck(element) {
 }
 
 function executeFocus(element) {
-  $(element).focus();
+  element.focus();
 }
 
 function executeSetText(element, text) {
