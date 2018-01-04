@@ -70,6 +70,11 @@ window.onload = function () {
 
         let result;
 
+        if (REG_EXP_STOP.test(userCommand)) {
+            changeInputMode(MODE_NO_MODE);
+            return;
+        }
+
         if (currentMode === MODE_MULTIPLE) {
             try {
 
@@ -87,26 +92,15 @@ window.onload = function () {
                     currentInputfield = elem;
                     changeInputMode(MODE_TYPE);
                 }
-
-                for (let i = 0; i < currentMultipleElements.length; i++) {
-                    $(currentMultipleElements[i]).unwrap('.vocs_multiple_select_wrapper');
-                }
                 currentMultipleElements = [];
 
-                $( '.vocs_multiple_select_label' ).each(function() {
-                    $( this ).unwrap('.vocs_multiple_select_wrapper').removeClass('vocs_multiple_select_label');
-                });
+                $('.vocs_overlay').remove();
 
                 provideSystemStatus('You choose:', userCommand);
 
             } catch (e) {
                 console.error('Error im MULTIPLE mode: ' + e);
             }
-            return;
-        }
-
-        if (REG_EXP_STOP.test(userCommand)) {
-            changeInputMode(MODE_NO_MODE);
             return;
         }
 
@@ -372,7 +366,6 @@ window.onload = function () {
 
     function multipleElementsSelected() {
         $('body').prepend('<div class="vocs_overlay"></div>');
-        console.log('^^^^^^Amount of Elements^^^^^^: ' + currentElements.length);
 
         for (let i = 0; i < currentElements.length; i++) {
 
@@ -390,6 +383,7 @@ window.onload = function () {
     function changeInputMode(newInputMode) {
         currentMode = newInputMode;
         if (currentMode === MODE_NO_MODE) {
+            $('.vocs_overlay').remove();
             $(currentInputfield).blur();
             $(currentSelect).selectmenu('close');
             currentInputfield = null;

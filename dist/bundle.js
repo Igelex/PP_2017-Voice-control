@@ -14420,6 +14420,11 @@ window.onload = function () {
     var userCommand = input.toString().toLowerCase().trim();
     var result;
 
+    if (_const.REG_EXP_STOP.test(userCommand)) {
+      changeInputMode(_const.MODE_NO_MODE);
+      return;
+    }
+
     if (currentMode === _const.MODE_MULTIPLE) {
       try {
         /**
@@ -14438,24 +14443,13 @@ window.onload = function () {
           changeInputMode(_const.MODE_TYPE);
         }
 
-        for (var i = 0; i < currentMultipleElements.length; i++) {
-          $(currentMultipleElements[i]).unwrap('.vocs_multiple_select_wrapper');
-        }
-
         currentMultipleElements = [];
-        $('.vocs_multiple_select_label').each(function () {
-          $(this).unwrap('.vocs_multiple_select_wrapper').removeClass('vocs_multiple_select_label');
-        });
+        $('.vocs_overlay').remove();
         provideSystemStatus('You choose:', userCommand);
       } catch (e) {
         console.error('Error im MULTIPLE mode: ' + e);
       }
 
-      return;
-    }
-
-    if (_const.REG_EXP_STOP.test(userCommand)) {
-      changeInputMode(_const.MODE_NO_MODE);
       return;
     }
 
@@ -14702,7 +14696,6 @@ window.onload = function () {
 
   function multipleElementsSelected() {
     $('body').prepend('<div class="vocs_overlay"></div>');
-    console.log('^^^^^^Amount of Elements^^^^^^: ' + currentElements.length);
 
     for (var i = 0; i < currentElements.length; i++) {
       if ($(currentElements[i]).is('input') && (0, _search_for_elements.getLabel)($(currentElements[i]).attr('id'))) {
@@ -14721,6 +14714,7 @@ window.onload = function () {
     currentMode = newInputMode;
 
     if (currentMode === _const.MODE_NO_MODE) {
+      $('.vocs_overlay').remove();
       $(currentInputfield).blur();
       $(currentSelect).selectmenu('close');
       currentInputfield = null;
