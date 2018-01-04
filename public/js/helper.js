@@ -14,8 +14,8 @@ export function buildMultipleWrapper(i, currentElement){
     const wrapperTemplate = `<div class="vocs_multiple_select_wrapper_container" id="${id}"><div id="vocs_wrapper_${i}" data-number="${i + 1}" class="vocs_multiple_select_wrapper"></div></div>`;
     $('.vocs_overlay').prepend(wrapperTemplate);
     $('#vocs_wrapper_' + i).width((wrapperWidth <= 100) ? wrapperWidth + 40 : wrapperWidth);
-    $('#vocs_wrapper_' + i).outerHeight(wrapperHeight);
-    $('#' + id).offset({ top: position.top, left: position.left});
+    $('#vocs_wrapper_' + i).outerHeight(wrapperHeight + 10);
+    $('#' + id).offset({ top: position.top - 5, left: position.left - 5});
 
 }
 

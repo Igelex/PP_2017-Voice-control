@@ -12868,10 +12868,10 @@ function buildMultipleWrapper(i, currentElement) {
   var wrapperTemplate = "<div class=\"vocs_multiple_select_wrapper_container\" id=\"".concat(id, "\"><div id=\"vocs_wrapper_").concat(i, "\" data-number=\"").concat(i + 1, "\" class=\"vocs_multiple_select_wrapper\"></div></div>");
   $('.vocs_overlay').prepend(wrapperTemplate);
   $('#vocs_wrapper_' + i).width(wrapperWidth <= 100 ? wrapperWidth + 40 : wrapperWidth);
-  $('#vocs_wrapper_' + i).outerHeight(wrapperHeight);
+  $('#vocs_wrapper_' + i).outerHeight(wrapperHeight + 10);
   $('#' + id).offset({
-    top: position.top,
-    left: position.left
+    top: position.top - 5,
+    left: position.left - 5
   });
 }
 
