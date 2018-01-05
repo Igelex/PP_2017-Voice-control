@@ -5,22 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d5e2526-8fc7-4f5b-9108-3394a5152ea8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/css/index_css/foundation/bootstrap.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/css/index_css/index/bootstrap.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/css/index_css/semantic/bootstrap.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/css/index_css/semantic/semantic.min.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/js/index-scripts/semantic.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/routes/foundation.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/routes/semanticui.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/views/foundation.ejs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/views/semanticui.ejs" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change beforePath="$PROJECT_DIR$/dist/bundle.js.map" afterPath="$PROJECT_DIR$/dist/bundle.js.map" />
-      <change beforePath="$PROJECT_DIR$/public/js/controller.js" afterPath="$PROJECT_DIR$/public/js/controller.js" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/materialize.css" afterPath="$PROJECT_DIR$/public/css/index_css/index/materialize.css" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/style_index.css" afterPath="$PROJECT_DIR$/public/css/index_css/style_index.css" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/vocs_styles.css" afterPath="$PROJECT_DIR$/public/css/vocs_styles.css" />
       <change beforePath="$PROJECT_DIR$/views/index.ejs" afterPath="$PROJECT_DIR$/views/index.ejs" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -105,7 +90,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style_index.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="style_index.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/index_css/style_index.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="528">
@@ -115,12 +100,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/index.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="70" lean-forward="false" selection-start-line="10" selection-start-column="70" selection-end-line="10" selection-end-column="70" />
-              <folding />
+            <state relative-caret-position="478">
+              <caret line="992" column="55" lean-forward="false" selection-start-line="992" selection-start-column="55" selection-end-line="992" selection-end-column="55" />
+              <folding>
+                <element signature="n#div#7;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -230,8 +217,8 @@
         <option value="$PROJECT_DIR$/public/css/index_css/foundation/bootstrap.css" />
         <option value="$PROJECT_DIR$/public/css/index_css/semantic/bootstrap.css" />
         <option value="$PROJECT_DIR$/views/semanticui.ejs" />
-        <option value="$PROJECT_DIR$/views/index.ejs" />
         <option value="$PROJECT_DIR$/public/css/index_css/style_index.css" />
+        <option value="$PROJECT_DIR$/views/index.ejs" />
       </list>
     </option>
   </component>
@@ -445,7 +432,7 @@
       <workItem from="1514631880441" duration="9061000" />
       <workItem from="1515065495091" duration="2704000" />
       <workItem from="1515068578134" duration="1303000" />
-      <workItem from="1515149228147" duration="12519000" />
+      <workItem from="1515149228147" duration="13396000" />
     </task>
     <task id="LOCAL-00001" summary="init server">
       <created>1509280352016</created>
@@ -678,11 +665,18 @@
       <option name="project" value="LOCAL" />
       <updated>1515100134900</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="semantic ui framwork added for testing">
+      <created>1515172343516</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1515172343517</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="370867000" />
+    <option name="totallyTimeSpent" value="371744000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -776,7 +770,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="implement start/stop record on voice recognition" />
     <MESSAGE value="test Web Speech API" />
     <MESSAGE value="add control functions to typing text in inputfields" />
     <MESSAGE value="define keywords end regExp's" />
@@ -801,7 +794,8 @@
     <MESSAGE value="highlighting css changes" />
     <MESSAGE value="fix issue with not clickable links" />
     <MESSAGE value="more test elements added" />
-    <option name="LAST_COMMIT_MESSAGE" value="more test elements added" />
+    <MESSAGE value="semantic ui framwork added for testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="semantic ui framwork added for testing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1094,19 +1088,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/index.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="70" lean-forward="false" selection-start-line="10" selection-start-column="70" selection-end-line="10" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/css/index_css/style_index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="24" column="18" lean-forward="false" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="992" column="55" lean-forward="false" selection-start-line="992" selection-start-column="55" selection-end-line="992" selection-end-column="55" />
+          <folding>
+            <element signature="n#div#7;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
