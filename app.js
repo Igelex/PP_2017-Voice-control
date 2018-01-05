@@ -3,6 +3,8 @@ let path = require('path');
 let logger = require('morgan');
 let bodyParser = require('body-parser');
 let index = require('./routes/index');
+let semanticui = require('./routes/semanticui');
+let foundation = require('./routes/foundation');
 let test = require('./routes/test-post');
 let helmet = require('helmet');
 let resourceMonitorMiddleware = require('express-watcher').resourceMonitorMiddleware;
@@ -21,7 +23,8 @@ app.use(express.static(path.join(__dirname + '/public')));
 app.use(express.static(path.join(__dirname + '/dist')));
 
 app.use('/', index);
-//app.use('/test', test);
+app.use('/semanticui', semanticui);
+app.use('/foundation', foundation);
 
 app.post('/test', function (req, res) {
   console.log('REQ.BODY: ' + req.body);

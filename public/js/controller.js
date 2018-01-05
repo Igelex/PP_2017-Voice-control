@@ -30,7 +30,7 @@ import {buildMultipleWrapper, splitUserCommand, getTypeOfElement} from "./helper
 
 import 'jquery-ui-dist/jquery-ui.min'
 import wordsToNumbers from 'words-to-numbers';
-//import '../stylesheets/vocs_styles.css'
+//import '../css/vocs_styles.css'
 //import 'chosen-js'
 
 
