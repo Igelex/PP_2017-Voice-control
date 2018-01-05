@@ -11696,7 +11696,7 @@ exports.TYPE_SELECTABLE = exports.TYPE_FOCUSABLE = exports.TYPE_CLICKABLE = expo
 /**
  * Selectors
  */
-var CLICK_SELECTORS = 'a, li, :button, :submit, :reset';
+var CLICK_SELECTORS = 'a, li, :button, :submit, :reset, .vocs_clickable';
 exports.CLICK_SELECTORS = CLICK_SELECTORS;
 var GO_TO_SELECTORS = 'input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"], textarea';
 exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
@@ -14917,6 +14917,10 @@ function searchForSelect(selector, userInput) {
 }
 /************************************************************************************************************************
  * Helper methods
+ */
+
+/**
+ * FIXME: why unfeasible(in flow) element always selected?
  */
 
 

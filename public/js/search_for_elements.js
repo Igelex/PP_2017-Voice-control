@@ -120,6 +120,9 @@ export function searchForSelect(selector, userInput) {
  * Helper methods
  */
 
+/**
+ * FIXME: why unfeasible(in flow) element always selected?
+ */
 function isVisible(elem) {
     let top_of_element = $(elem).offset().top;
     let bottom_of_element = $(elem).offset().top + $(elem).outerHeight();

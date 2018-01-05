@@ -27,54 +27,44 @@
     </a>
 </div>
 
-<div id="main" class="pusher" style="margin-bottom: 100px">
+<div id="main" class="pusher">
     <div id="content" class="container">
-        <div id="canvas">
-            <canvas class="visualizer"></canvas>
-        </div>
-
-        <div class="row row-margin">
-            <div class="col-xs-12">
-                <div id="controll-button">
-                    <button id="startRecord" type="button" class=" btn btn-default btn-circle btn-xl"><img
-                                id="control-img" src="./images/play_icon.svg"></button>
+        <div style="position: sticky; top: 0; z-index: 50;">
+            <div id="canvas">
+                <canvas class="visualizer"></canvas>
+            </div>
+            <div class="row row-margin">
+                <div class="col-xs-12">
+                    <div id="controll-button">
+                        <button id="startRecord" type="button" class=" btn btn-default btn-circle btn-xl"><img id="control-img" src="./images/play_icon.svg"></button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--Input field for testing ////////////////////////////////////////////////////////////////////////////////-->
-        <div class="row row-margin">
-            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-
-                <div class="ui form" style="width: 100%;">
-                    <div class="two fields" style="width: 100%;">
-                        <div class="field fluid" style="width: 100%;">
-                            <input class="form-control" type="text" id="search-input" placeholder="search">
+            <!--Input field for testing ////////////////////////////////////////////////////////////////////////////////-->
+            <div class="row row-margin">
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <div style="background-color: #f5f5f5; height: 130px; padding: 20px 20px 0 20px">
+                        <div class="ui form">
+                            <div class="two fields">
+                                <div class="field fluid" style="width: 100%;">
+                                    <input class="form-control" type="text" id="search-input" placeholder="search">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <button id="search" type="button" class="fluid ui primary button">Search</button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button id="hide" type="button" class="fluid ui button">hide</button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button id="unwrap" type="button" class="fluid ui button">Unwrap</button>
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-xs-4">
-                        <button id="search" type="button" class="fluid ui primary button">Search</button>
-                    </div>
-                    <div class="col-xs-4">
-                        <button id="hide" type="button" class="fluid ui button">hide</button>
-                    </div>
-                    <div class="col-xs-4">
-                        <button id="unwrap" type="button" class="fluid ui button">Unwrap</button>
-                    </div>
-                </div>
             </div>
         </div>
-
-        <!--<div class="row">
-            <div class="col-sm-6">
-                <audio id=recordedAudio>Record</audio>
-                <br>
-                <a class="btn button-default" id=audioDownload></a>
-            </div>
-        </div>-->
 
         <div class="row row-margin">
             <div class="col-xs-12">
@@ -97,22 +87,22 @@
                                     <button class="ui primary button" onclick="alert(this.textContent + ' says hello')">
                                         Save
                                     </button>
-                                    <button class="ui button">
+                                    <button class="ui button" onclick="alert(this.textContent + ' says hello')">
                                         Discard
                                     </button>
                                     <div class="ui buttons">
-                                        <button class="ui button">Cancel</button>
+                                        <button class="ui button" onclick="alert(this.textContent + ' says hello')">Cancel</button>
                                         <div class="or"></div>
-                                        <button class="ui positive button">Save</button>
+                                        <button class="ui positive button" onclick="alert(this.textContent + ' says hello')">Save</button>
                                     </div>
                                     <div class="ui animated button" tabindex="0">
-                                        <div class="visible content">Next</div>
+                                        <div class="visible content vocs_clickable">Next</div>
                                         <div class="hidden content">
                                             <i class="right arrow icon"></i>
                                         </div>
                                     </div>
                                     <div class="ui animated fade button" tabindex="0">
-                                        <div class="visible content">Sign-up for a Pro account</div>
+                                        <div class="visible content vocs_clickable">Sign-up for a Pro account</div>
                                         <div class="hidden content">
                                             $12.99 a month
                                         </div>
@@ -121,7 +111,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="ui labeled button" tabindex="0">
-                                        <div class="ui button">
+                                        <div class="ui button vocs_clickable" onclick="alert(this.textContent + ' says hello')">
                                             <i class="heart icon"></i> Like
                                         </div>
                                         <a class="ui basic label">
@@ -132,12 +122,12 @@
                                         <a class="ui basic right pointing label">
                                             2,048
                                         </a>
-                                        <div class="ui button">
-                                            <i class="heart icon"></i> Like
+                                        <div class="ui button vocs_clickable" onclick="alert(this.textContent + ' says hello')">
+                                            <i class="heart icon"></i> Price
                                         </div>
                                     </div>
                                     <div class="ui left labeled button" tabindex="0">
-                                        <a class="ui basic label">
+                                        <a class="ui basic label" onclick="alert(this.textContent + ' says hello')">
                                             1,048
                                         </a>
                                         <div class="ui icon button">
@@ -148,74 +138,47 @@
                             </div>
                             <div class="row row-margin" style="margin-bottom: 20px">
                                 <div class="col-sm-6">
-                                    <button class="ui labeled icon button">
-                                        <i class="pause icon"></i>
-                                        Pause
-                                    </button>
-                                    <button class="ui right labeled icon button">
-                                        <i class="right arrow icon"></i>
-                                        Next
-                                    </button>
-                                    <button class="ui basic button">
-                                        <i class="icon user"></i>
-                                        Add Friend
-                                    </button>
+                                    <button class="ui labeled icon button" onclick="alert(this.textContent + ' says hello')"><i class="pause icon"></i>Pause</button>
+                                    <button class="ui right labeled icon button" onclick="alert(this.textContent + ' says hello')"><i class="right arrow icon"></i>Next</button>
+                                    <button class="ui basic button" onclick="alert(this.textContent + ' says hello')"><i class="icon user"></i>Add Friend</button>
                                 </div>
-                                <button class="ui facebook button">
-                                    <i class="facebook icon"></i>
-                                    Facebook
-                                </button>
-                                <button class="ui twitter button">
-                                    <i class="twitter icon"></i>
-                                    Twitter
-                                </button>
-                                <button class="ui google plus button">
-                                    <i class="google plus icon"></i>
-                                    Google Plus
-                                </button>
+                                <button class="ui facebook button" onclick="alert(this.textContent + ' says hello')"><i class="facebook icon"></i>Facebook</button>
+                                <button class="ui twitter button" onclick="alert(this.textContent + ' says hello')"><i class="twitter icon"></i>Twitter</button>
+                                <button class="ui google plus button" onclick="alert(this.textContent + ' says hello')"><i class="google plus icon"></i>Google Plus</button>
                             </div>
                             <div class="row row-margin" style="margin-bottom: 20px">
                                 <div class="col-sm-6">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="ui vertical labeled icon buttons">
-                                                <button class="ui button">
-                                                    <i class="pause icon"></i>
-                                                    Pause
-                                                </button>
-                                                <button class="ui button">
-                                                    <i class="play icon"></i>
-                                                    Play
-                                                </button>
-                                                <button class="ui button">
-                                                    <i class="shuffle icon"></i>
-                                                    Shuffle
-                                                </button>
+                                                <button class="ui button" ><i class="pause icon"></i>Pause</button>
+                                                <button class="ui button" ><i class="play icon"></i>Play</button>
+                                                <button class="ui button" ><i class="shuffle icon"></i>Shuffle</button>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="ui vertical buttons">
-                                                    <button class="ui button">Feed</button>
-                                                    <button class="ui button">Messages</button>
-                                                    <button class="ui button">Events</button>
+                                                    <button class="ui button" >Feed</button>
+                                                    <button class="ui button" >Messages</button>
+                                                    <button class="ui button" >Events</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button class="ui vk button">
+                                    <button class="ui vk button" onclick="alert(this.textContent + ' says hello')">
                                         <i class="vk icon"></i>
                                         VK
                                     </button>
-                                    <button class="ui linkedin button">
+                                    <button class="ui linkedin button" onclick="alert(this.textContent + ' says hello')">
                                         <i class="linkedin icon"></i>
                                         LinkedIn
                                     </button>
-                                    <button class="ui instagram button">
+                                    <button class="ui instagram button" onclick="alert(this.textContent + ' says hello')">
                                         <i class="instagram icon"></i>
                                         Instagram
                                     </button>
-                                    <button class="ui youtube button">
+                                    <button class="ui youtube button" onclick="alert(this.textContent + ' says hello')">
                                         <i class="youtube icon"></i>
                                         YouTube
                                     </button>

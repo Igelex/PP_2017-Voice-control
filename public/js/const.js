@@ -1,7 +1,7 @@
 /**
  * Selectors
  */
-const CLICK_SELECTORS = 'a, li, :button, :submit, :reset';
+const CLICK_SELECTORS = 'a, li, :button, :submit, :reset, .vocs_clickable';
 const GO_TO_SELECTORS = 'input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
     'input[type="search"], input[type="tel"], input[type="url"], textarea';
 const CHECK_SELECTORS = ':radio, :checkbox';
