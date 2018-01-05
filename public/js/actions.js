@@ -30,6 +30,7 @@ export function executeCheck(element) {
 }
 
 export function executeFocus(element) {
+    element.click();
     element.focus();
 }
 

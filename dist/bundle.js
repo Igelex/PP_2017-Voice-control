@@ -11698,7 +11698,7 @@ exports.TYPE_SELECTABLE = exports.TYPE_FOCUSABLE = exports.TYPE_CLICKABLE = expo
  */
 var CLICK_SELECTORS = 'a, li, :button, :submit, :reset, .vocs_clickable';
 exports.CLICK_SELECTORS = CLICK_SELECTORS;
-var GO_TO_SELECTORS = 'input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"], textarea';
+var GO_TO_SELECTORS = 'input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' + 'input[type="search"], input[type="tel"], input[type="url"], input[type="hidden"], textarea, .vocs_focusable';
 exports.GO_TO_SELECTORS = GO_TO_SELECTORS;
 var CHECK_SELECTORS = ':radio, :checkbox';
 exports.CHECK_SELECTORS = CHECK_SELECTORS;
@@ -15049,6 +15049,7 @@ function executeCheck(element) {
 }
 
 function executeFocus(element) {
+  element.click();
   element.focus();
 }
 

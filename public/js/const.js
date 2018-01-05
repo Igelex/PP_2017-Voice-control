@@ -3,7 +3,7 @@
  */
 const CLICK_SELECTORS = 'a, li, :button, :submit, :reset, .vocs_clickable';
 const GO_TO_SELECTORS = 'input[type=""], input[type="email"], input[type="text"], input[type="password"], input[type="number"],' +
-    'input[type="search"], input[type="tel"], input[type="url"], textarea';
+    'input[type="search"], input[type="tel"], input[type="url"], input[type="hidden"], textarea, .vocs_focusable';
 const CHECK_SELECTORS = ':radio, :checkbox';
 const SELECT_SELECTORS = 'select';
 const SEARCH_SELECTORS = 'input[type="search"]';
